@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5002"
+    environment:
+      - DATABASE_URL=postgresql://quantdinger:quantdinger123@db:5432/ai_adplacer
+      - REDIS_URL=redis://redis:6379/0
+      - TENCENT_MAP_KEY=7HKBZ-HQBEM-XS56X-6DBAT-ITXUZ-IDFNG
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./backend:/app
+    networks:
+      - aiadplacer-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - aiadplacer-network
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ai_adplacer
+      POSTGRES_USER: quantdinger
+      POSTGRES_PASSWORD: quantdinger123
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - aiadplacer-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6380:6379"
+    networks:
+      - aiadplacer-network
+
+volumes:
+  postgres_data:
+
+networks:
+  aiadplacer-network:
+    driver: bridge

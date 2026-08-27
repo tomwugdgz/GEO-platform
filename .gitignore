@@ -1,0 +1,87 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+
+# 数据库
+*.db
+*.sqlite
+*.sqlite3
+postgres_data/
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 敏感配置
+chroma_data/
+*.log
+logs/
+backend/startup.log
+backend/startup-err.log
+backend/uvicorn.log
+backend/geo-backend.log
+backend/backend-clean.log
+backend/backend-final.log
+
+# 前端
+node_modules/
+bmn-frontend/dist/
+bmn-frontend/.vite/
+bmn-frontend/npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# 测试
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+
+# Next.js
+geo-next/.next/
+geo-next/out/
+geo-next/build/
+
+# 用户特定
+desktop.ini
+
+# Next.js
+geo-next/
+geo-next/.next/
+geo-next/out/
+geo-next/build/
+
+# 备份和构建产物
+*.backup
+*.bak
+bmn-frontend/dist/
+bmn-frontend/build/
+bmn-frontend/.vite/

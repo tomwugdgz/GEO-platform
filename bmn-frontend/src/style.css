@@ -1,0 +1,121 @@
+/* ── GEO 平台全局样式 ── 极简未来主义 × Dieter Rams */
+:root {
+  --bg: #F5F5F7;
+  --card: #FFFFFF;
+  --text: #1D1D1F;
+  --text2: #86868B;
+  --accent: #FF5C1A;
+  --accent2: #0071E3;
+  --border: #D2D2D7;
+  --success: #34C759;
+  --warn: #FF9500;
+  --danger: #FF3B30;
+  --shadow: 0 2px 12px rgba(0,0,0,.06);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 15px; line-height: 1.6;
+}
+a { color: var(--accent2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── 顶栏 ── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; height: 56px; padding: 0 32px;
+}
+.topbar .logo { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+.topbar .logo span { color: var(--accent); }
+.topbar nav { display: flex; gap: 4px; margin-left: 40px; }
+.topbar nav a {
+  padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 500;
+  color: var(--text2); transition: all .2s;
+}
+.topbar nav a:hover { color: var(--text); background: rgba(0,0,0,.04); text-decoration: none; }
+.topbar nav a.router-link-active { color: var(--accent); background: rgba(255,92,26,.08); }
+.topbar .right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.topbar select {
+  padding: 5px 10px; border: 1px solid var(--border); border-radius: 8px;
+  background: #fff; font-size: 13px; color: var(--text); cursor: pointer;
+}
+
+/* ── 页面容器 ── */
+.page-container { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
+
+/* ── 卡片 ── */
+.card {
+  background: var(--card); border-radius: var(--radius); padding: 28px;
+  box-shadow: var(--shadow); margin-bottom: 20px;
+}
+.card h2 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+.card h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--text); }
+
+/* ── 按钮 ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 20px; border: none; border-radius: 10px;
+  font-size: 14px; font-weight: 500; cursor: pointer; transition: all .2s;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: #e04d10; }
+.btn-secondary { background: var(--accent2); color: #fff; }
+.btn-secondary:hover { background: #005bb5; }
+.btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn-ghost:hover { background: rgba(0,0,0,.04); }
+.btn-success { background: var(--success); color: #fff; }
+.btn-sm { padding: 5px 12px; font-size: 12px; border-radius: 6px; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ── 表单 ── */
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--text2); }
+.form-input {
+  width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  font-size: 14px; background: #fff; transition: border .2s;
+}
+.form-input:focus { outline: none; border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(0,113,227,.1); }
+textarea.form-input { resize: vertical; min-height: 80px; }
+
+/* ── 表格 ── */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 14px; color: var(--text2); font-weight: 500; border-bottom: 1px solid var(--border); background: #FAFAFA; }
+td { padding: 10px 14px; border-bottom: 1px solid #F0F0F0; }
+tr:hover td { background: #FAFAFA; }
+
+/* ── 标签 ── */
+.tag {
+  display: inline-block; padding: 2px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 500;
+}
+.tag-high { background: rgba(255,59,48,.1); color: var(--danger); }
+.tag-mid { background: rgba(255,149,0,.1); color: var(--warn); }
+.tag-low { background: rgba(52,199,89,.1); color: var(--success); }
+.tag-info { background: rgba(0,113,227,.1); color: var(--accent2); }
+
+/* ── 统计卡片 ── */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+.stat-card {
+  background: var(--card); border-radius: var(--radius); padding: 20px 24px;
+  box-shadow: var(--shadow); text-align: center;
+}
+.stat-card .stat-value { font-size: 32px; font-weight: 700; color: var(--accent); }
+.stat-card .stat-label { font-size: 13px; color: var(--text2); margin-top: 4px; }
+
+/* ── 进度条 ── */
+.progress-bar { height: 6px; background: #E5E5EA; border-radius: 3px; overflow: hidden; }
+.progress-bar .fill { height: 100%; border-radius: 3px; transition: width .6s ease; }
+
+/* ── 响应式 ── */
+@media (max-width: 768px) {
+  .topbar { padding: 0 16px; }
+  .topbar nav { gap: 2px; margin-left: 16px; }
+  .topbar nav a { padding: 5px 8px; font-size: 12px; }
+  .page-container { padding: 16px; }
+}

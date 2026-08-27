@@ -1,0 +1,140 @@
+# ═══════════════════════════════════════════════════════════════
+# pDOOH 服务端 Python 依赖清单
+# ═══════════════════════════════════════════════════════════════
+# 安装方式:
+#   1. 使用清华大学镜像源（推荐，国内速度快）:
+#      pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+#   2. 使用默认源:
+#      pip install -r requirements.txt
+#
+# 虚拟环境（推荐）:
+#   python -m venv venv
+#   # Windows:
+#   venv\Scripts\activate.bat
+#   # Linux/Mac:
+#   source venv/bin/activate
+#   pip install -r requirements.txt
+# ═══════════════════════════════════════════════════════════════
+
+# ── 核心 Web 框架 ───────────────────────────────────────────────
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+python-dotenv>=1.0.0
+
+# ── 数据库 ─────────────────────────────────────────────────────
+# 使用 SQLite（默认，无需额外安装）或 PostgreSQL
+# SQLite: 无需额外配置
+# PostgreSQL: 需要安装 psycopg2-binary
+SQLAlchemy>=2.0.0
+# PostgreSQL 驱动（使用 PostgreSQL 时启用）
+psycopg2-binary>=2.9.9
+# 异步 PostgreSQL 驱动（Booking 模块并行异步引擎）
+asyncpg>=0.29.0
+
+# ── Redis（可选，用于缓存和异步任务）─────────────────────────
+# 如果不用 Redis，可以注释掉这两行
+redis>=5.0.0
+# 异步 Redis 驱动（可选）
+# aioredis>=2.0.0
+
+# ── HTTP 客户端 ────────────────────────────────────────────────
+httpx>=0.25.0
+requests>=2.31.0
+
+# ── 数据处理 ──────────────────────────────────────────────────
+pandas>=2.2.0
+numpy>=1.26.0
+scikit-learn>=1.3.0
+
+# ── LangChain / LangGraph（AI Agent 框架）────────────────────
+# 核心框架
+langchain>=0.3.0
+langchain-core>=0.3.0
+langgraph>=0.2.0
+# OpenAI 集成（如使用 OpenAI 或 Ollama）
+langchain-openai>=0.2.0
+# 社区集成（可选）
+langchain-community>=0.3.0
+# HuggingFace 集成（如使用 HF 模型）
+# langchain-huggingface>=0.1.0
+
+# ── 向量数据库（ChromaDB）────────────────────────────────────
+chromadb>=0.5.0
+
+# ── 文本嵌入模型（Sentence Transformers）────────────────────
+# CPU 版本（推荐，安装快速）
+sentence-transformers>=3.0.0
+# GPU 版本（如有 NVIDIA GPU，取消注释以加速）:
+# sentence-transformers[gpu]>=3.0.0
+# 或使用:
+# pip install -U "sentence-transformers[torch]"
+
+# ── OpenAI SDK（如使用 OpenAI API）──────────────────────────
+openai>=1.30.0
+
+# ── Anthropic SDK（如使用 Claude API）───────────────────────
+# anthropic>=0.31.0
+
+# ── Excel/数据处理（可选）────────────────────────────────────
+openpyxl>=3.1.0
+# 仅 build 阶段读 .xls 需要：xlrd>=2.0 已移除 xls 支持，必须锁 <2.0
+xlrd==1.2.0
+
+# ── 青柠智能对话助手（qinglin_assistant 增量模块）─────────
+# 文档生成技能（真实链路）：Word / PowerPoint / PDF
+python-docx>=1.1.0
+python-pptx>=0.6.23
+reportlab>=4.0.0
+
+# ── 文档生成（青柠助手 skills 模块）─────────────────────────
+# Excel 复用上面已声明的 openpyxl，勿重复添加
+python-docx>=1.1.0
+python-pptx>=0.6.23
+reportlab>=4.0.0
+
+# ── 异步任务队列（Celery，可选）────────────────────────────
+# celery>=5.3.0
+# 如果使用 Celery + Redis
+# redis>=5.0.0
+
+# ── 日志 ──────────────────────────────────────────────────────
+loguru>=0.7.0
+
+# ── 工具库 ──────────────────────────────────────────────────
+pyyaml>=6.0.0
+python-dateutil>=2.8.0
+tqdm>=4.66.0
+
+# ── 测试（可选，开发时使用）────────────────────────────────
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+httpx>=0.25.0  # 已包含在 HTTP 客户端中
+
+# ── 迁移（Alembic，Booking 模块 DDL）──────────────────────
+alembic>=1.13.0
+
+# ── 定时任务（APScheduler，到期释放 cron）─────────────────
+APScheduler>=3.10.0
+
+# ═══════════════════════════════════════════════════════════════
+# 可选依赖（按需安装）
+# ═══════════════════════════════════════════════════════════════
+#
+# 1. GPU 加速（如有 NVIDIA GPU）:
+#    pip install torch --index-url https://download.pytorch.org/whl/cu121
+#    pip install "sentence-transformers[torch]"
+#
+# 2. PostgreSQL 数据库:
+#    pip install psycopg2-binary
+#
+# 3. Anthropic Claude:
+#    pip install anthropic
+#
+# 4. HuggingFace Hub:
+#    pip install huggingface_hub
+#
+# 5. 开发工具（代码格式化、lint）:
+#    pip install black isort flake8 mypy
+# ═══════════════════════════════════════════════════════════════
