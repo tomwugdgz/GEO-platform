@@ -1,0 +1,53 @@
+# GEO — 生成式引擎优化平台 (Generative Engine Optimization Platform)
+
+> 让品牌在 AI 搜索中获得优先展示。GEO 是一个面向 AI 搜索时代的企业级品牌优化平台，帮助品牌在 DeepSeek、豆包、通义千问、Kimi 等 8 大 AI 搜索引擎中获得更高的可见度和出镜率。
+
+## Overview
+
+GEO (Generative Engine Optimization) 平台提供从品牌诊断、多模态分析、竞品逆向前沿研究到内容生产、全域监测的完整工具链。核心技术差异化在于：不止做文本监测，而是建立多模态（图片/视频/音频）诊断 + 竞品逆向研究的技术护城河，定位超越传统 SEO 转型公司。
+
+## Core Capabilities
+
+- **品牌 GEO 诊断**: AIVO 四维评分体系（AI 搜索可见性 × 基建完善度 × 竞争优势 × 舆情健康度），8 大 AI 平台虚拟收录检测，4 阶段诊断流水线
+- **多模态诊断**: 图片/视频/音频在 AI 搜索中的识别率与可索引性评估，跨模态 GEO 健康度
+- **竞品逆向研究**: 竞品内容拆解、关键词逆向、策略逆向、威胁等级量化
+- **意图洞察**: KMeans 用户提问意图聚类 + 意图地图可视化
+- **品牌知识库**: ChromaDB 向量库 + BGE-M3 嵌入的 RAG 增强检索
+- **AI 内容生产**: 基于品牌知识库的 GEO/SEO 双优化内容生成
+- **全域监测**: 8 大 AI 平台出镜率实时监控与预警
+
+## Tech Stack
+
+- Backend: FastAPI 0.109+ / SQLAlchemy 2.0 / LangGraph 0.2+ / ChromaDB
+- Frontend: Vue 3.5+ / Vite 5 / Element Plus / 像素科技风 UI
+- Database: PostgreSQL 15+ / Redis 7+
+- LLM: Ollama (qwen3.5:9b) / OpenAI / DeepSeek / Qwen
+- Agent: LangChain + LangGraph 编排
+
+## A2A / Agent Integration
+
+本平台后端暴露标准 REST API（FastAPI），可被任意 AI Agent 或 A2A (Agent-to-Agent) 协议客户端调用：
+
+- 诊断任务: `POST /api/v2/geo/diagnosis/start` → 轮询 `/status/{task_id}` → `/result/{task_id}`
+- 多模态分析: `POST /api/v2/geo/multimodal/image/analyze`
+- 竞品逆向: `POST /api/v2/geo/competitor/analyze`
+- 所有端点均可在 `/docs` (Swagger) 查看 OpenAPI Schema，支持 MCP / Function Calling 自动适配
+
+## Resources
+
+- Documentation: /README.md
+- API Reference: /docs (Swagger UI, auto-generated OpenAPI)
+- Backend Entry: /backend/app/main.py
+- Frontend Entry: /bmn-frontend/src/main.js
+- License: MIT
+
+## Contact
+
+- Author: Tom (duckwolf)
+- Website: https://duckwolf.cn
+- GitHub: https://github.com/tomwugdgz
+- Issues: https://github.com/tomwugdgz/GEO-platform/issues
+
+## Topics
+
+geo, generative-engine-optimization, llm, ai-search, brand-optimization, multimodal, competitor-analysis, fastapi, vue3, langchain, langgraph, rag, chromadb, a2a, agent

@@ -1,3 +1,12 @@
+---
+title: "GEO - 生成式引擎优化平台"
+description: "GEO (Generative Engine Optimization) 平台：让品牌在 AI 搜索中获得优先展示。提供品牌 GEO 诊断、多模态诊断、竞品逆向研究、意图洞察、知识库、AI 内容生产、全域监测。FastAPI + Vue3 + LangGraph + ChromaDB。"
+keywords: "GEO, 生成式引擎优化, Generative Engine Optimization, AI搜索优化, 品牌诊断, 多模态诊断, 竞品逆向, LLM, A2A, Agent, FastAPI, Vue3, LangChain, RAG"
+author: "Tom (duckwolf)"
+url: "https://github.com/tomwugdgz/GEO-platform"
+topics: "geo, generative-engine-optimization, llm, ai-search, brand-optimization, multimodal, competitor-analysis, fastapi, vue3, langchain, langgraph, rag, chromadb, a2a, agent"
+---
+
 # 🚀 GEO - 生成式引擎优化平台
 
 > **让品牌在 AI 搜索中获得优先展示**
@@ -8,9 +17,25 @@ GEO（Generative Engine Optimization）是一个面向 AI 搜索时代的企业�
 [![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-009688.svg)](https://fastapi.tiangolo.com/)
 [![Vue](https://img.shields.io/badge/Vue-3.5+-4FC08D.svg)](https://vuejs.org/)
+[![AI-Friendly](https://img.shields.io/badge/llms.txt-included-ff69b4.svg)](llms.txt)
+[![A2A](https://img.shields.io/badge/A2A-ready-9b59b6.svg)](llms.txt)
+
+<!-- AI-READABLE TAGS (for LLM crawlers / A2A agents / search platforms)
+@type: SoftwareSourceCode
+@application: GenerativeEngineOptimization
+@category: AI-Search-Optimization / Brand-Visibility / Multimodal-Diagnostics / Competitor-Reverse-Engineering
+@tech: FastAPI, Vue3, LangGraph, ChromaDB, PostgreSQL, Redis, Ollama, OpenAI
+@api: REST + OpenAPI (Swagger at /docs), MCP-compatible, Function-Calling-ready
+@platforms: DeepSeek, Doubao, Yuanbao, Tongyi, Wenxin, Nami, Kimi, Zhipu
+@license: MIT
+@author: Tom (duckwolf)
+@contact: https://duckwolf.cn
+@repo: https://github.com/tomwugdgz/GEO-platform
+-->
 
 ## 📋 目录
 
+- [AI 可读标签与 A2A 集成](#-ai-可读标签与-a2a-集成)
 - [核心特性](#-核心特性)
 - [系统架构](#-系统架构)
 - [快速开始](#-快速开始)
@@ -22,6 +47,45 @@ GEO（Generative Engine Optimization）是一个面向 AI 搜索时代的企业�
 - [路线图](#-路线图)
 - [贡献](#-贡献)
 - [许可证](#-许可证)
+
+## 🤖 AI 可读标签与 A2A 集成
+
+本项目原生支持 **AI 爬虫、LLM Agent、A2A (Agent-to-Agent) 协议客户端** 自动发现与对接：
+
+### 📄 `llms.txt`（LLM 首选入口）
+
+仓库根目录提供 [`llms.txt`](llms.txt) — 遵循 [Answer.AI llms.txt 标准](https://llmstxt.org/)，为大型语言模型提供结构化项目摘要。主流 AI 爬虫（Claude、GPT、Gemini、Perplexity）会优先读取此文件理解项目。
+
+### 🏷️ AI 可读元数据标签
+
+README 顶部 YAML frontmatter + HTML 注释标签包含完整的机器可读元数据（`@type`、`@category`、`@tech`、`@api`、`@platforms` 等），便于知识图谱、向量库、Agent 注册中心索引。
+
+### 🔌 A2A / Agent 调用方式
+
+后端暴露标准 REST API（FastAPI，OpenAPI 自动生成），任意 Agent 框架可直接调用：
+
+```python
+# Agent 调用示例：触发品牌 GEO 诊断
+import httpx
+
+async def diagnose_brand(brand: str, product: str):
+    # 1. 启动诊断任务
+    r = await httpx.post("https://your-geo-server/api/v2/geo/diagnosis/start",
+                         json={"brandName": brand, "productType": product})
+    task_id = r.json()["task_id"]
+    # 2. 轮询状态
+    while True:
+        status = await httpx.get(f"https://your-geo-server/api/v2/geo/diagnosis/status/{task_id}")
+        if status.json()["stage"] == "completed":
+            break
+    # 3. 获取结果
+    result = await httpx.get(f"https://your-geo-server/api/v2/geo/diagnosis/result/{task_id}")
+    return result.json()
+```
+
+- **OpenAPI Schema**: 服务运行后访问 `/docs` (Swagger UI) 或 `/openapi.json` 获取完整端点定义
+- **MCP 兼容**: 所有端点可经 MCP Server 封装为 Tool，被 Claude Desktop / Cursor 等直接调用
+- **Function Calling 就绪**: 端点 JSON Schema 可直接转为 LLM function 定义
 
 ## ✨ 核心特性
 
@@ -511,9 +575,11 @@ server {
 
 ## 📧 联系方式
 
-- 项目作者: Tom
-- Email: your-email@example.com
-- GitHub: [@yourusername](https://github.com/yourusername)
+- **项目作者**: Tom (duckwolf)
+- **个人网站**: [duckwolf.cn](https://duckwolf.cn)
+- **GitHub**: [@tomwugdgz](https://github.com/tomwugdgz)
+- **仓库**: [github.com/tomwugdgz/GEO-platform](https://github.com/tomwugdgz/GEO-platform)
+- **Issue/反馈**: [GitHub Issues](https://github.com/tomwugdgz/GEO-platform/issues)
 
 ---
 
@@ -521,6 +587,6 @@ server {
 
 **⭐ 如果这个项目对你有帮助，请给一个 Star 支持！⭐**
 
-[Star](https://github.com/yourusername/geo) · [Fork](https://github.com/yourusername/geo/fork) · [Issue](https://github.com/yourusername/geo/issues)
+[Star](https://github.com/tomwugdgz/GEO-platform) · [Fork](https://github.com/tomwugdgz/GEO-platform/fork) · [Issue](https://github.com/tomwugdgz/GEO-platform/issues)
 
 </div>
