@@ -28,6 +28,8 @@ from app.api.business_routes import router as business_router
 from app.api.diagnosis_routes import router as diagnosis_router
 from app.api.multimodal_routes import router as multimodal_router
 from app.api.competitor_routes import router as competitor_router
+from app.api.geolook_routes import router as geolook_router
+from app.api.web_publishing_routes import router as web_publishing_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -56,6 +58,8 @@ app.include_router(business_router, prefix="/api/v2", tags=["商业工作流"])
 app.include_router(diagnosis_router, prefix="/api/v2/geo/diagnosis", tags=["品牌GEO诊断"])
 app.include_router(multimodal_router, prefix="/api/v2/geo/multimodal", tags=["多模态诊断"])
 app.include_router(competitor_router, prefix="/api/v2/geo/competitor", tags=["竞品逆向"])
+app.include_router(geolook_router, prefix="/api/v2", tags=["GeoLook 引擎"])
+app.include_router(web_publishing_router, prefix="/api/v2", tags=["网站优化"])
 
 
 @app.on_event("startup")
@@ -76,6 +80,7 @@ async def startup():
     print(f"🎯 品牌诊断: POST /api/v2/geo/diagnosis/start")
     print(f"🖼️ 多模态诊断: POST /api/v2/geo/multimodal/image/analyze")
     print(f"🔍 竞品逆向: POST /api/v2/geo/competitor/analyze")
+    print(f"🔬 GeoLook引擎: GET /api/v2/geolook/projects")
 
 
 @app.get("/api/health")

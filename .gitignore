@@ -85,3 +85,16 @@ geo-next/build/
 bmn-frontend/dist/
 bmn-frontend/build/
 bmn-frontend/.vite/
+
+# GeoLook 运行时产出（爬取证据 HTML / 报告 / 采样，属用户数据，不入库）
+backend/geolook/work/
+backend/geolook/**/.geo.bak
+
+# Vite 配置热重载临时文件
+bmn-frontend/vite.config.js.timestamp-*.mjs
+
+# 本地校验/截图脚本（临时验证用）
+bmn-frontend/_*.cjs
+
+# WorkBuddy 会话产物缓存
+.workbuddy/

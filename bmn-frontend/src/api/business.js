@@ -1,7 +1,30 @@
 import axios from 'axios'
+import { resolveTenantId, cleanParams, cleanUrl } from './tenant'
 
 const api = axios.create({
   baseURL: '/api/v2'
+})
+
+/**
+ * 租户上下文统一兜底：补齐 tenant_id + 清洗无效参数
+ * （详见 @/api/tenant 的说明；页面无需逐个改造）
+ */
+api.interceptors.request.use(async (config) => {
+  const method = (config.method || 'get').toLowerCase()
+
+  config.url = cleanUrl(config.url)
+  config.params = cleanParams(config.params)
+
+  if (method === 'get' || method === 'delete') {
+    const hasInUrl = typeof config.url === 'string' && config.url.includes('tenant_id=')
+    const hasInParams = config.params && config.params.tenant_id
+    if (!hasInUrl && !hasInParams) {
+      const tid = await resolveTenantId()
+      if (tid) config.params = { tenant_id: tid, ...(config.params || {}) }
+    }
+  }
+
+  return config
 })
 
 // 蒸馏主词 API
@@ -42,17 +65,34 @@ export const deleteDistributionTask = (id, tenantId) => api.delete(`/geo/feed/ta
 export const getDistributionProgress = (id, tenantId) => api.get(`/geo/feed/tasks/${id}/progress?tenant_id=${tenantId}`)
 
 // 监测看板 API（临时 mock，后端暂无此模块）
+// 注意：页面统一按 res.data 取值，这里必须返回 { data } 结构，
+// 字段名也要与 Monitoring.vue 的模板保持一致（appearance_rate 等）。
 export const getMonitoringOverview = (params) => Promise.resolve({
-  exposure_rate: 0.75,
-  citation_rate: 0.62,
-  recommendation_rate: 0.58,
-  geo_health_score: 78,
-  total_queries: 12450,
-  platform_count: 12
+  data: {
+    appearance_rate: 0,
+    appearance_trend: 0,
+    citation_rates: 0,
+    citation_trend: 0,
+    recommendation_rates: 0,
+    recommendation_trend: 0,
+    geo_health_score: 0,
+    health_trend: 0,
+    total_queries: 0,
+    platform_count: 0
+  }
 })
-export const getPlatformData = (params) => Promise.resolve([])
-export const getCompetitorData = (params) => Promise.resolve([])
-export const getPlatformDetail = (platform, params) => Promise.resolve({ platform, data: [] })
+export const getPlatformData = (params) => Promise.resolve({ data: [] })
+export const getCompetitorData = (params) => Promise.resolve({ data: [] })
+export const getPlatformDetail = (platform, params) => Promise.resolve({
+  data: {
+    platform,
+    platform_name: platform,
+    appearance_rate: 0,
+    citation_rates: 0,
+    recommendation_rates: 0,
+    samples: []
+  }
+})
 
 export default {
   // 蒸馏主词

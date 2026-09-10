@@ -90,6 +90,52 @@
         </router-link>
       </div>
 
+      <!-- 分组：GeoLook 引擎 -->
+      <div class="px-group">
+        <div class="px-group-title">▹ GeoLook 引擎</div>
+        <!-- 当前项目：子页面（站点审计/工单/验收…）默认操作该项目 -->
+        <div v-if="currentSlug" class="px-current-project" :title="`当前项目：${currentSlug}`">
+          <span class="px-current-label">当前项目</span>
+          <span class="px-current-slug">{{ currentSlug }}</span>
+        </div>
+        <router-link to="/geolook" class="px-nav-item">
+          <span class="px-nav-icon">⚙</span> GEO 诊断
+          <span class="px-nav-indicator"></span>
+        </router-link>
+        <router-link to="/geo/siteaudit" class="px-nav-item">
+          <span class="px-nav-icon">🔍</span> 站点审计
+          <span class="px-nav-indicator"></span>
+        </router-link>
+        <router-link to="/geo/plan" class="px-nav-item">
+          <span class="px-nav-icon">📋</span> 工单管理
+          <span class="px-nav-indicator"></span>
+        </router-link>
+        <router-link to="/geo/competitors" class="px-nav-item">
+          <span class="px-nav-icon">🏆</span> 竞品分析
+          <span class="px-nav-indicator"></span>
+        </router-link>
+        <router-link to="/geo/channels" class="px-nav-item">
+          <span class="px-nav-icon">🗺️</span> 渠道地图
+          <span class="px-nav-indicator"></span>
+        </router-link>
+        <router-link to="/geo/gaps" class="px-nav-item">
+          <span class="px-nav-icon">🎯</span> 缺口诊断
+          <span class="px-nav-indicator"></span>
+        </router-link>
+        <router-link to="/geo/verify" class="px-nav-item">
+          <span class="px-nav-icon">✅</span> 验收闭环
+          <span class="px-nav-indicator"></span>
+        </router-link>
+        <router-link to="/settings" class="px-nav-item">
+          <span class="px-nav-icon">⚙️</span> 引擎配置
+          <span class="px-nav-indicator"></span>
+        </router-link>
+        <router-link to="/web-publishing" class="px-nav-item">
+          <span class="px-nav-icon">🌐</span> 网站优化助手
+          <span class="px-nav-indicator"></span>
+        </router-link>
+      </div>
+
       <!-- 分组：团队协作 -->
       <div class="px-group">
         <div class="px-group-title">▹ 团队协作</div>
@@ -132,19 +178,51 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import api from '@/api/axios'
+import { getStoredSlug, SLUG_CHANGED_EVENT } from '@/composables/useGeoProject'
 
 const route = useRoute()
 
-const currentTenant = ref(localStorage.getItem('tenant_id') || '')
-const currentBrand = ref(localStorage.getItem('brand_id') || '')
-const tenants = ref([
-  { id: 'demo-tenant', name: '演示租户' }
-])
-const brands = ref([
-  { id: 'demo-brand', name: '演示品牌' }
-])
+// localStorage 在沙箱化预览（opaque origin）中会抛 SecurityError，
+// 统一降级为内存变量，避免顶层调用直接打断整个应用初始化。
+const safeGetStorage = (key) => {
+  try { return localStorage.getItem(key) || '' } catch { return '' }
+}
+const safeSetStorage = (key, value) => {
+  try { localStorage.setItem(key, value) } catch { /* 忽略 */ }
+}
+
+const currentTenant = ref(safeGetStorage('tenant_id'))
+const currentBrand = ref(safeGetStorage('brand_id'))
+const tenants = ref([])
+const brands = ref([])
+
+/**
+ * 租户 / 品牌引导：首次访问时 localStorage 为空，
+ * 各业务页面会把空租户传给后端（导致 422 / 500 与空白列表），
+ * 这里在应用启动时自动选中首个可用租户及其首个品牌。
+ */
+const bootstrapTenant = async () => {
+  try {
+    const res = await api.get('/api/v2/tenants')
+    tenants.value = res.data || []
+    if (!tenants.value.length) return
+
+    if (!currentTenant.value || !tenants.value.some((t) => t.id === currentTenant.value)) {
+      currentTenant.value = tenants.value[0].id
+    }
+
+    const brandRes = await api.get(`/api/v2/tenants/${currentTenant.value}/brands`)
+    brands.value = brandRes.data || []
+    if (!currentBrand.value || !brands.value.some((b) => b.id === currentBrand.value)) {
+      currentBrand.value = brands.value[0]?.id || ''
+    }
+  } catch {
+    /* 后端不可用时保持空值，页面自行展示空态 */
+  }
+}
 
 const pageNames = {
   '/': '品牌首页',
@@ -165,15 +243,32 @@ const pageNames = {
   '/omni-distribution': '全域分发',
   '/ai-tracking': 'AI 追踪',
   '/team-collaboration': '团队协作',
+  '/geolook': 'GEO 诊断',
+  '/geo/siteaudit': '站点审计',
+  '/geo/plan': '工单管理',
+  '/geo/competitors': '竞品分析',
+  '/geo/channels': '渠道地图',
+  '/geo/gaps': '缺口诊断',
+  '/geo/verify': '验收闭环',
+  '/settings': '引擎配置',
+  '/web-publishing': '网站优化助手',
 }
 
 const currentPageName = computed(() => pageNames[route.path] || 'GEO')
 
-watch(currentTenant, (v) => { localStorage.setItem('tenant_id', v) })
-watch(currentBrand, (v) => { localStorage.setItem('brand_id', v) })
+// 当前 GeoLook 项目：子页面（站点审计/工单/验收…）默认操作它
+const currentSlug = ref(getStoredSlug())
+const syncSlug = () => { currentSlug.value = getStoredSlug() }
+watch(() => route.path, syncSlug)
+onMounted(() => window.addEventListener(SLUG_CHANGED_EVENT, syncSlug))
+onBeforeUnmount(() => window.removeEventListener(SLUG_CHANGED_EVENT, syncSlug))
+
+watch(currentTenant, (v) => { safeSetStorage('tenant_id', v) })
+watch(currentBrand, (v) => { safeSetStorage('brand_id', v) })
 
 onMounted(() => {
   document.title = 'GEO.AI — Generative Engine Optimization'
+  bootstrapTenant()
 })
 </script>
 

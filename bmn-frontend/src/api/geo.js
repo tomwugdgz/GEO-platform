@@ -1,8 +1,40 @@
 import axios from 'axios'
+import { resolveTenantId, cleanParams, cleanUrl } from './tenant'
 
 const http = axios.create({
   baseURL: '/api/v2',
   timeout: 30000,
+})
+
+/**
+ * 租户上下文兜底
+ * 部分页面调用 getBrands() 时不传租户，拼出 /tenants/undefined/brands 导致 500；
+ * 这里统一清洗参数、补 tenant_id，并把路径里的 undefined/null 段换成真实租户。
+ */
+http.interceptors.request.use(async (config) => {
+  const method = (config.method || 'get').toLowerCase()
+
+  config.url = cleanUrl(config.url)
+  config.params = cleanParams(config.params)
+
+  const needsTenantInPath =
+    typeof config.url === 'string' && /\/tenants\/(undefined|null|\s*)\//.test(config.url)
+
+  if (needsTenantInPath) {
+    const tid = await resolveTenantId()
+    if (tid) config.url = config.url.replace(/\/tenants\/(undefined|null|\s*)\//, `/tenants/${tid}/`)
+  }
+
+  if (method === 'get' || method === 'delete') {
+    const hasInUrl = typeof config.url === 'string' && config.url.includes('tenant_id=')
+    const hasInParams = config.params && config.params.tenant_id
+    if (!hasInUrl && !hasInParams) {
+      const tid = await resolveTenantId()
+      if (tid) config.params = { tenant_id: tid, ...(config.params || {}) }
+    }
+  }
+
+  return config
 })
 
 // ── 租户 ──

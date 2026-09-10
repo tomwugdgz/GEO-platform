@@ -169,6 +169,33 @@ body::after {
   font-weight: 500;
 }
 
+/* 当前 GeoLook 项目标识：让用户明确子页面操作的是哪个项目 */
+.px-current-project {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 12px 8px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: rgba(255, 92, 26, 0.08);
+  border: 1px solid rgba(255, 92, 26, 0.22);
+  font-size: 11px;
+  overflow: hidden;
+}
+
+.px-current-label {
+  color: var(--px-text-muted);
+  flex-shrink: 0;
+}
+
+.px-current-slug {
+  color: #FF5C1A;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .px-nav-item {
   display: flex;
   align-items: center;

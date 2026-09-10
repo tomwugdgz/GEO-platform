@@ -1,38 +1,20 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import ElementPlus from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import App from './App.vue'
+import router from './router'
+
+// 样式顺序：先加载 Element Plus 基础样式，再用项目自有像素风主题覆盖
+import 'element-plus/dist/index.css'
 import './styles/pixel.css'
 
-// ── 路由配置
-const routes = [
-  { path: '/', name: 'story', component: () => import('./views/geo/StoryPage.vue') },
-  { path: '/workflow', name: 'workflow', component: () => import('./views/geo/WorkflowView.vue') },
-  { path: '/dashboard', name: 'dashboard', component: () => import('./views/geo/Dashboard.vue') },
-  { path: '/intent', name: 'intent', component: () => import('./views/geo/IntentMap.vue') },
-  { path: '/knowledge', name: 'knowledge', component: () => import('./views/geo/KnowledgeEditor.vue') },
-  { path: '/content', name: 'content', component: () => import('./views/geo/ContentList.vue') },
-  { path: '/monitor', name: 'monitor', component: () => import('./views/geo/MonitorBoard.vue') },
-  // 商业工作流模块
-  { path: '/gallery', name: 'gallery', component: () => import('./views/Gallery.vue') },
-  { path: '/keywords', name: 'keywords', component: () => import('./views/Keywords.vue') },
-  { path: '/social', name: 'social', component: () => import('./views/Social.vue') },
-  { path: '/writing', name: 'writing', component: () => import('./views/Writing.vue') },
-  { path: '/distribution', name: 'distribution', component: () => import('./views/Distribution.vue') },
-  { path: '/monitoring', name: 'monitoring', component: () => import('./views/Monitoring.vue') },
-  // 5大高级模块
-  { path: '/brand-diagnosis', name: 'brandDiagnosis', component: () => import('./views/BrandDiagnosis.vue') },
-  { path: '/question-creation', name: 'questionCreation', component: () => import('./views/QuestionCreation.vue') },
-  { path: '/omni-distribution', name: 'omniDistribution', component: () => import('./views/OmniDistribution.vue') },
-  { path: '/ai-tracking', name: 'aiTracking', component: () => import('./views/AITracking.vue') },
-  { path: '/team-collaboration', name: 'teamCollaboration', component: () => import('./views/TeamCollaboration.vue') },
-]
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-})
-
-// ── 创建应用
+/**
+ * Element Plus 必须在此全局注册。
+ * 此前只有部分页面 import 了 ElMessage 等 API，组件本身从未注册，
+ * 导致 Social / Writing / Distribution / Monitoring 等使用 <el-table> 的页面
+ * 渲染时报 "Cannot destructure property 'row' of 'undefined'"，整页白屏。
+ */
 const app = createApp(App)
 app.use(router)
+app.use(ElementPlus, { locale: zhCn })
 app.mount('#app')
