@@ -12,10 +12,19 @@ topics: "geo, generative-engine-optimization, llm, ai-search, brand-optimization
 > **让品牌在 AI 搜索中获得优先展示**
 
 GEO（Generative Engine Optimization）是一个面向 AI 搜索时代的企业级品牌优化平台，帮助品牌在 DeepSeek、豆包、通义千问、Kimi 等 8 大 AI 搜索引擎中获得更高的可见度和出镜率。
-<img width="1600" height="1000" alt="channels" src="https://github.com/user-attachments/assets/d325b28d-743e-4617-ae84-3310f4ed4c8b" />
-<img width="1600" height="1000" alt="site-audit" src="https://github.com/user-attachments/assets/caa1d161-eca8-40ce-bb48-eaa5fbe6222b" />
-<img width="1600" height="1000" alt="settings-engines" src="https://github.com/user-attachments/assets/7b81020b-6a21-4bae-98d9-9ced3dde33fe" />
-<img width="1600" height="1000" alt="plan-tasks" src="https://github.com/user-attachments/assets/026f986f-6b69-49ce-9871-43c5a8deabf4" />
+
+> **⚠️ 使用声明**：本项目为**个人学习与研究的非商业项目**，无任何商业部署意图。
+> 其中 GEO 引擎内核源自开源项目 [GeoLook](https://github.com/aigclink/geolook)（MIT 许可），
+> 版权归其作者所有。**如认为本仓库任何内容侵犯了您的权益，请联系 [duckwolf@qq.com](mailto:duckwolf@qq.com)，
+> 我们将在核实后第一时间删除相关内容，不作任何抗辩。**
+> 详见 [版权与使用声明](#-版权与使用声明)。
+
+<p align="center">
+  <img width="1600" height="1000" alt="channels" src="screenshots/channels.png" />
+  <img width="1600" height="1000" alt="site-audit" src="screenshots/site-audit.png" />
+  <img width="1600" height="1000" alt="settings-engines" src="screenshots/settings-engines.png" />
+  <img width="1600" height="1000" alt="plan-tasks" src="screenshots/plan-tasks.png" />
+</p>
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
@@ -35,6 +44,10 @@ GEO（Generative Engine Optimization）是一个面向 AI 搜索时代的企业�
 @author: Tom (duckwolf)
 @contact: https://duckwolf.cn
 @repo: https://github.com/tomwugdgz/GEO-platform
+@upstream: GeoLook — https://github.com/aigclink/geolook (MIT, Copyright (c) 2026 GeoLook contributors) — GEO engine core at /backend/geolook/
+@usage: 个人非商业项目（Personal, non-commercial, research & learning only）
+@third_party: https://github.com/tomwugdgz/GEO-platform/blob/main/THIRD_PARTY_NOTICES.md
+@takedown: duckwolf@qq.com — 如认为内容侵权请联系，核实后立即删除，不作抗辩
 -->
 
 ## 📋 目录
@@ -51,6 +64,8 @@ GEO（Generative Engine Optimization）是一个面向 AI 搜索时代的企业�
 - [路线图](#-路线图)
 - [贡献](#-贡献)
 - [许可证](#-许可证)
+- [致谢](#-致谢)
+- [版权与使用声明](#-版权与使用声明)
 - [📚 交付文档与体系（青柠GEO）](#交付文档与体系青柠geo)
 
 ## 📚 交付文档与体系（青柠GEO）
@@ -580,15 +595,110 @@ server {
 
 ## 📄 许可证
 
-本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
+本项目采用 **MIT 许可证** - 详见 [LICENSE](LICENSE) 文件。
+
+> 本仓库包含第三方开源组件，其许可与版权声明详见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 ## 🙏 致谢
+
+### ⭐ 特别致谢：GeoLook
+
+本项目的 **GEO 引擎内核来自开源项目 [GeoLook](https://github.com/aigclink/geolook)**，感谢其作者的开放与分享。
+
+| 项目 | [aigclink/geolook](https://github.com/aigclink/geolook) |
+|---|---|
+| 官网 | https://geolook.cc |
+| 版权 | Copyright (c) 2026 GeoLook contributors |
+| 许可 | MIT License |
+| 引入位置 | [`backend/geolook/`](backend/geolook/)（含上游 `LICENSE` 副本） |
+
+GeoLook 提供了一套**完整的端到端 GEO 实现**——站点状态分析、诊断、策略、工单、执行与验收闭环，
+是本平台能够跑通「诊断 → 采样 → 工单 → 资产 → 验收」全链路的基础。
+本项目在其基础上完成了三件事：
+
+1. 将上游 CLI 能力封装为 REST 接口（[`backend/app/api/geolook_routes.py`](backend/app/api/geolook_routes.py)，前缀 `/api/v2/geolook`）；
+2. 新增 Windows 平台兼容层（`backend/geolook/_win_fcntl.py`）；
+3. 接入平台的多租户体系与前端界面。
+
+**上游核心算法未作修改，全部版权归 GeoLook contributors 所有。**
+如您认可 GeoLook 的价值，请前往上游仓库 [点一个 Star](https://github.com/aigclink/geolook) 支持原作者。
+
+### 其他致谢
 
 - [FastAPI](https://fastapi.tiangolo.com/) - 现代、快速的 Web 框架
 - [Vue 3](https://vuejs.org/) - 渐进式 JavaScript 框架
 - [LangChain](https://langchain.com/) - LLM 应用开发框架
 - [ChromaDB](https://www.trychroma.com/) - 开源向量数据库
 - [Element Plus](https://element-plus.org/) - Vue 3 组件库
+
+## ⚖️ 版权与使用声明
+
+> 本节是本项目的**使用边界与免责声明**，请在使用前完整阅读。
+
+### 1. 项目性质：个人非商业
+
+本项目是**个人学习、技术研究与自用的非商业项目**：
+
+- **不用于任何商业部署、销售、代运营或对外收费服务**；
+- 不作为任何组织或第三方的官方产品对外提供；
+- 与上游项目 [GeoLook](https://github.com/aigclink/geolook) 及其作者**无任何隶属、合作、赞助或背书关系**；
+- 不代表、也不冒充任何上游项目的官方立场。
+
+### 2. 开源合规
+
+本项目尊重并遵守所引入开源组件的许可条款：
+
+- 引入 [GeoLook](https://github.com/aigclink/geolook) 时，已**完整保留其 MIT 许可与版权声明**
+  （见 [`backend/geolook/LICENSE`](backend/geolook/LICENSE)），符合 MIT 许可证关于
+  「版权声明应包含在本软件的所有副本或实质性部分中」的要求；
+- 本项目自身的 MIT 许可**不影响、不覆盖**第三方组件原有的许可条款；
+- 完整的第三方组件清单见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+### 3. 无侵权意图 · 联系即删
+
+本项目**无任何侵犯他人合法权益的意图**。
+
+如果您是某作品的著作权人、商标权人或其授权代理人，**并认为本仓库中的任何内容侵犯了您的权利**，
+请通过以下任一方式联系：
+
+- 📧 邮箱：**[duckwolf@qq.com](mailto:duckwolf@qq.com)**
+- 🐛 Issue：[提交 Issue](https://github.com/tomwugdgz/GEO-platform/issues)
+
+为便于快速处理，请在联系时提供：① 您的身份与权利证明；② 涉嫌侵权内容在本仓库中的具体位置（文件路径或链接）；③ 您的联系方式。
+
+**我们的承诺：**
+
+> 收到有效通知后，我们将在**核实后第一时间删除相关内容、或直接下架整个仓库**；
+> **不作任何抗辩、不要求任何补偿、不设置任何前置条件。**
+
+### 4. 使用风险自担
+
+- 本项目按 **「原样」（AS IS）** 提供，**不提供任何明示或暗示的担保**，
+  包括但不限于适销性、特定用途适用性与非侵权保证；
+- 因使用本项目产生的任何直接或间接损失，**作者不承担任何责任**；
+- 使用本项目可能涉及的第三方 AI 服务（智谱 GLM、火山方舟、DeepSeek、Kimi、MiniMax、
+  Gemini、OpenAI、Anthropic、xAI、Perplexity 等）须遵守各服务提供方的条款，
+  相关 API Key 由使用者自行申请与承担费用。
+
+### 5. 使用者责任
+
+**使用者应对自己的使用行为独立承担全部责任**，包括但不限于：
+
+- 遵守所在国家/地区的法律法规；
+- 遵守《生成式人工智能服务管理暂行办法》《网络安全法》《数据安全法》《个人信息保护法》
+  及《广告法》等相关规定 —— **尤其注意生成内容不得包含违法违规信息、
+  不得使用「最」「第一」等绝对化用语、不得作虚假或引人误解的宣传**；
+- 抓取（`crawl`）功能产生的数据归原网站所有，仅供个人研究分析，
+  使用者须自行确认符合目标站点的 `robots.txt` 与使用条款，不得用于批量转载或再分发；
+- 不得将本项目用于任何违法、侵权、欺诈或损害他人权益的用途。
+
+### 6. 权利保留
+
+本项目作者保留随时**修改、停止维护或删除本仓库**的权利，无需事先通知。
+
+---
+
+*本声明随项目持续更新。若本声明与具体开源许可条款存在冲突，以相应许可条款为准。最后更新：2026-09-10*
 
 ## 📧 联系方式
 

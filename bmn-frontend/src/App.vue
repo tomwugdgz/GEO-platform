@@ -144,6 +144,22 @@
           <span class="px-nav-indicator"></span>
         </router-link>
       </div>
+
+      <!-- ═══ 版权与使用声明 ═══ 个人非商业项目，详见 /THIRD_PARTY_NOTICES.md -->
+      <div class="px-legal-notice">
+        <div class="px-legal-title">⚖ 使用声明</div>
+        <p>
+          个人非商业学习研究项目，无商业部署意图。
+          GEO 引擎内核源自开源项目
+          <a href="https://github.com/aigclink/geolook" target="_blank" rel="noopener noreferrer">GeoLook</a>
+          （MIT · Copyright (c) 2026 GeoLook contributors），与上游无隶属或背书关系。
+        </p>
+        <p>
+          如认为本作品侵犯您的权益，请联系
+          <a href="mailto:duckwolf@qq.com">duckwolf@qq.com</a>，
+          核实后立即删除，不作抗辩。
+        </p>
+      </div>
     </aside>
 
     <!-- ═══ 顶栏 ═══ -->
@@ -291,5 +307,45 @@ onMounted(() => {
 
 .px-select-inline:focus {
   border-color: var(--px-neon-cyan);
+}
+
+/* ═══ 侧边栏底部：版权与使用声明 ═══ */
+.px-legal-notice {
+  margin: 16px 8px 12px;
+  padding: 10px 10px 11px;
+  background: var(--px-bg-deep);
+  border: 1px solid var(--px-border);
+  border-left: 3px solid var(--px-neon-yellow);
+  font-size: 10px;
+  line-height: 1.65;
+  color: var(--px-text-muted);
+}
+
+.px-legal-title {
+  margin-bottom: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--px-neon-yellow);
+  text-transform: uppercase;
+}
+
+.px-legal-notice p {
+  margin: 0 0 6px;
+}
+
+.px-legal-notice p:last-child {
+  margin-bottom: 0;
+}
+
+.px-legal-notice a {
+  color: var(--px-text-dim);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  word-break: break-all;
+}
+
+.px-legal-notice a:hover {
+  color: var(--px-neon-cyan);
 }
 </style>

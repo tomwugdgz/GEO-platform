@@ -1,0 +1,40 @@
+MIT License
+
+Copyright (c) 2026 GeoLook contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+本目录（`backend/geolook/`）内的工程代码与参考文献源自开源项目 GeoLook：
+
+    上游项目：https://github.com/aigclink/geolook
+    上游作者：GeoLook contributors
+    上游许可证：MIT
+    上游官网：https://geolook.cc
+
+本项目在保留上述 MIT 许可与版权声明的前提下，对该代码作如下**非商业性**使用：
+
+  - 作为「青柠GEO」平台的 GEO 引擎内核加以集成；
+  - 通过 `backend/app/api/geolook_routes.py` 将上游 CLI 能力封装为 REST 接口；
+  - 增加了 Windows 平台兼容层 `_win_fcntl.py`。
+
+上述使用方式属于 MIT 许可证明确授予的权利范围（use / copy / modify / merge / publish / distribute）。
+如需查看本项目自身的许可条款，请见仓库根目录的 `LICENSE`；
+完整的第三方组件清单请见仓库根目录的 `THIRD_PARTY_NOTICES.md`。

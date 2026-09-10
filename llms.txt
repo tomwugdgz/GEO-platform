@@ -40,6 +40,18 @@ GEO (Generative Engine Optimization) 平台提供从品牌诊断、多模态分�
 - Backend Entry: /backend/app/main.py
 - Frontend Entry: /bmn-frontend/src/main.js
 - License: MIT
+- Third-Party Notices: /THIRD_PARTY_NOTICES.md
+
+## Attribution & Usage Notice
+
+- **项目性质**: 个人学习与技术研究的**非商业项目**，不用于商业部署、销售或对外收费服务。
+- **GEO 引擎内核**: 源自开源项目 **GeoLook** — https://github.com/aigclink/geolook
+  - Copyright (c) 2026 GeoLook contributors / MIT License / https://geolook.cc
+  - 引入位置: /backend/geolook/（已完整保留上游 MIT 许可与版权声明）
+  - 与上游项目及其作者无任何隶属、合作、赞助或背书关系。
+- **无侵权意图**: 本项目无侵犯他人权益的意图。如认为任何内容侵犯您的权利，请联系
+  duckwolf@qq.com 或提交 Issue，我们将在核实后第一时间删除相关内容，不作任何抗辩。
+- **免责**: 本项目按「原样」提供，不提供任何明示或暗示担保，使用风险由使用者自行承担。
 
 ## Contact
 
