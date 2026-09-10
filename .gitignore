@@ -93,8 +93,8 @@ backend/geolook/**/.geo.bak
 # Vite 配置热重载临时文件
 bmn-frontend/vite.config.js.timestamp-*.mjs
 
-# 本地校验/截图脚本（临时验证用）
-bmn-frontend/_*.cjs
+# 本地校验/截图脚本与临时产物（临时验证用，不入库）
+bmn-frontend/_*
 
 # WorkBuddy 会话产物缓存
 .workbuddy/
