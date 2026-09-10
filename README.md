@@ -12,6 +12,10 @@ topics: "geo, generative-engine-optimization, llm, ai-search, brand-optimization
 > **让品牌在 AI 搜索中获得优先展示**
 
 GEO（Generative Engine Optimization）是一个面向 AI 搜索时代的企业级品牌优化平台，帮助品牌在 DeepSeek、豆包、通义千问、Kimi 等 8 大 AI 搜索引擎中获得更高的可见度和出镜率。
+<img width="1600" height="1000" alt="channels" src="https://github.com/user-attachments/assets/d325b28d-743e-4617-ae84-3310f4ed4c8b" />
+<img width="1600" height="1000" alt="site-audit" src="https://github.com/user-attachments/assets/caa1d161-eca8-40ce-bb48-eaa5fbe6222b" />
+<img width="1600" height="1000" alt="settings-engines" src="https://github.com/user-attachments/assets/7b81020b-6a21-4bae-98d9-9ced3dde33fe" />
+<img width="1600" height="1000" alt="plan-tasks" src="https://github.com/user-attachments/assets/026f986f-6b69-49ce-9871-43c5a8deabf4" />
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
