@@ -34,6 +34,9 @@ const routes = [
   // ── 团队协作 ──
   { path: '/team-collaboration', name: 'teamCollaboration', component: () => import('@/views/TeamCollaboration.vue') },
 
+  // ── MTO 概念与共建 ──
+  { path: '/about-mto', name: 'aboutMto', component: () => import('@/views/AboutMTO.vue') },
+
   // ── GeoLook 引擎（原有） ──
   { path: '/geolook', name: 'geolook', component: () => import('@/views/GeoLook.vue') },
   { path: '/web-publishing', name: 'webPublishing', component: () => import('@/views/WebPublishing.vue') },

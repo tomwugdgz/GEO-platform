@@ -5,9 +5,18 @@
       <div class="px-logo">
         <div class="px-logo-icon"></div>
         <div>
-          <div class="px-logo-text">GEO.AI</div>
-          <div class="px-logo-sub">GENERATIVE ENGINE OPTIMIZATION</div>
+          <div class="px-logo-text">MTO</div>
+          <div class="px-logo-sub">MACHINE TRUST OPTIMIZATION</div>
         </div>
+      </div>
+
+      <!-- 分组：MTO 平台 -->
+      <div class="px-group">
+        <div class="px-group-title">▹ MTO 平台</div>
+        <router-link to="/about-mto" class="px-nav-item">
+          <span class="px-nav-icon">🔐</span> 关于 MTO
+          <span class="px-nav-indicator"></span>
+        </router-link>
       </div>
 
       <!-- 分组：认知底座 -->
@@ -149,7 +158,10 @@
       <div class="px-legal-notice">
         <div class="px-legal-title">⚖ 使用声明</div>
         <p>
-          个人非商业学习研究项目，无商业部署意图。
+          <strong>MTO（机器信任优化）概念目前仍属理论推演阶段，尚未全面落地，请勿据此做商业决策。</strong>
+          本项目为个人非商业学习研究项目，无商业部署意图。
+        </p>
+        <p>
           GEO 引擎内核源自开源项目
           <a href="https://github.com/aigclink/geolook" target="_blank" rel="noopener noreferrer">GeoLook</a>
           （MIT · Copyright (c) 2026 GeoLook contributors），与上游无隶属或背书关系。
@@ -165,7 +177,7 @@
     <!-- ═══ 顶栏 ═══ -->
     <header class="px-topbar">
       <div class="px-crumb">
-        <span>GEO</span>
+        <span>MTO</span>
         <span class="sep">/</span>
         <span class="current">{{ currentPageName }}</span>
       </div>
@@ -259,6 +271,7 @@ const pageNames = {
   '/omni-distribution': '全域分发',
   '/ai-tracking': 'AI 追踪',
   '/team-collaboration': '团队协作',
+  '/about-mto': '关于 MTO',
   '/geolook': 'GEO 诊断',
   '/geo/siteaudit': '站点审计',
   '/geo/plan': '工单管理',
@@ -270,7 +283,7 @@ const pageNames = {
   '/web-publishing': '网站优化助手',
 }
 
-const currentPageName = computed(() => pageNames[route.path] || 'GEO')
+const currentPageName = computed(() => pageNames[route.path] || 'MTO')
 
 // 当前 GeoLook 项目：子页面（站点审计/工单/验收…）默认操作它
 const currentSlug = ref(getStoredSlug())
@@ -283,7 +296,7 @@ watch(currentTenant, (v) => { safeSetStorage('tenant_id', v) })
 watch(currentBrand, (v) => { safeSetStorage('brand_id', v) })
 
 onMounted(() => {
-  document.title = 'GEO.AI — Generative Engine Optimization'
+  document.title = 'MTO — Machine Trust Optimization · 机器信任优化'
   bootstrapTenant()
 })
 </script>

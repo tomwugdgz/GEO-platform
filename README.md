@@ -1,23 +1,41 @@
 ---
-title: "GEO - 生成式引擎优化平台"
-description: "GEO (Generative Engine Optimization) 平台：让品牌在 AI 搜索中获得优先展示。提供品牌 GEO 诊断、多模态诊断、竞品逆向研究、意图洞察、知识库、AI 内容生产、全域监测。FastAPI + Vue3 + LangGraph + ChromaDB。"
-keywords: "GEO, 生成式引擎优化, Generative Engine Optimization, AI搜索优化, 品牌诊断, 多模态诊断, 竞品逆向, LLM, A2A, Agent, FastAPI, Vue3, LangChain, RAG"
+title: "MTO 平台 - 机器信任优化"
+description: "MTO (Machine Trust Optimization, 机器信任优化) 开源平台：把品牌主张治理成机器可验证的证据链，让 AI 智能体在自主交易时能核验并信任你。在 GEO（生成式引擎优化）可见性底座之上，叠加 AI 智能体编排与 A2A 机器间协议。FastAPI + Vue3 + LangGraph + ChromaDB。"
+keywords: "MTO, Machine Trust Optimization, 机器信任优化, GEO, Generative Engine Optimization, 生成式引擎优化, AI智能体, AI Agent, A2A, Agent-to-Agent, 机器可读, 证据链, 信任量化, AI搜索优化, 品牌诊断, LLM, FastAPI, Vue3, LangChain, RAG"
 author: "Tom (duckwolf)"
 url: "https://github.com/tomwugdgz/GEO-platform"
-topics: "geo, generative-engine-optimization, llm, ai-search, brand-optimization, multimodal, competitor-analysis, fastapi, vue3, langchain, langgraph, rag, chromadb, a2a, agent"
+topics: "mto, machine-trust-optimization, geo, generative-engine-optimization, ai-agent, a2a, agent-to-agent, machine-readable, evidence-chain, trust-scoring, llm, ai-search, brand-optimization, fastapi, vue3, langchain, langgraph, rag, mcp"
 ---
 
-# 🚀 GEO - 生成式引擎优化平台
+# 🔐 MTO 平台 — 机器信任优化
 
-> **让品牌在 AI 搜索中获得优先展示**
+> **让 AI 愿意推荐你（GEO）· 让机器敢直接买你（MTO）**
 
-GEO（Generative Engine Optimization）是一个面向 AI 搜索时代的企业级品牌优化平台，帮助品牌在 DeepSeek、豆包、通义千问、Kimi 等 8 大 AI 搜索引擎中获得更高的可见度和出镜率。
+**MTO（Machine Trust Optimization，机器信任优化）** 是一个面向「机器自主交易」时代的开源品牌信任资产治理平台。
+它把品牌的产品主张从**人类可读的营销文案**，重构为**机器可验证的证据链**，
+使 AI 智能体在自主完成购物决策时，能够检索到你、核验你的主张、并**信任你而直接下单**。
+
+一句话对比两者：
+
+| | **GEO** · Generative Engine Optimization | **MTO** · Machine Trust Optimization |
+|---|---|---|
+| 中文 | 生成式引擎优化 | 机器信任优化 |
+| 解决 | **被 AI 看见**（进候选答案池） | **被机器信任**（进成交决策集） |
+| 终点 | 让 AI **愿意推荐**你 —— 拿到入场资格 | 让机器**敢直接买**你 —— 实现自主交易 |
+| 成熟度 | 🟢 当下企业正在布局的**实操方向** | 🔴 仍处于**理论推演阶段**，尚未全面落地 |
+
+本平台是**递进双层**结构：**GEO 打底**（站点审计 / 答案采样 / 缺口诊断 / 工单闭环），
+**MTO 在上**（证据链建模 / 信任量化 / AI 智能体编排 / A2A 机器间协议）。
+「让 AI 提到我」之外，继续回答**「机器凭什么信我」**。
+
+> 📖 完整论述见 **[MTO 平台定义说明](docs/MTO平台定义说明.md)**（含概念辨析、四层技术构成、成熟度分级、共建路线图）。
 
 > **⚠️ 使用声明**：本项目为**个人学习与研究的非商业项目**，无任何商业部署意图。
+> **MTO 概念目前仍属理论推演阶段，尚未全面落地，请勿据此做商业决策。**
 > 其中 GEO 引擎内核源自开源项目 [GeoLook](https://github.com/aigclink/geolook)（MIT 许可），
 > 版权归其作者所有。**如认为本仓库任何内容侵犯了您的权益，请联系 [duckwolf@qq.com](mailto:duckwolf@qq.com)，
 > 我们将在核实后第一时间删除相关内容，不作任何抗辩。**
-> 详见 [版权与使用声明](#-版权与使用声明)。
+> 详见 [版权与使用声明](#️-版权与使用声明)。
 
 <p align="center">
   <img width="1600" height="1000" alt="channels" src="screenshots/channels.png" />
@@ -30,15 +48,21 @@ GEO（Generative Engine Optimization）是一个面向 AI 搜索时代的企业�
 [![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-009688.svg)](https://fastapi.tiangolo.com/)
 [![Vue](https://img.shields.io/badge/Vue-3.5+-4FC08D.svg)](https://vuejs.org/)
+[![MTO](https://img.shields.io/badge/MTO-Machine%20Trust%20Optimization-ff6b00.svg)](docs/MTO平台定义说明.md)
 [![AI-Friendly](https://img.shields.io/badge/llms.txt-included-ff69b4.svg)](llms.txt)
 [![A2A](https://img.shields.io/badge/A2A-ready-9b59b6.svg)](llms.txt)
+[![Open Source](https://img.shields.io/badge/co--building-welcome-39ff14.svg)](docs/MTO平台定义说明.md#九开源共建-mto)
 
 <!-- AI-READABLE TAGS (for LLM crawlers / A2A agents / search platforms)
 @type: SoftwareSourceCode
-@application: GenerativeEngineOptimization
-@category: AI-Search-Optimization / Brand-Visibility / Multimodal-Diagnostics / Competitor-Reverse-Engineering
+@application: MachineTrustOptimization
+@applicationLayer2: GenerativeEngineOptimization
+@category: Machine-Trust / Evidence-Chain / AI-Agent-Orchestration / A2A / AI-Search-Optimization / Brand-Visibility
+@mto_definition: Machine Trust Optimization (机器信任优化) — 把品牌主张治理成机器可验证的证据链，使 AI 智能体在自主交易时能核验并信任品牌
+@geo_definition: Generative Engine Optimization (生成式引擎优化) — 让品牌被生成式 AI 正确理解、引用与推荐，进入候选答案池；是 MTO 的下层基础
+@maturity: GEO 层可用；AI 智能体层可用；A2A 接口就绪但生态未成熟；MTO 方法论属理论推演阶段
 @tech: FastAPI, Vue3, LangGraph, ChromaDB, PostgreSQL, Redis, Ollama, OpenAI
-@api: REST + OpenAPI (Swagger at /docs), MCP-compatible, Function-Calling-ready
+@api: REST + OpenAPI (Swagger at /docs), MCP-compatible, A2A-ready, Function-Calling-ready
 @platforms: DeepSeek, Doubao, Yuanbao, Tongyi, Wenxin, Nami, Kimi, Zhipu
 @license: MIT
 @author: Tom (duckwolf)
@@ -46,12 +70,16 @@ GEO（Generative Engine Optimization）是一个面向 AI 搜索时代的企业�
 @repo: https://github.com/tomwugdgz/GEO-platform
 @upstream: GeoLook — https://github.com/aigclink/geolook (MIT, Copyright (c) 2026 GeoLook contributors) — GEO engine core at /backend/geolook/
 @usage: 个人非商业项目（Personal, non-commercial, research & learning only）
+@co_building: 开源共建 MTO — 欢迎提 Issue 挑战框架、提 PR 补充行业证据模型
 @third_party: https://github.com/tomwugdgz/GEO-platform/blob/main/THIRD_PARTY_NOTICES.md
 @takedown: duckwolf@qq.com — 如认为内容侵权请联系，核实后立即删除，不作抗辩
 -->
 
 ## 📋 目录
 
+- [MTO 是什么（与 GEO 的关系）](#-mto-是什么与-geo-的关系)
+- [MTO 平台架构](#-mto-平台架构)
+- [开源共建 MTO](#-开源共建-mto)
 - [AI 可读标签与 A2A 集成](#-ai-可读标签与-a2a-集成)
 - [核心特性](#-核心特性)
 - [系统架构](#-系统架构)
@@ -65,8 +93,131 @@ GEO（Generative Engine Optimization）是一个面向 AI 搜索时代的企业�
 - [贡献](#-贡献)
 - [许可证](#-许可证)
 - [致谢](#-致谢)
-- [版权与使用声明](#-版权与使用声明)
+- [版权与使用声明](#️-版权与使用声明)
 - [📚 交付文档与体系（青柠GEO）](#交付文档与体系青柠geo)
+
+## 🔐 MTO 是什么（与 GEO 的关系）
+
+### 交易路径正在发生的迁移
+
+```
+第一代 · 人找货           人 → 搜索引擎 → 自己比较 → 自己下单        优化对象：SEO
+第二代 · 人问 AI，人下单   人 → 问 AI「哪个好」→ AI 建议 → 人自己去买   优化对象：GEO
+第三代 · 人给目标，机器下单 人 → 智能体自主检索·核验·比价·下单          优化对象：MTO  ← 本平台面向的未来
+```
+
+前两代无论入口怎么变，**按下"购买"键的都是人**，所以「被看见、被推荐」就够了。
+第三代**按下"购买"键的是机器**——而机器不"喜欢"任何品牌，它只做一件事：**核验主张是否成立**。
+
+### 两者是递进关系，不是替代关系
+
+```
+┌───────────────────────────────────────────────────────────┐
+│  MTO 层 · 被机器信任       证据链可核验 · 信任可量化 · A2A 可调用   │
+│  目标：机器自主交易时选择你                                  │
+└────────────────────────────┬──────────────────────────────┘
+                             │ 依赖 ↓ 建立在
+┌────────────────────────────┴──────────────────────────────┐
+│  GEO 层 · 被 AI 看见       被正确理解 · 被引用 · 被推荐         │
+│  目标：进入 AI 的候选答案池                                  │
+└────────────────────────────┬──────────────────────────────┘
+                             │ 依赖 ↓ 建立在
+┌────────────────────────────┴──────────────────────────────┐
+│  资产层 · 品牌知识底座     品牌事实 · 产品事实 · 结构化内容资产    │
+└───────────────────────────────────────────────────────────┘
+```
+
+| 关键判断 | 说明 |
+|---|---|
+| **跳过 GEO 做 MTO 不成立** | 机器连你都检索不到，遑论信任你。GEO 是必需的入场券 |
+| **只做 GEO 会停在半路** | 被 AI 推荐了，但机器要自主下单时你没有可核验的证据链，依然出局 |
+| **两者的资产是同一套** | GEO 用它做引用，MTO 用它做核验——**一次治理，两层受益** |
+| **当下该怎么做** | **先用 MTO 的标准整理资产，再靠 GEO 拿当下收益**。不必等 MTO 成熟才开始准备 |
+
+> **本平台的核心主张**：MTO 需要的证据链，正是 GEO 需要的高质量结构化资产。
+> 现在按 MTO 口径整理，GEO 阶段就能见效。
+
+📖 **完整论述见 [MTO 平台定义说明](docs/MTO平台定义说明.md)** —— 含四层技术构成（证据链 / 机器可读性 / 信任量化 / A2A 执行）、
+成熟度分级、与纯 GEO 工具的差异对比、共建路线图与 FAQ。
+
+## 🏗️ MTO 平台架构
+
+本平台是**递进双层**结构：GEO 打底，MTO 在上。
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  MTO 层 · 机器信任                                             │
+│  · 证据链建模与治理      · 信任量化评分                          │
+│  · A2A 能力暴露与协议对接  · 机器调用审计日志                      │
+├──────────────────────────────────────────────────────────────┤
+│  GEO 层 · AI 可见性  ← 由 GeoLook 引擎提供                      │
+│  · 站点状态审计  · AI 答案采样  · 缺口诊断                        │
+│  · 工单生成与闭环验收  · 渠道/竞品分析                            │
+├──────────────────────────────────────────────────────────────┤
+│  资产层 · 品牌知识底座                                          │
+│  · 品牌事实库   · 产品事实库   · 结构化内容资产   · 知识库检索      │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### 与纯 GEO 工具的差异
+
+差异**不在 GEO 做得更好，而在于多了两层**：
+
+| 能力 | 纯 GEO 工具 | **MTO 平台** |
+|---|---|---|
+| AI 可见性诊断（站点审计 / 采样 / 缺口） | ✅ | ✅（内置，由 GeoLook 引擎提供） |
+| 工单化闭环与验收 | ✅ | ✅ |
+| **AI 智能体编排** | ❌ | ✅ 多智能体协同：洞察 / 编排 / 创意 / 归因 |
+| **A2A 机器间协议** | ❌ | ✅ 把品牌核验能力暴露为机器可调用能力 |
+| **证据链建模与信任量化** | ❌ | ✅ MTO 核心：从"被提到"到"被证明" |
+| **机器调用审计** | ❌ | ✅ 记录机器为何选择你 |
+
+> 纯 GEO 工具回答「AI 提到我了吗」；
+> **MTO 平台在回答这个之后，继续回答「机器凭什么信我」。**
+
+### ⚠️ 成熟度分级（主动声明边界，避免概念炒作）
+
+| 部分 | 成熟度 | 说明 |
+|---|---|---|
+| **GEO 层能力** | 🟢 **可用** | 站点审计、答案采样、缺口诊断、工单闭环、验收均可实际运行并产出结果 |
+| **AI 智能体层** | 🟡 **可用但依赖配置** | 需自行配置各模型 API Key；未配置的引擎降级为人工采样 |
+| **A2A 协议层** | 🟡 **接口就绪，生态未成熟** | 协议与接口已实现，但**外部尚无规模化支持 A2A 交易的商业生态** |
+| **MTO 方法论本身** | 🔴 **理论推演阶段** | 机器自主交易尚未大规模发生；本框架是**推演与工程化尝试**，不是已落地的成熟方案 |
+| **信任量化指标** | 🔴 **实验性** | 指标设计合理但**未经过真实交易场景验证**，不构成任何决策依据 |
+
+> **请勿将本平台的 MTO 能力用于对外商业承诺。** 现阶段它是一块面向未来的实验田。
+
+## 🤝 开源共建 MTO
+
+### 为什么必须开源
+
+MTO 要成立，前提是**机器能够跨组织地验证证据**。
+一个封闭系统里的「信任分」没有意义——机器凭什么相信一个它无法审计的黑盒？
+
+因此 MTO 的底层约定必须是**开放、可审计、可互操作**的。
+这是本项目选择开源的根本原因：**不是姿态，是技术前提。**
+
+### 我们在共建什么
+
+| 共建目标 | 当前状态 | 需要什么 |
+|---|---|---|
+| **证据链的数据模型** | 初版设计 | 不同行业的证据类型与溯源需求 |
+| **信任量化指标** | 实验性 | 真实的验证场景与反例，用来证伪 |
+| **A2A 核验接口** | 接口就绪 | 真实的机器调用方接入测试 |
+| **机器可读知识文件约定** | 已实践 | 更多实现方参与，形成事实标准 |
+| **行业证据模板** | 待补充 | 快消 / 美妆 / 3C / 医疗健康等领域的领域知识 |
+
+### 如何参与
+
+- 🐛 **提 Issue 挑战我们的框架** —— 尤其欢迎「这个指标算不出来」「这个假设不成立」的具体反例
+- 🔧 **提 PR 补充行业证据模型** —— 你所在行业的一条真实证据链，比十页理论更有价值
+- 📄 **参与规范讨论** —— 证据链格式、信任指标口径、A2A 接口约定
+- 🔬 **做证伪实验** —— 试着用本方法让机器完成一次真实核验，然后把失败的地方告诉我们
+
+> **我们更欢迎否定意见。** 一个仍在理论推演阶段的框架，
+> 最大的风险不是被批评，而是被附和。
+
+详细共建议题见 [MTO 平台定义说明 · 第九节](docs/MTO平台定义说明.md#九开源共建-mto)。
 
 ## 📚 交付文档与体系（青柠GEO）
 

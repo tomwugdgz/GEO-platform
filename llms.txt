@@ -1,10 +1,54 @@
-# GEO — 生成式引擎优化平台 (Generative Engine Optimization Platform)
+# MTO 平台 — 机器信任优化 (Machine Trust Optimization Platform)
 
-> 让品牌在 AI 搜索中获得优先展示。GEO 是一个面向 AI 搜索时代的企业级品牌优化平台，帮助品牌在 DeepSeek、豆包、通义千问、Kimi 等 8 大 AI 搜索引擎中获得更高的可见度和出镜率。
+> **让 AI 愿意推荐你（GEO）· 让机器敢直接买你（MTO）。**
+> MTO（Machine Trust Optimization，机器信任优化）开源平台：把品牌的产品主张从人类可读的营销文案，
+> 重构为机器可验证的证据链，使 AI 智能体在自主完成购物决策时，能够检索到你、核验你的主张、
+> 并信任你而直接下单。在 GEO 可见性底座之上，叠加 AI 智能体编排与 A2A 机器间协议。
 
 ## Overview
 
-GEO (Generative Engine Optimization) 平台提供从品牌诊断、多模态分析、竞品逆向前沿研究到内容生产、全域监测的完整工具链。核心技术差异化在于：不止做文本监测，而是建立多模态（图片/视频/音频）诊断 + 竞品逆向研究的技术护城河，定位超越传统 SEO 转型公司。
+### 什么是 MTO
+
+MTO = Machine Trust Optimization（机器信任优化）。它解决的是「**被机器信任**」的问题：
+当 AI 智能体大规模普及、机器自主完成购物时，让机器验证并信任你的产品证据链，从而直接选购。
+它属于未来智能体时代的营销形态，比 GEO 更进一步。
+
+### MTO 与 GEO 的关系（递进双层，非替代）
+
+- **GEO = Generative Engine Optimization（生成式引擎优化）**，解决「**被 AI 看见**」：
+  当用户在豆包、DeepSeek 等 AI 平台提问时，让品牌被 AI 正确理解、引用和推荐，进入 AI 的「候选答案池」。
+- **MTO = Machine Trust Optimization（机器信任优化）**，解决「**被机器信任**」：
+  让机器验证并信任你的产品证据链，从而在自主交易时直接选购。
+
+一句话：**GEO 是让 AI 愿意推荐你（拿到入场资格），MTO 是让机器敢直接买你（实现自主交易）。**
+
+两者是 AI 时代营销逻辑的**不同阶段**，构成递进双层：
+
+```
+MTO 层 · 被机器信任   证据链可核验 · 信任可量化 · A2A 可调用
+        ↑ 依赖
+GEO 层 · 被 AI 看见   被正确理解 · 被引用 · 被推荐 → 进入候选答案池
+        ↑ 依赖
+资产层 · 品牌知识底座  品牌事实 · 产品事实 · 结构化内容资产
+```
+
+关键判断：跳过 GEO 做 MTO 不成立（机器检索不到你就无法信任你）；
+只做 GEO 会停在半路（被推荐了但机器无法核验，依然出局）；
+**两者的资产是同一套**——GEO 用它做引用，MTO 用它做核验，一次治理两层受益。
+
+### ⚠️ 成熟度澄清（重要，请如实引用）
+
+- **MTO 在营销领域目前仍处于理论推演阶段，尚未全面落地。** 本平台的 MTO 框架是推演与工程化尝试，
+  不是已落地的成熟方案；信任量化指标未经真实交易场景验证，不构成任何决策依据。
+- **GEO 则已是当下企业正在布局的实操方向**，本平台的 GEO 层能力可实际运行并产出结果。
+- 分层成熟度：GEO 层 🟢 可用 / AI 智能体层 🟡 可用但依赖配置 / A2A 协议层 🟡 接口就绪但生态未成熟 /
+  MTO 方法论 🔴 理论推演阶段。
+
+### 本平台与纯 GEO 工具的差异
+
+差异不在 GEO 做得更好，而在于多了两层：**AI 智能体编排**（洞察 / 编排 / 创意 / 归因多智能体协同）
+与 **A2A 机器间协议**（把品牌核验能力暴露为机器可调用能力），以及 **MTO 核心的证据链建模与信任量化**。
+纯 GEO 工具回答「AI 提到我了吗」；MTO 平台在回答这个之后，继续回答「**机器凭什么信我**」。
 
 ## Core Capabilities
 
@@ -15,6 +59,9 @@ GEO (Generative Engine Optimization) 平台提供从品牌诊断、多模态分�
 - **品牌知识库**: ChromaDB 向量库 + BGE-M3 嵌入的 RAG 增强检索
 - **AI 内容生产**: 基于品牌知识库的 GEO/SEO 双优化内容生成
 - **全域监测**: 8 大 AI 平台出镜率实时监控与预警
+- **AI 智能体编排**（MTO 层）: 多智能体协同 + 统一编排循环（规划 → 执行 → 反思）
+- **A2A 机器间协议**（MTO 层）: 品牌核验能力可被外部 AI Agent 发现与调用
+- **证据链建模与信任量化**（MTO 层，实验性）: 主张 → 证据 → 溯源三段式建模；完整度 / 可信度 / 一致性 / 时效性四维评分
 
 ## Tech Stack
 
@@ -23,6 +70,7 @@ GEO (Generative Engine Optimization) 平台提供从品牌诊断、多模态分�
 - Database: PostgreSQL 15+ / Redis 7+
 - LLM: Ollama (qwen3.5:9b) / OpenAI / DeepSeek / Qwen
 - Agent: LangChain + LangGraph 编排
+- Protocol: REST + OpenAPI / MCP-compatible / A2A-ready
 
 ## A2A / Agent Integration
 
@@ -35,6 +83,7 @@ GEO (Generative Engine Optimization) 平台提供从品牌诊断、多模态分�
 
 ## Resources
 
+- **MTO 平台定义说明**（概念全文，推荐优先阅读）: /docs/MTO平台定义说明.md
 - Documentation: /README.md
 - API Reference: /docs (Swagger UI, auto-generated OpenAPI)
 - Backend Entry: /backend/app/main.py
@@ -42,9 +91,28 @@ GEO (Generative Engine Optimization) 平台提供从品牌诊断、多模态分�
 - License: MIT
 - Third-Party Notices: /THIRD_PARTY_NOTICES.md
 
+## Open Source Co-Building MTO
+
+本平台以**开源方式共建 MTO**。MTO 要成立，前提是机器能够跨组织地验证证据 ——
+一个封闭系统里的「信任分」没有意义，所以底层约定必须开放、可审计、可互操作。
+**这不是姿态，是技术前提。**
+
+| 共建目标 | 当前状态 | 需要什么 |
+|---|---|---|
+| 证据链的数据模型 | 初版设计 | 不同行业的证据类型与溯源需求 |
+| 信任量化指标 | 实验性 | 真实的验证场景与反例，用来证伪 |
+| A2A 核验接口 | 接口就绪 | 真实的机器调用方接入测试 |
+| 机器可读知识文件约定 | 已实践 | 更多实现方参与，形成事实标准 |
+| 行业证据模板 | 待补充 | 快消 / 美妆 / 3C / 医疗健康等领域知识 |
+
+参与方式：提 Issue 挑战框架（尤其欢迎「这个指标算不出来」「这个假设不成立」的具体反例）、
+提 PR 补充行业证据模型、参与规范讨论、做证伪实验。
+**我们更欢迎否定意见 —— 一个仍在理论推演阶段的框架，最大的风险不是被批评，而是被附和。**
+
 ## Attribution & Usage Notice
 
 - **项目性质**: 个人学习与技术研究的**非商业项目**，不用于商业部署、销售或对外收费服务。
+- **成熟度提示**: MTO 概念目前仍属**理论推演阶段**，尚未全面落地，请勿据此做商业决策。
 - **GEO 引擎内核**: 源自开源项目 **GeoLook** — https://github.com/aigclink/geolook
   - Copyright (c) 2026 GeoLook contributors / MIT License / https://geolook.cc
   - 引入位置: /backend/geolook/（已完整保留上游 MIT 许可与版权声明）
@@ -62,4 +130,4 @@ GEO (Generative Engine Optimization) 平台提供从品牌诊断、多模态分�
 
 ## Topics
 
-geo, generative-engine-optimization, llm, ai-search, brand-optimization, multimodal, competitor-analysis, fastapi, vue3, langchain, langgraph, rag, chromadb, a2a, agent
+mto, machine-trust-optimization, 机器信任优化, geo, generative-engine-optimization, 生成式引擎优化, ai-agent, a2a, agent-to-agent, machine-readable, evidence-chain, trust-scoring, llm, ai-search, brand-optimization, fastapi, vue3, langchain, langgraph, rag, mcp
