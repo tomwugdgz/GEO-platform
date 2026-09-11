@@ -30,6 +30,10 @@ topics: "mto, machine-trust-optimization, geo, generative-engine-optimization, a
 
 > 📖 完整论述见 **[MTO 平台定义说明](docs/MTO平台定义说明.md)**（含概念辨析、四层技术构成、成熟度分级、共建路线图）。
 
+> 📄 **行业级白皮书**：**[《MTO 白皮书 —— 从「被 AI 看见」到「被机器信任」》](docs/MTO白皮书.md)**
+> （9 章 + 3 附录，含消费决策三次迁移、SEO→GEO→MTO 三代范式对照、MCP / A2A / Agentic Commerce 协议进展、
+> 市场数据、企业行动框架与成熟度诚实声明）。
+
 > **⚠️ 使用声明**：本项目为**个人学习与研究的非商业项目**，无任何商业部署意图。
 > **MTO 概念目前仍属理论推演阶段，尚未全面落地，请勿据此做商业决策。**
 > 其中 GEO 引擎内核源自开源项目 [GeoLook](https://github.com/aigclink/geolook)（MIT 许可），
@@ -49,6 +53,7 @@ topics: "mto, machine-trust-optimization, geo, generative-engine-optimization, a
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-009688.svg)](https://fastapi.tiangolo.com/)
 [![Vue](https://img.shields.io/badge/Vue-3.5+-4FC08D.svg)](https://vuejs.org/)
 [![MTO](https://img.shields.io/badge/MTO-Machine%20Trust%20Optimization-ff6b00.svg)](docs/MTO平台定义说明.md)
+[![Whitepaper](https://img.shields.io/badge/whitepaper-MTO%20行业白皮书-1f6feb.svg)](docs/MTO白皮书.md)
 [![AI-Friendly](https://img.shields.io/badge/llms.txt-included-ff69b4.svg)](llms.txt)
 [![A2A](https://img.shields.io/badge/A2A-ready-9b59b6.svg)](llms.txt)
 [![Open Source](https://img.shields.io/badge/co--building-welcome-39ff14.svg)](docs/MTO平台定义说明.md#九开源共建-mto)
@@ -95,6 +100,7 @@ topics: "mto, machine-trust-optimization, geo, generative-engine-optimization, a
 - [致谢](#-致谢)
 - [版权与使用声明](#️-版权与使用声明)
 - [📚 交付文档与体系（青柠GEO）](#交付文档与体系青柠geo)
+- [📄 MTO 白皮书（行业研究）](docs/MTO白皮书.md)
 
 ## 🔐 MTO 是什么（与 GEO 的关系）
 
@@ -139,6 +145,9 @@ topics: "mto, machine-trust-optimization, geo, generative-engine-optimization, a
 
 📖 **完整论述见 [MTO 平台定义说明](docs/MTO平台定义说明.md)** —— 含四层技术构成（证据链 / 机器可读性 / 信任量化 / A2A 执行）、
 成熟度分级、与纯 GEO 工具的差异对比、共建路线图与 FAQ。
+
+📄 **面向行业的完整论述见 [MTO 白皮书](docs/MTO白皮书.md)** —— 从消费决策迁移到协议基础设施的系统论证，
+不涉及本平台实现，可直接对外引用。
 
 ## 🏗️ MTO 平台架构
 
@@ -230,6 +239,36 @@ MTO 要成立，前提是**机器能够跨组织地验证证据**。
 - **产品与交付主文档**：[`青柠GEO-产品介绍.md`](docs/青柠GEO-交付文档/青柠GEO-产品介绍.md) · [`青柠GEO-软件建立说明书.md`](docs/青柠GEO-交付文档/青柠GEO-软件建立说明书.md)（含 **附录 A：本仓库实际 FastAPI 部署**）
 - **七阶段模板体系**：`docs/青柠GEO-交付文档/青柠GEO-项目文档模板/`（00 总览 → 07 部署运维，共 47 份产出文件模板）
 - **技术栈对齐**：[`技术栈对齐说明.md`](docs/青柠GEO-交付文档/技术栈对齐说明.md)
+- **行业白皮书**：[`docs/MTO白皮书.md`](docs/MTO白皮书.md) —— MTO 行业研究白皮书（概念层，不涉及本平台实现）
+
+## 📄 MTO 白皮书（行业研究）
+
+面向企业决策者、技术架构师与投资机构的 **MTO 行业研究白皮书**，独立于本平台实现，可单独对外引用。
+
+**📥 在线阅读 / 下载**：[`docs/MTO白皮书.md`](docs/MTO白皮书.md)
+
+**《MTO 白皮书 —— 从「被 AI 看见」到「被机器信任」》** 主张：
+
+> **GEO 解决「让 AI 愿意推荐你」（拿到入场资格）；MTO 解决「让机器敢直接买你」（实现自主交易）。**
+
+**目录结构**
+
+| 章节 | 内容 |
+|---|---|
+| 摘要 | MTO 定义、全文立场与成熟度前置声明 |
+| 第一章 | 消费决策的三次迁移：纯人类 → 人机协同 → 机器自主 |
+| 第二章 | 营销范式迁移：SEO → GEO → MTO（含三代六维对照表） |
+| 第三章 | 信任机制的结构性差异：启发式信任 vs 程序化信任 |
+| 第四章 | MTO 的四层技术构成：证据链 / 机器可读 / 信任量化 / 协议执行 |
+| 第五章 | 技术基础设施：MCP、A2A（Agent Card + Task）、Agentic Commerce 三路线 |
+| 第六章 | 市场信号与数据：Gartner / CIDC / IDC / 麦肯锡 / 1688（逐项标注来源） |
+| 第七章 | 企业行动框架：短中长期三阶段 + 成熟度自评表（L1–L4） |
+| 第八章 | 成熟度诚实声明与风险边界：技术 / 法律 / 标准 / 概念透支 |
+| 第九章 | 结论与展望 |
+| 附录 | A 术语表 · B 时间线 · C 参考文献 |
+
+**📌 阅读提示**：白皮书明确界定 MTO **目前仍处于理论推演阶段，尚未全面落地**，不构成投资建议或商业承诺。
+数据均标注第三方来源，可独立核查。
 
 ## 🤖 AI 可读标签与 A2A 集成
 
