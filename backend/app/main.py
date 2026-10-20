@@ -30,6 +30,7 @@ from app.api.multimodal_routes import router as multimodal_router
 from app.api.competitor_routes import router as competitor_router
 from app.api.geolook_routes import router as geolook_router
 from app.api.web_publishing_routes import router as web_publishing_router
+from app.api.trend_routes import router as trend_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -60,6 +61,7 @@ app.include_router(multimodal_router, prefix="/api/v2/geo/multimodal", tags=["�
 app.include_router(competitor_router, prefix="/api/v2/geo/competitor", tags=["竞品逆向"])
 app.include_router(geolook_router, prefix="/api/v2", tags=["GeoLook 引擎"])
 app.include_router(web_publishing_router, prefix="/api/v2", tags=["网站优化"])
+app.include_router(trend_router, prefix="/api/v2/trend", tags=["MTO 趋势与优化顾问"])
 
 
 @app.on_event("startup")

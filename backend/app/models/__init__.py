@@ -40,6 +40,9 @@ from app.models.geo import (  # noqa: E402,F401
     FeedTask,
 )
 
+# 趋势与优化顾问：MTO/GEO 指标时序快照（新增）
+from app.models.trend import MetricSnapshot  # noqa: E402,F401
+
 
 def init_db():
     """初始化数据库表（启动时调用一次即可）"""

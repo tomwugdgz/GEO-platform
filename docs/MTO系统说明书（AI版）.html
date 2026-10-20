@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN" prefix="schema: http://schema.org/ mto: https://mto.example/ns#">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MTO 系统说明 · AI 版 — Machine Trust Optimization Platform (machine-readable)</title>
+
+<!-- ===== Machine-readable metadata (mirrors README AI-READABLE TAGS) ===== -->
+<meta name="dc.type" content="SoftwareSourceCode" />
+<meta name="application-name" content="MTO Platform" />
+<meta name="application:layer1" content="MachineTrustOptimization" />
+<meta name="application:layer2" content="GenerativeEngineOptimization" />
+<meta name="category" content="Machine-Trust,Evidence-Chain,AI-Agent-Orchestration,A2A,AI-Search-Optimization,Brand-Visibility" />
+<meta name="mto:definition" content="Machine Trust Optimization (机器信任优化) — 把品牌主张治理成机器可验证的证据链，使 AI 智能体在自主交易时能核验并信任品牌。" />
+<meta name="geo:definition" content="Generative Engine Optimization (生成式引擎优化) — 让品牌被生成式 AI 正确理解、引用与推荐，进入候选答案池；是 MTO 的下层基础。" />
+<meta name="maturity" content="GEO 层可用；AI 智能体层可用；A2A 接口就绪但生态未成熟；MTO 方法论属理论推演阶段" />
+<meta name="tech" content="FastAPI,Vue3,LangGraph,ChromaDB,PostgreSQL,Redis,Ollama,OpenAI" />
+<meta name="api" content="REST,OpenAPI,Swagger,/docs,MCP-compatible,A2A-ready,Function-Calling-ready" />
+<meta name="protocols" content="MCP,A2A,Agentic-Commerce" />
+<meta name="platforms" content="DeepSeek,Doubao,Yuanbao,Tongyi,Wenxin,Nami,Kimi,Zhipu" />
+<meta name="license" content="MIT" />
+<meta name="author" content="Tom (duckwolf)" />
+<meta name="contact" content="https://duckwolf.cn" />
+<meta name="repo" content="https://github.com/tomwugdgz/GEO-platform" />
+<meta name="upstream" content="GeoLook — https://github.com/aigclink/geolook (MIT, Copyright (c) 2026 GeoLook contributors)" />
+<meta name="usage" content="Personal non-commercial research & learning only" />
+<meta name="co-building" content="Open-source co-building MTO — Issue challenges / PR evidence models welcome" />
+<meta name="takedown" content="duckwolf@qq.com — takedown on verified infringement, no defense" />
+<meta name="llms-txt" content="../llms.txt" />
+<meta name="see-also" content="MTO平台定义说明.md, MTO白皮书.md, ../README.md, ../llms.txt" />
+
+<style>
+  :root{
+    --bg:#0a0f1f; --panel:#0f1730; --line:#22324f; --txt:#cdd9f0; --dim:#8597b8;
+    --cyan:#36c8e0; --green:#46d36a;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--txt); font:14px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; padding:28px;}
+  .wrap{max-width:1000px; margin:0 auto;}
+  h1{font-size:22px; color:#fff; border-bottom:2px solid var(--line); padding-bottom:10px;}
+  h2{font-size:17px; color:var(--cyan); margin:28px 0 8px; border-left:4px solid var(--cyan); padding-left:10px;}
+  h3{font-size:14px; color:#fff; margin:16px 0 6px;}
+  a{color:var(--cyan);}
+  code{background:#0c1426; color:var(--green); padding:1px 5px; border-radius:4px;}
+  .muted{color:var(--dim);}
+  table{border-collapse:collapse; width:100%; margin:10px 0; font-size:13px;}
+  th,td{border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top;}
+  th{background:#121c38; color:var(--cyan);}
+  .pill{display:inline-block; padding:1px 8px; border-radius:10px; font-size:12px; font-weight:600;}
+  .g{background:#10331a; color:#46d36a; border:1px solid #46d36a;}
+  .y{background:#3a3410; color:#e7c84b; border:1px solid #e7c84b;}
+  .r{background:#3a1620; color:#ff6b8a; border:1px solid #ff6b8a;}
+  pre{background:#070c1a; border:1px solid var(--line); border-radius:8px; padding:14px; overflow:auto; color:#bcd; font-size:12.5px;}
+  .note{border-left:3px solid var(--cyan); background:#0d152b; padding:10px 14px; margin:12px 0;}
+  .warn{border-left:3px solid #e7c84b; background:#1c1907; padding:10px 14px; margin:12px 0;}
+  .tag{color:var(--dim); font-size:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>MTO 平台系统说明 · 机器可读版</h1>
+<p class="muted">本文件面向 LLM / A2A Agent / 知识图谱爬虫，提供结构化、可抽取、可验证的项目事实。配套人读版见 <a href="MTO系统说明书（人读版）.html">MTO系统说明书（人读版）.html</a>。结构化数据见文末 <code>application/ld+json</code> 与 <code>application/json</code> 块。</p>
+
+<!-- ============ 1. 概念定义 ============ -->
+<section id="concepts" itemscope itemtype="https://schema.org/DefinedTerm">
+  <h2>1. 核心概念定义</h2>
+  <h3 id="def-mto">MTO — Machine Trust Optimization（机器信任优化）</h3>
+  <p itemprop="name"><b>MTO</b></p>
+  <p>面向「机器自主交易」时代的方法与工具集：把品牌的产品主张从<b>人类可读的营销文案</b>重构为<b>机器可验证的证据链</b>，使 AI 智能体在自主完成购物决策时能检索到、核验主张、并信任而直接下单。</p>
+  <p class="muted">解决的问题：<b>被机器信任</b>（进成交决策集）。终点：机器自主交易时选择你。成熟度：<span class="pill r">🔴 理论推演阶段</span></p>
+
+  <h3 id="def-geo">GEO — Generative Engine Optimization（生成式引擎优化）</h3>
+  <p>让品牌被生成式 AI 正确理解、引用、推荐，进入 AI 的候选答案池。是 MTO 的下层基础。</p>
+  <p class="muted">解决的问题：<b>被 AI 看见</b>（进候选答案池）。终点：让 AI 愿意推荐你（入场资格）。成熟度：<span class="pill g">🟢 当下企业正在布局的实操方向</span></p>
+
+  <div class="note">关系：GEO ↔ MTO 为<b>递进双层、非替代</b>。跳过 GEO 做 MTO 不成立；只做 GEO 会停在半路；两者资产同一套（品牌事实/产品事实/结构化内容），一次治理两层受益。</div>
+</section>
+
+<!-- ============ 2. 三代迁移 ============ -->
+<section id="migrations">
+  <h2>2. 消费决策 / 交易路径的三次迁移</h2>
+  <table data-model="decision-migration">
+    <thead><tr><th>代</th><th>路径</th><th>决策主体</th><th>优化对象</th><th>营销方法</th><th>成熟度</th></tr></thead>
+    <tbody>
+      <tr><td>第一代</td><td>人找货（搜索/货架）</td><td>人</td><td>SEO</td><td>品牌营销</td><td>成熟</td></tr>
+      <tr><td>第二代</td><td>人问 AI，AI 建议，人下单</td><td>机器初筛 + 人终选</td><td>GEO</td><td>GEO</td><td>正在普及</td></tr>
+      <tr><td>第三代</td><td>人给目标，机器自主检索·核验·比价·下单</td><td>机器全权</td><td>MTO</td><td>MTO</td><td>理论推演</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">关键变化：第一代→第二代变的是信息入口（搜索→AI 问答）；第二代→第三代变的是决策权本身（人→机器）。</p>
+</section>
+
+<!-- ============ 3. MTO 四层技术构成 ============ -->
+<section id="four-layers">
+  <h2>3. MTO 四层技术构成（缺一层即无法闭环）</h2>
+  <table data-model="mto-layers">
+    <thead><tr><th>层</th><th>名称</th><th>英文</th><th>目标</th><th>关键点</th></tr></thead>
+    <tbody>
+      <tr><td>L1</td><td>证据链层</td><td>Evidence Chain</td><td>主张→可独立核验的结构化证据</td><td>证据清单化 / 结构化 / 关联化；主张须指向签发方+有效期</td></tr>
+      <tr><td>L2</td><td>机器可读层</td><td>Machine Readability</td><td>机器无歧义读取证据</td><td>字段标准化、口径明确、MCP 等标准接口暴露；不依赖图片/扫描件</td></tr>
+      <tr><td>L3</td><td>信任量化层</td><td>Trust Scoring</td><td>信任→可测量可对比指标</td><td>可复算/可解释/可审计/防操纵；⚠ 未经真实交易验证</td></tr>
+      <tr><td>L4</td><td>协议与执行层</td><td>Protocol &amp; Execution</td><td>核验能力被机器直接调用</td><td>MCP（工具连接）+ A2A（智能体协同）+ Agentic Commerce（授权结算）</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 4. 平台三层架构 ============ -->
+<section id="platform-arch">
+  <h2>4. MTO 平台三层架构（递进双层：GEO 打底，MTO 在上）</h2>
+  <table data-model="platform-layers">
+    <thead><tr><th>层</th><th>职责</th><th>由谁提供</th></tr></thead>
+    <tbody>
+      <tr><td>MTO 层 · 机器信任</td><td>证据链建模治理 · 信任量化评分 · A2A 能力暴露 · 机器调用审计日志</td><td>本平台</td></tr>
+      <tr><td>GEO 层 · AI 可见性</td><td>站点审计 · AI 答案采样 · 缺口诊断 · 工单闭环验收 · 渠道/竞品分析</td><td>GeoLook 引擎（上游 MIT）</td></tr>
+      <tr><td>资产层 · 品牌知识底座</td><td>品牌事实库 · 产品事实库 · 结构化内容资产 · 知识库检索</td><td>本平台</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 5. 软件系统架构 ============ -->
+<section id="software-arch">
+  <h2>5. 软件系统架构</h2>
+  <table data-model="software-stack">
+    <thead><tr><th>层级</th><th>技术</th></tr></thead>
+    <tbody>
+      <tr><td>前端</td><td>Vue 3.5+ (Composition API) · Vite 5 · Element Plus 2.9+ · Vue Router 4 · Axios 1.20+ · 像素科技风主题</td></tr>
+      <tr><td>后端</td><td>FastAPI 0.109+ · SQLAlchemy 2.0 · Uvicorn</td></tr>
+      <tr><td>AI 编排</td><td>LangChain 0.3+ / LangGraph 0.2+（规划→执行→反思循环）· 4 Agent：洞察/编排/创意/归因</td></tr>
+      <tr><td>检索</td><td>ChromaDB 0.5+ · BGE-M3 嵌入 · RAG 增强</td></tr>
+      <tr><td>数据</td><td>PostgreSQL 15+ / SQLite（主库）· Redis 7+（缓存）· Celery（可选）</td></tr>
+      <tr><td>LLM</td><td>Ollama (qwen3.5:9b) / OpenAI / DeepSeek / Qwen</td></tr>
+      <tr><td>协议</td><td>REST + OpenAPI（/docs Swagger）· MCP 兼容 · A2A 就绪 · Function Calling 就绪</td></tr>
+      <tr><td>部署</td><td>Docker / Docker Compose · Nginx 反向代理</td></tr>
+    </tbody>
+  </table>
+  <h3>核心 API 端点</h3>
+  <table data-model="api-endpoints">
+    <thead><tr><th>方法</th><th>路径</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>POST</td><td><code>/api/v2/geo/diagnosis/start</code></td><td>启动品牌 GEO 诊断任务</td></tr>
+      <tr><td>GET</td><td><code>/api/v2/geo/diagnosis/status/{task_id}</code></td><td>查询诊断状态</td></tr>
+      <tr><td>GET</td><td><code>/api/v2/geo/diagnosis/result/{task_id}</code></td><td>获取诊断结果</td></tr>
+      <tr><td>POST</td><td><code>/api/v2/geo/multimodal/image/analyze</code></td><td>图片多模态分析</td></tr>
+      <tr><td>POST</td><td><code>/api/v2/geo/competitor/analyze</code></td><td>竞品逆向分析</td></tr>
+      <tr><td>POST</td><td><code>/api/v2/geo/intent/seed</code></td><td>意图洞察种子问题生成</td></tr>
+      <tr><td>POST</td><td><code>/api/v2/geo/knowledge/units</code></td><td>批量创建知识单元</td></tr>
+      <tr><td>前缀</td><td><code>/api/v2/geolook</code></td><td>GeoLook 引擎 REST 封装（backend/app/api/geolook_routes.py）</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">OpenAPI Schema：服务运行后访问 <code>/docs</code>（Swagger UI）或 <code>/openapi.json</code>。所有端点可经 MCP Server 封装为 Tool，或转为 LLM function 定义。</p>
+</section>
+
+<!-- ============ 6. MTO 生态 ============ -->
+<section id="ecosystem">
+  <h2>6. MTO 生态（协议基础设施）</h2>
+  <table data-model="ecosystem-protocols">
+    <thead><tr><th>协议</th><th>发布方 / 时间</th><th>作用</th></tr></thead>
+    <tbody>
+      <tr><td>MCP（Model Context Protocol）</td><td>Anthropic 2024-11；2025-12 捐赠 Linux Foundation / AAIF</td><td>智能体与工具、数据源的连接标准化</td></tr>
+      <tr><td>A2A（Agent-to-Agent）</td><td>Google 2025-04；捐赠 Linux Foundation</td><td>智能体间发现/认证/通信（Agent Card + Task，JSON-RPC over HTTPS）</td></tr>
+      <tr><td>Agentic Commerce</td><td>Mastercard Agent Pay / OpenAI+Stripe / Google AP2（三路线）</td><td>机器发起的授权、支付与结算</td></tr>
+    </tbody>
+  </table>
+  <div class="note">生态节点：MTO 平台（中央）连接 GEO 引擎（GeoLook / MIT）、AI 智能体编排、品牌知识库（ChromaDB+RAG）、品牌资产、MCP、A2A、Agentic Commerce、8 大 AI 平台（DeepSeek/豆包/元宝/通义/文心/纳米/Kimi/智谱）。MTO 成立前提是机器能跨组织验证证据，故底层约定必须开放、可审计、可互操作。</div>
+</section>
+
+<!-- ============ 7. 成熟度 ============ -->
+<section id="maturity">
+  <h2>7. 成熟度诚实声明</h2>
+  <table data-model="maturity">
+    <thead><tr><th>组成部分</th><th>成熟度</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>GEO 层能力</td><td><span class="pill g">🟢 可用</span></td><td>站点审计/采样/缺口诊断/工单闭环/验收可实际运行产出结果</td></tr>
+      <tr><td>AI 智能体层</td><td><span class="pill y">🟡 可用但依赖配置</span></td><td>需自配模型 API Key；未配置降级人工采样</td></tr>
+      <tr><td>A2A 协议层</td><td><span class="pill y">🟡 接口就绪，生态未成熟</span></td><td>外部尚无规模化支持 A2A 交易的商业生态</td></tr>
+      <tr><td>MTO 方法论本身</td><td><span class="pill r">🔴 理论推演阶段</span></td><td>机器自主交易尚未大规模发生；推演与工程化尝试</td></tr>
+      <tr><td>信任量化指标</td><td><span class="pill r">🔴 实验性</span></td><td>未经真实交易场景验证，不构成决策依据</td></tr>
+    </tbody>
+  </table>
+  <div class="warn">⚠️ 请勿将本平台 MTO 能力用于对外商业承诺。本项目为个人非商业学习/研究项目，MTO 概念仍属理论推演阶段，请勿据此做商业决策。</div>
+</section>
+
+<!-- ============ 8. 开源共建 ============ -->
+<section id="co-building">
+  <h2>8. 开源共建（Co-Building）</h2>
+  <table data-model="co-building">
+    <thead><tr><th>共建目标</th><th>状态</th><th>需要</th></tr></thead>
+    <tbody>
+      <tr><td>证据链数据模型</td><td>初版设计</td><td>不同行业证据类型与溯源需求</td></tr>
+      <tr><td>信任量化指标</td><td>实验性</td><td>真实验证场景与反例（证伪）</td></tr>
+      <tr><td>A2A 核验接口</td><td>接口就绪</td><td>真实机器调用方接入测试</td></tr>
+      <tr><td>机器可读知识文件约定</td><td>已实践</td><td>更多实现方参与形成事实标准</td></tr>
+      <tr><td>行业证据模板</td><td>待补充</td><td>快消/美妆/3C/医疗健康领域知识</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 9. 资源链接 ============ -->
+<section id="resources">
+  <h2>9. 相关资源（相对路径，跨平台可移植）</h2>
+  <ul>
+    <li><a href="MTO平台定义说明.md">MTO平台定义说明.md</a> — 平台视角概念全文</li>
+    <li><a href="MTO白皮书.md">MTO白皮书.md</a> — 行业研究白皮书（9 章 + 3 附录，可单独引用）</li>
+    <li><a href="../README.md">../README.md</a> — 项目总览</li>
+    <li><a href="../llms.txt">../llms.txt</a> — LLM 结构化入口</li>
+    <li><a href="https://github.com/tomwugdgz/GEO-platform">GitHub 仓库</a> · <a href="https://duckwolf.cn">个人网站</a> · <a href="mailto:duckwolf@qq.com">duckwolf@qq.com</a></li>
+    <li>上游 GEO 引擎：<a href="https://github.com/aigclink/geolook">GeoLook</a>（MIT, geolook.cc）</li>
+  </ul>
+</section>
+
+<!-- ============ 10. 结构化数据（JSON-LD） ============ -->
+<script type="application/ld+json">
+{
+  "@context": {
+    "schema": "http://schema.org/",
+    "mto": "https://mto.example/ns#"
+  },
+  "@graph": [
+    {
+      "@type": "schema:SoftwareSourceCode",
+      "schema:name": "MTO Platform",
+      "schema:alternateName": "机器信任优化平台",
+      "schema:description": "Machine Trust Optimization (MTO) 开源品牌信任资产治理平台：把品牌主张治理成机器可验证的证据链，让 AI 智能体在自主交易时能核验并信任品牌。在 GEO 可见性底座之上叠加 AI 智能体编排与 A2A 机器间协议。",
+      "schema:codeRepository": "https://github.com/tomwugdgz/GEO-platform",
+      "schema:license": "https://opensource.org/licenses/MIT",
+      "schema:programmingLanguage": ["Python", "JavaScript"],
+      "schema:author": { "@type": "schema:Person", "schema:name": "Tom (duckwolf)", "schema:url": "https://duckwolf.cn" },
+      "schema:applicationCategory": "Marketing/SEO/AI-Agent",
+      "mto:layer1": "MachineTrustOptimization",
+      "mto:layer2": "GenerativeEngineOptimization",
+      "mto:maturity": "GEO usable; AI-agent usable; A2A interface ready but ecosystem immature; MTO methodology theoretical",
+      "mto:protocols": ["MCP", "A2A", "Agentic-Commerce"],
+      "mto:techStack": ["FastAPI", "Vue3", "LangGraph", "ChromaDB", "PostgreSQL", "Redis", "Ollama"]
+    },
+    {
+      "@type": "schema:DefinedTerm",
+      "@id": "mto:MTO",
+      "schema:name": "MTO",
+      "schema:termCode": "Machine Trust Optimization",
+      "schema:description": "机器信任优化：把品牌主张治理成机器可验证的证据链，使 AI 智能体在自主交易时能核验并信任品牌。解决「被机器信任」。成熟度：理论推演阶段。",
+      "mto:relationTo": "mto:GEO",
+      "mto:relationType": "progressive-layer (非替代)"
+    },
+    {
+      "@type": "schema:DefinedTerm",
+      "@id": "mto:GEO",
+      "schema:name": "GEO",
+      "schema:termCode": "Generative Engine Optimization",
+      "schema:description": "生成式引擎优化：让品牌被生成式 AI 正确理解、引用、推荐，进入候选答案池。解决「被 AI 看见」。成熟度：当下实操方向。",
+      "mto:isBaseOf": "mto:MTO"
+    },
+    {
+      "@type": "schema:DefinedTermSet",
+      "@id": "mto:MTO-Layers",
+      "schema:name": "MTO 四层技术构成",
+      "schema:hasDefinedTerm": [
+        {"@type":"schema:DefinedTerm","schema:name":"L1 证据链层 (Evidence Chain)","schema:description":"主张→可独立核验的结构化证据"},
+        {"@type":"schema:DefinedTerm","schema:name":"L2 机器可读层 (Machine Readability)","schema:description":"机器无歧义读取证据，MCP 暴露"},
+        {"@type":"schema:DefinedTerm","schema:name":"L3 信任量化层 (Trust Scoring)","schema:description":"信任→可测量指标（未经真实交易验证）"},
+        {"@type":"schema:DefinedTerm","schema:name":"L4 协议与执行层 (Protocol & Execution)","schema:description":"MCP + A2A + Agentic Commerce 使核验能力被机器调用"}
+      ]
+    },
+    {
+      "@type": "schema:SoftwareApplication",
+      "@id": "mto:GeoLook",
+      "schema:name": "GeoLook",
+      "schema:description": "本平台 GEO 引擎内核上游项目（MIT 许可）。",
+      "schema:codeRepository": "https://github.com/aigclink/geolook",
+      "schema:license": "MIT",
+      "schema:copyright": "Copyright (c) 2026 GeoLook contributors"
+    }
+  ]
+}
+</script>
+
+<!-- ============ 11. 机器可消费 MTO 模型（application/json） ============ -->
+<script type="application/json" id="mto-model">
+{
+  "schema_version": "1.0",
+  "generated_for": "LLM / A2A Agent / knowledge-graph crawler",
+  "project": {
+    "name": "MTO Platform",
+    "zh": "机器信任优化平台",
+    "repository": "https://github.com/tomwugdgz/GEO-platform",
+    "license": "MIT",
+    "author": "Tom (duckwolf)",
+    "contact": "duckwolf@qq.com",
+    "website": "https://duckwolf.cn",
+    "usage": "personal non-commercial research & learning only",
+    "upstream": { "name": "GeoLook", "repo": "https://github.com/aigclink/geolook", "license": "MIT", "copyright": "Copyright (c) 2026 GeoLook contributors" }
+  },
+  "concepts": {
+    "MTO": {
+      "full": "Machine Trust Optimization",
+      "zh": "机器信任优化",
+      "solves": "被机器信任（进成交决策集）",
+      "endpoint": "机器自主交易时选择你",
+      "maturity": "theoretical"
+    },
+    "GEO": {
+      "full": "Generative Engine Optimization",
+      "zh": "生成式引擎优化",
+      "solves": "被 AI 看见（进候选答案池）",
+      "endpoint": "让 AI 愿意推荐你（入场资格）",
+      "maturity": "practical"
+    },
+    "relation": "progressive dual-layer, not substitution; same asset base, dual benefit"
+  },
+  "decision_migration": [
+    { "gen": 1, "path": "人找货", "subject": "human", "method": "SEO", "maturity": "mature" },
+    { "gen": 2, "path": "人问 AI，人下单", "subject": "machine-prescreen+human-final", "method": "GEO", "maturity": "adopting" },
+    { "gen": 3, "path": "机器自主下单", "subject": "machine", "method": "MTO", "maturity": "theoretical" }
+  ],
+  "mto_layers": [
+    { "layer": "L1", "name": "证据链层", "en": "Evidence Chain", "goal": "主张→可独立核验的结构化证据" },
+    { "layer": "L2", "name": "机器可读层", "en": "Machine Readability", "goal": "机器无歧义读取证据，MCP 暴露" },
+    { "layer": "L3", "name": "信任量化层", "en": "Trust Scoring", "goal": "信任→可测量指标（未经真实交易验证）" },
+    { "layer": "L4", "name": "协议与执行层", "en": "Protocol & Execution", "goal": "MCP+A2A+Agentic Commerce 使核验能力被机器调用" }
+  ],
+  "platform_layers": [
+    { "layer": "MTO 层", "duty": "证据链建模治理·信任量化·A2A 暴露·审计", "provided_by": "本平台" },
+    { "layer": "GEO 层", "duty": "站点审计·采样·缺口诊断·工单闭环·竞品", "provided_by": "GeoLook 引擎 (上游 MIT)" },
+    { "layer": "资产层", "duty": "品牌事实库·产品事实库·结构化内容·检索", "provided_by": "本平台" }
+  ],
+  "tech_stack": {
+    "frontend": ["Vue 3.5", "Vite 5", "Element Plus", "Vue Router 4", "Axios"],
+    "backend": ["FastAPI 0.109", "SQLAlchemy 2.0", "Uvicorn"],
+    "ai": ["LangChain 0.3", "LangGraph 0.2", "ChromaDB 0.5", "BGE-M3"],
+    "data": ["PostgreSQL 15", "SQLite", "Redis 7", "Celery"],
+    "llm": ["Ollama qwen3.5:9b", "OpenAI", "DeepSeek", "Qwen"],
+    "protocol": ["REST", "OpenAPI", "MCP", "A2A", "Function-Calling"],
+    "deploy": ["Docker", "Docker Compose", "Nginx"]
+  },
+  "api_endpoints": [
+    { "method": "POST", "path": "/api/v2/geo/diagnosis/start" },
+    { "method": "GET", "path": "/api/v2/geo/diagnosis/status/{task_id}" },
+    { "method": "GET", "path": "/api/v2/geo/diagnosis/result/{task_id}" },
+    { "method": "POST", "path": "/api/v2/geo/multimodal/image/analyze" },
+    { "method": "POST", "path": "/api/v2/geo/competitor/analyze" },
+    { "method": "POST", "path": "/api/v2/geo/intent/seed" },
+    { "method": "POST", "path": "/api/v2/geo/knowledge/units" },
+    { "prefix": "/api/v2/geolook", "note": "GeoLook 引擎 REST 封装" }
+  ],
+  "protocol_infrastructure": [
+    { "name": "MCP", "by": "Anthropic 2024-11; LF/AAIF 2025-12", "role": "智能体-工具/数据源连接" },
+    { "name": "A2A", "by": "Google 2025-04; LF", "role": "智能体间协同 (Agent Card+Task)" },
+    { "name": "Agentic Commerce", "by": "Mastercard/OpenAI+Stripe/Google AP2", "role": "机器授权与结算" }
+  ],
+  "ai_platforms": ["DeepSeek", "Doubao", "Yuanbao", "Tongyi", "Wenxin", "Nami", "Kimi", "Zhipu"],
+  "maturity": [
+    { "part": "GEO 层", "level": "usable" },
+    { "part": "AI 智能体层", "level": "usable-but-config-dependent" },
+    { "part": "A2A 协议层", "level": "interface-ready-ecosystem-immature" },
+    { "part": "MTO 方法论", "level": "theoretical" },
+    { "part": "信任量化指标", "level": "experimental" }
+  ],
+  "co_building": {
+    "evidence_model": "初版设计",
+    "trust_scoring": "实验性",
+    "a2a_interface": "接口就绪",
+    "machine_readable_spec": "已实践",
+    "industry_templates": "待补充"
+  },
+  "resources": {
+    "platform_definition": "MTO平台定义说明.md",
+    "whitepaper": "MTO白皮书.md",
+    "readme": "../README.md",
+    "llms_txt": "../llms.txt"
+  },
+  "disclaimer": "MTO 概念仍属理论推演阶段，未经真实交易场景验证，不构成投资建议或商业决策依据。本项目为个人非商业项目。"
+}
+</script>
+
+<p class="tag">EOF · MTO Platform System Doc (AI-readable) · MIT · Tom (duckwolf) · 2026-09</p>
+
+</div>
+</body>
+</html>

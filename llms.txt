@@ -62,6 +62,7 @@ GEO 层 · 被 AI 看见   被正确理解 · 被引用 · 被推荐 → 进入�
 - **AI 智能体编排**（MTO 层）: 多智能体协同 + 统一编排循环（规划 → 执行 → 反思）
 - **A2A 机器间协议**（MTO 层）: 品牌核验能力可被外部 AI Agent 发现与调用
 - **证据链建模与信任量化**（MTO 层，实验性）: 主张 → 证据 → 溯源三段式建模；完整度 / 可信度 / 一致性 / 时效性四维评分
+- **MTO 趋势与优化顾问**（MTO 层，新）: 累积多期 MTO/GEO 指标快照，由 Laya 决策引擎（LAYA 本地 GPU / JEV 远程，auto 自动切换）判别未来趋势并推荐可执行优化方向；统计回归给出各指标斜率与下一期预测；Laya 不可用时启发式降级为"最弱指标优先"
 
 ## Tech Stack
 
@@ -70,6 +71,7 @@ GEO 层 · 被 AI 看见   被正确理解 · 被引用 · 被推荐 → 进入�
 - Database: PostgreSQL 15+ / Redis 7+
 - LLM: Ollama (qwen3.5:9b) / OpenAI / DeepSeek / Qwen
 - Agent: LangChain + LangGraph 编排
+- Decision Engine: Laya（LAYA 本地 GPU 通路 / JEV 远程 API 通路，`auto` 自动切换）— 用于 MTO 趋势判别与优化方向决策
 - Protocol: REST + OpenAPI / MCP-compatible / A2A-ready
 
 ## A2A / Agent Integration
@@ -79,6 +81,7 @@ GEO 层 · 被 AI 看见   被正确理解 · 被引用 · 被推荐 → 进入�
 - 诊断任务: `POST /api/v2/geo/diagnosis/start` → 轮询 `/status/{task_id}` → `/result/{task_id}`
 - 多模态分析: `POST /api/v2/geo/multimodal/image/analyze`
 - 竞品逆向: `POST /api/v2/geo/competitor/analyze`
+- MTO 趋势与优化顾问: `POST /api/v2/trend/snapshot` 上报一期指标 → `POST /api/v2/trend/predict?backend=auto` 判别趋势与推荐优化方向（需 ≥2 期快照）；`GET /api/v2/trend/snapshots` 查询快照列表
 - 所有端点均可在 `/docs` (Swagger) 查看 OpenAPI Schema，支持 MCP / Function Calling 自动适配
 
 ## Resources
@@ -130,4 +133,4 @@ GEO 层 · 被 AI 看见   被正确理解 · 被引用 · 被推荐 → 进入�
 
 ## Topics
 
-mto, machine-trust-optimization, 机器信任优化, geo, generative-engine-optimization, 生成式引擎优化, ai-agent, a2a, agent-to-agent, machine-readable, evidence-chain, trust-scoring, llm, ai-search, brand-optimization, fastapi, vue3, langchain, langgraph, rag, mcp
+mto, machine-trust-optimization, 机器信任优化, geo, generative-engine-optimization, 生成式引擎优化, ai-agent, a2a, agent-to-agent, machine-readable, evidence-chain, trust-scoring, llm, ai-search, brand-optimization, fastapi, vue3, langchain, langgraph, rag, mcp, laya, jev, trend-forecast, optimization-advisor

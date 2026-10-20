@@ -66,7 +66,7 @@ topics: "mto, machine-trust-optimization, geo, generative-engine-optimization, a
 @mto_definition: Machine Trust Optimization (机器信任优化) — 把品牌主张治理成机器可验证的证据链，使 AI 智能体在自主交易时能核验并信任品牌
 @geo_definition: Generative Engine Optimization (生成式引擎优化) — 让品牌被生成式 AI 正确理解、引用与推荐，进入候选答案池；是 MTO 的下层基础
 @maturity: GEO 层可用；AI 智能体层可用；A2A 接口就绪但生态未成熟；MTO 方法论属理论推演阶段
-@tech: FastAPI, Vue3, LangGraph, ChromaDB, PostgreSQL, Redis, Ollama, OpenAI
+@tech: FastAPI, Vue3, LangGraph, ChromaDB, PostgreSQL, Redis, Ollama, OpenAI, Laya(LAYA/JEV 决策引擎)
 @api: REST + OpenAPI (Swagger at /docs), MCP-compatible, A2A-ready, Function-Calling-ready
 @platforms: DeepSeek, Doubao, Yuanbao, Tongyi, Wenxin, Nami, Kimi, Zhipu
 @license: MIT
@@ -349,6 +349,26 @@ async def diagnose_brand(brand: str, product: str):
 - **趋势分析**：GEO 健康度、内容覆盖度、分发成功率趋势
 - **预警机制**：舆情异常、出镜率下降的实时告警
 
+### 📈 MTO 趋势与优化顾问（LAYA / JEV 接入）
+把"连续多期 MTO/GEO 指标"喂给 AI 判别工具，自动判断**未来趋势**并给出**可执行优化方向**。
+- **累积数据驱动**：通过 `POST /api/v2/trend/snapshot` 持续上报指标快照（AIVO 四维、提及率、信任分、证据链完整性等），形成时间序列
+- **统计判别**：对各指标做一元线性回归，输出斜率、下一期预测值与综合趋势方向（up / down / flat）
+- **AI 判别（双引擎可切换）**：把近期状态写成"人话战报"喂给 Laya 决策引擎，由它在若干**可执行**优化方向中选定最优
+  - `local`：本地 GPU 通路（LAYA，torch + CUDA）
+  - `remote`：远程 API 通路（JEV / `bocha-jev-v1`）
+  - `auto`（默认）：有 CUDA 走本地，否则自动降级远程 —— 无需手动判断环境
+- **优化方向推荐**：输出选定方向 + 攻击性分数（偏保守 / 偏进攻）+ 置信度 + 全部候选方案
+- **优雅降级**：Laya 不可用时自动回退"最弱指标优先"启发式选择，保证始终有可执行建议
+
+#### 🔒 优化方向边界与适用限制
+趋势顾问给出的"优化方向"是**数据驱动的建议**，不是承诺或指令。使用时应明确以下边界：
+
+- **范围边界**：方向严格限定在 GEO/MTO 品牌优化范畴——内容铺设、证据链完善、AI 可见性提升、舆情健康维护、官网基建完善、差异化优势强化。**不包含**财务/投资回报承诺、医疗/法律/专业资质建议，或对具体投放效果的保证。
+- **方法边界**：方向由"累积数据 → 统计回归 + Laya 决策引擎在候选中选优"两段式产出，是"可执行的下一步建议"而非唯一正确结论；最终取舍由人决定。
+- **置信边界**：`aggression`（偏保守 / 偏进攻）与 `confidence`（置信度）均为模型输出，不构成确定性保证；统计趋势基于历史线性外推，**不适用于突发舆情、算法大改、季节性突变等非线性场景**。
+- **数据边界**：需 ≥2 期**真实**累积指标；合成 / 随机数据仅用于演示，不可据此推断真实趋势。
+- **责任边界**：MTO 方法论目前仍属**理论推演阶段**，本结果为研究参考，**不构成任何商业决策依据**。请勿据此做对外商业承诺或投放决策，落地前务必结合人工研判与 A/B 验证。
+
 ### 🏢 多租户架构
 - **租户隔离**：完全的数据隔离和权限控制
 - **品牌管理**：单租户多品牌支持
@@ -367,11 +387,11 @@ async def diagnose_brand(brand: str, product: str):
 ┌────────────────────▼────────────────────────────────────┐
 │              后端 (FastAPI + Uvicorn)                    │
 │  ┌──────────────────────────────────────────────────┐  │
-│  │  API 路由层 (10 个模块, 69+ 端点)                 │  │
+│  │  API 路由层 (11 个模块, 70+ 端点)                 │  │
 │  │  ├─ 认证授权    ├─ 租户管理    ├─ 意图洞察       │  │
 │  │  ├─ 知识库      ├─ 内容生产    ├─ 监测看板       │  │
 │  │  ├─ 品牌诊断    ├─ 多模态诊断  ├─ 竞品逆向       │  │
-│  │  └─ 商业工作流                                    │  │
+│  │  ├─ 商业工作流  └─ 趋势顾问(LAYA/JEV)             │  │
 │  └──────────────────────────────────────────────────┘  │
 │  ┌──────────────────────────────────────────────────┐  │
 │  │  业务逻辑层                                        │  │
@@ -536,6 +556,30 @@ POST /api/v2/geo/knowledge/units
 }
 ```
 
+#### MTO 趋势与优化顾问（LAYA / JEV 趋势判别）
+```bash
+# 上报一期指标快照（趋势顾问的累积数据来源，可多次上报形成时间序列）
+POST /api/v2/trend/snapshot
+{
+  "tenant_id": "uuid",
+  "brand_id": "uuid",
+  "period_label": "W1",
+  "source": "diagnosis",          # diagnosis / monitor / manual
+  "metrics": { "aivo_total": 60, "trust_score": 57, "mention_rate": 20, "evidence_completeness": 45, ... }
+}
+
+# 查询快照列表（按时间倒序）
+GET /api/v2/trend/snapshots?tenant_id=xxx&brand_id=xxx&limit=50
+
+# 趋势判别 + 优化方向推荐（需 ≥2 期快照；backend: auto/local/remote）
+POST /api/v2/trend/predict
+{ "tenant_id": "uuid", "brand_id": "uuid", "backend": "auto", "limit": 12 }
+
+# GET 版（便于 Agent / 浏览器 / A2A 直接调用）
+GET /api/v2/trend/predict?tenant_id=xxx&brand_id=xxx&backend=auto&limit=12
+```
+> 判别结果包含：统计趋势方向、各指标斜率与下一期预测、AI 选定的优化方向（含攻击性分数与置信度）、全部候选方案、人话战报（state）。Laya 不可用时自动降级为启发式选择。
+
 完整的 API 文档请访问：http://localhost:5006/docs (Swagger UI)
 
 ## 🛠️ 技术栈
@@ -547,6 +591,7 @@ POST /api/v2/geo/knowledge/units
 - **缓存**: Redis 7+
 - **任务队列**: Celery + Redis (可选)
 - **AI 框架**: LangChain 0.3+ / LangGraph 0.2+
+- **决策引擎**: Laya（LAYA 本地 GPU 通路 / JEV 远程 API 通路，`auto` 自动切换，用于 MTO 趋势判别与优化方向决策）
 - **向量数据库**: ChromaDB 0.5+
 - **嵌入模型**: Sentence Transformers (BGE-M3)
 - **LLM 支持**: Ollama / OpenAI / DeepSeek / Qwen
@@ -570,7 +615,7 @@ POST /api/v2/geo/knowledge/units
 GEO/
 ├── backend/                    # 后端服务
 │   ├── app/
-│   │   ├── api/               # API 路由层 (10 个模块)
+│   │   ├── api/               # API 路由层 (11 个模块)
 │   │   │   ├── auth_routes.py
 │   │   │   ├── tenants_routes.py
 │   │   │   ├── intent_routes.py
@@ -580,13 +625,17 @@ GEO/
 │   │   │   ├── diagnosis_routes.py
 │   │   │   ├── multimodal_routes.py
 │   │   │   ├── competitor_routes.py
-│   │   │   └── business_routes.py
+│   │   │   ├── business_routes.py
+│   │   │   └── trend_routes.py   # MTO 趋势与优化顾问 (LAYA/JEV)
 │   │   ├── agents/            # LangGraph Agent 编排
-│   │   ├── models/            # 数据模型 (17 张表)
+│   │   │   └── trend_advisor.py  # 趋势顾问 Agent 封装
+│   │   ├── models/            # 数据模型 (18 张表)
+│   │   │   └── trend.py         # MetricSnapshot 指标快照表
 │   │   ├── services/          # 业务逻辑层
 │   │   │   ├── llm_client.py
 │   │   │   ├── rag_kb.py
 │   │   │   ├── competitor_monitor.py
+│   │   │   ├── trend_advisor.py   # MTO 趋势判别核心（统计 + Laya 决策 + 启发式降级）
 │   │   │   └── ...
 │   │   ├── core/              # 核心组件
 │   │   │   ├── async_db.py
@@ -753,6 +802,7 @@ server {
 - ✅ AI 内容生产
 - ✅ 全域监测看板
 - ✅ 多租户架构
+- ✅ MTO 趋势与优化顾问（LAYA/JEV 趋势判别 + 可执行优化方向推荐）
 
 ### v1.1 (计划中)
 - [ ] 真实 AI 平台 API 对接（DeepSeek、豆包等）

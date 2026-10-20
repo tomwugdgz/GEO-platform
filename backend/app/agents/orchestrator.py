@@ -14,10 +14,28 @@ import logging
 from typing import TypedDict, Optional, List, Dict, Any
 from langgraph.graph import StateGraph, END
 
-from app.agents.audience_insight import audience_agent
-from app.agents.smart_schedule import schedule_agent
-from app.agents.dynamic_creative import creative_agent
-from app.agents.attribution import attribution_agent
+# 注：原 audience_insight / smart_schedule / dynamic_creative / attribution 四个 Agent
+# 模块当前未随仓库提供（见 app/agents/__init__.py 亦为休眠状态）。此处改为防御式导入，
+# 缺失时置为 None 并跳过对应节点，使编排器可加载、趋势顾问节点可正常运行。
+try:
+    from app.agents.audience_insight import audience_agent
+except Exception:
+    audience_agent = None
+try:
+    from app.agents.smart_schedule import schedule_agent
+except Exception:
+    schedule_agent = None
+try:
+    from app.agents.dynamic_creative import creative_agent
+except Exception:
+    creative_agent = None
+try:
+    from app.agents.attribution import attribution_agent
+except Exception:
+    attribution_agent = None
+
+from app.agents.trend_advisor import trend_advisor_agent
+
 from app.services.scheduling_optimizer import SchedulingOptimizer
 from app.services.competitor_monitor import CompetitorMonitorService as CompetitorMonitor
 from app.services.llm_client import llm_client
@@ -38,6 +56,7 @@ class CampaignState(TypedDict):
     attribution_report: dict             # 归因报告
     optimization_report: dict            # 排期优化结果
     competitor_report: dict              # 竞品监控
+    trend_report: dict                    # MTO 趋势与优化顾问结论（新增）
     # 工作流控制
     iteration: int                       # 反思迭代次数
     feedback: str                        # 反思反馈
@@ -267,6 +286,31 @@ class OrchestratorAgent:
             }
         return state
 
+
+    async def _run_trend(self, state: CampaignState) -> CampaignState:
+        """MTO 趋势与优化顾问节点 —— 消费累积指标快照，判别趋势并推荐优化方向。"""
+        try:
+            from app.models import SessionLocal
+            from app.models.trend import MetricSnapshot
+            from app.services import trend_advisor as svc
+            db = SessionLocal()
+            try:
+                rows = db.query(MetricSnapshot).order_by(MetricSnapshot.snapshot_at.asc()).limit(12).all()
+                snaps = [svc.snapshot_to_metrics(r) for r in rows]
+            finally:
+                db.close()
+            if len(snaps) < 2:
+                state["trend_report"] = {
+                    "ok": False,
+                    "note": "MTO 指标快照不足 2 期，趋势判别跳过（可通过 /api/v2/trend/snapshot 累积）",
+                }
+            else:
+                state["trend_report"] = svc.predict_trend(snaps, backend="auto")
+        except Exception as e:
+            state["errors"].append(f"趋势顾问失败: {e}")
+            state["trend_report"] = {"ok": False, "error": str(e)}
+        return state
+
     async def _reflect(self, state: CampaignState) -> CampaignState:
         """
         反思阶段 — 基于归因报告提出优化建议
@@ -380,6 +424,9 @@ class OrchestratorAgent:
                 "suggestions_count": len(attribution.get("suggestions", [])),
                 "geo_analysis": attribution.get("geo_analysis", {}),
             },
+
+            # MTO 趋势与优化顾问
+            "trend_advisor": state.get("trend_report", {}),
 
             # 反思反馈
             "feedback": state.get("feedback", ""),

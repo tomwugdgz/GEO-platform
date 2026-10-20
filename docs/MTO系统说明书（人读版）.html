@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MTO 系统说明书 · 人读版 — 机器信任优化平台与 MTO 生态</title>
+<meta name="description" content="MTO（Machine Trust Optimization，机器信任优化）开源平台的系统说明：软件架构、GEO↔MTO 递进双层、MTO 四层技术构成、MTO 生态与成熟度诚实声明。FastAPI + Vue3 + LangGraph + ChromaDB。" />
+<meta name="keywords" content="MTO, 机器信任优化, GEO, 生成式引擎优化, 证据链, 信任量化, A2A, AI智能体, 品牌信任资产" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#030617; --bg2:#070c20; --panel:#0b1228; --panel2:#0e1733;
+    --line:#1c2b52; --line2:#27395f;
+    --cyan:#00f0ff; --green:#39ff14; --pink:#ff2e97; --purple:#b537f2;
+    --yellow:#fff200; --orange:#ff6b00;
+    --txt:#dbe7ff; --txt-dim:#8aa0c8; --txt-mute:#5e72994d;
+    --ok:#39ff14; --warn:#ffd23f; --bad:#ff4d6d;
+    --mono:'JetBrains Mono','Courier New',monospace;
+    --pixel:'Press Start 2P',var(--mono);
+    --display:'VT323',var(--mono);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--txt);
+    font-family:var(--mono); font-size:15px; line-height:1.75;
+    background-image:
+      linear-gradient(rgba(0,240,255,.035) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(0,240,255,.035) 1px,transparent 1px);
+    background-size:42px 42px;
+  }
+  a{color:var(--cyan); text-decoration:none; border-bottom:1px dotted rgba(0,240,255,.4);}
+  a:hover{color:var(--green); border-bottom-color:var(--green);}
+  code{font-family:var(--mono); background:#0a142e; color:var(--green); padding:1px 6px; border-radius:4px; font-size:.92em;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 22px 90px;}
+
+  /* HERO */
+  .hero{
+    position:relative; padding:64px 22px 48px; text-align:center;
+    border-bottom:2px solid var(--line2);
+    background:radial-gradient(900px 380px at 50% -40%,rgba(0,240,255,.16),transparent 70%),
+               radial-gradient(700px 320px at 80% 0%,rgba(181,55,242,.14),transparent 70%);
+  }
+  .hero h1{
+    font-family:var(--pixel); font-size:26px; line-height:1.5; margin:0 0 6px;
+    color:#fff; text-shadow:0 0 14px rgba(0,240,255,.55),0 0 26px rgba(181,55,242,.35);
+  }
+  .hero .sub{font-family:var(--display); font-size:30px; color:var(--cyan); letter-spacing:1px;}
+  .hero .tag{margin-top:18px; font-size:16px; color:var(--txt-dim); max-width:760px; margin-left:auto; margin-right:auto;}
+  .hero .tag b{color:var(--green);}
+  .badges{margin-top:22px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+  .badge{font-size:12px; padding:5px 11px; border:1px solid var(--line2); border-radius:20px; color:var(--txt-dim); background:var(--panel);}
+  .badge.cyan{border-color:var(--cyan); color:var(--cyan);}
+  .badge.green{border-color:var(--green); color:var(--green);}
+
+  /* TOC */
+  nav.toc{
+    position:sticky; top:0; z-index:30; background:rgba(3,6,23,.92);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--line2);
+    padding:10px 22px; margin-bottom:34px;
+  }
+  nav.toc .inner{max-width:1180px; margin:0 auto; display:flex; gap:8px 14px; flex-wrap:wrap; font-size:13px;}
+  nav.toc a{border:none; color:var(--txt-dim); padding:3px 0;}
+  nav.toc a:hover{color:var(--cyan);}
+
+  section{margin:0 0 54px; scroll-margin-top:64px;}
+  h2{
+    font-family:var(--display); font-size:30px; color:#fff; margin:0 0 6px;
+    border-left:5px solid var(--cyan); padding-left:14px;
+  }
+  h2 .idx{color:var(--cyan); font-family:var(--pixel); font-size:14px; margin-right:10px;}
+  h3{font-size:18px; color:var(--cyan); margin:26px 0 10px;}
+  .lead{color:var(--txt-dim); font-size:15px; margin:8px 0 18px; max-width:880px;}
+  p{max-width:900px;}
+
+  .panel{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:20px 22px; margin:16px 0;}
+  .panel.glow{border-color:var(--line2); box-shadow:0 0 30px rgba(0,240,255,.06) inset;}
+
+  .twocol{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media(max-width:820px){.twocol{grid-template-columns:1fr;}}
+
+  /* callout */
+  .callout{border-left:4px solid var(--cyan); background:var(--panel2); padding:14px 18px; border-radius:0 8px 8px 0; margin:16px 0; color:var(--txt);}
+  .callout.warn{border-color:var(--warn);}
+  .callout.bad{border-color:var(--bad);}
+  .callout.good{border-color:var(--ok);}
+  .callout b{color:#fff;}
+
+  /* tables */
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:14px; background:var(--panel); border-radius:8px; overflow:hidden;}
+  th,td{border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top;}
+  th{background:var(--panel2); color:var(--cyan); font-weight:600; font-size:13px; letter-spacing:.5px;}
+  td small{color:var(--txt-dim);}
+
+  /* cards */
+  .cards{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+  @media(max-width:820px){.cards{grid-template-columns:1fr;}}
+  .card{background:var(--panel); border:1px solid var(--line2); border-radius:10px; padding:16px 18px; position:relative; overflow:hidden;}
+  .card .n{font-family:var(--pixel); font-size:13px; color:var(--purple);}
+  .card h4{margin:8px 0 6px; color:#fff; font-size:16px;}
+  .card p{margin:0; font-size:13.5px; color:var(--txt-dim);}
+
+  /* diagram frame */
+  .fig{margin:18px 0; text-align:center;}
+  .fig svg{max-width:100%; height:auto;}
+  .fig .cap{font-size:13px; color:var(--txt-dim); margin-top:8px;}
+
+  /* maturity pills */
+  .pill{display:inline-block; font-size:12px; padding:2px 9px; border-radius:12px; font-weight:600;}
+  .pill.g{background:rgba(57,255,20,.14); color:var(--green); border:1px solid var(--green);}
+  .pill.y{background:rgba(255,210,63,.14); color:var(--warn); border:1px solid var(--warn);}
+  .pill.r{background:rgba(255,77,109,.14); color:var(--bad); border:1px solid var(--bad);}
+
+  footer{border-top:1px solid var(--line2); margin-top:60px; padding-top:24px; color:var(--txt-dim); font-size:13px;}
+  footer .links{display:flex; gap:18px; flex-wrap:wrap; margin-top:10px;}
+  .kicker{font-family:var(--pixel); font-size:11px; color:var(--pink); letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="kicker">MTO PLATFORM · SYSTEM DOC</div>
+  <h1>MTO 系统说明书</h1>
+  <div class="sub">机器信任优化平台 &amp; MTO 生态</div>
+  <p class="tag">
+    <b>MTO</b>（Machine Trust Optimization，机器信任优化）是一个面向「机器自主交易」时代的
+    开源品牌信任资产治理平台：把品牌主张治理成机器可验证的证据链，
+    让 AI 智能体在自主交易时能核验并信任你。
+  </p>
+  <div class="badges">
+    <span class="badge cyan">GEO 打底 · 被 AI 看见</span>
+    <span class="badge green">MTO 在上 · 被机器信任</span>
+    <span class="badge">FastAPI + Vue3</span>
+    <span class="badge">LangGraph + ChromaDB</span>
+    <span class="badge">MIT · 开源共建</span>
+  </div>
+</div>
+
+<nav class="toc">
+  <div class="inner">
+    <a href="#what">01 是什么</a>
+    <a href="#migration">02 三次迁移</a>
+    <a href="#dual">03 递进双层</a>
+    <a href="#four">04 四层技术</a>
+    <a href="#arch">05 平台架构</a>
+    <a href="#system">06 系统架构</a>
+    <a href="#stack">07 技术栈</a>
+    <a href="#eco">08 MTO 生态</a>
+    <a href="#maturity">09 成熟度</a>
+    <a href="#co">10 开源共建</a>
+    <a href="#start">11 快速开始</a>
+    <a href="#docs">12 文档导航</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- 01 -->
+  <section id="what">
+    <h2><span class="idx">01</span>这是什么：MTO 与 GEO</h2>
+    <p class="lead">MTO 不是替代 GEO，而是在 GEO 之上解决一个更靠后的问题——当决策者是一台机器时，它凭什么信任你。</p>
+    <div class="twocol">
+      <div class="panel glow">
+        <h3 style="margin-top:0">GEO · 生成式引擎优化</h3>
+        <p>Generative Engine Optimization。解决「<b style="color:var(--cyan)">被 AI 看见</b>」：当用户在豆包、DeepSeek、元宝等 AI 平台提问时，让品牌被 AI 正确理解、引用、推荐，进入候选答案池。</p>
+        <p><b>终点</b>：让 AI <b>愿意推荐</b>你 —— 拿到入场资格。 🟢 当下企业正在布局的实操方向。</p>
+      </div>
+      <div class="panel glow">
+        <h3 style="margin-top:0">MTO · 机器信任优化</h3>
+        <p>Machine Trust Optimization。解决「<b style="color:var(--green)">被机器信任</b>」：让机器验证并信任你的产品证据链，从而在自主交易时直接选购。</p>
+        <p><b>终点</b>：让机器 <b>敢直接买</b>你 —— 实现自主交易。 🔴 仍处于理论推演阶段，尚未全面落地。</p>
+      </div>
+    </div>
+    <div class="callout good">
+      <b>一句话核心</b>：GEO 是让 AI 愿意推荐你（拿到入场资格），MTO 是让机器敢直接买你（实现自主交易）。两者是 AI 时代营销逻辑的不同阶段，构成<b>递进双层</b>，而非替代关系。
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section id="migration">
+    <h2><span class="idx">02</span>交易路径的三次迁移</h2>
+    <p class="lead">理解 MTO 的前提，是决策主体正在从「人」迁移到「机器」。这不是渠道变迁，而是决策权归属的迁移。</p>
+    <div class="fig">
+      <svg viewBox="0 0 980 250" role="img" aria-label="三代交易路径迁移">
+        <defs>
+          <marker id="ar" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L7,3 L0,6 Z" fill="#00f0ff"/>
+          </marker>
+        </defs>
+        <rect x="14" y="40" width="290" height="170" rx="10" fill="#0b1228" stroke="#27395f"/>
+        <text x="159" y="72" fill="#fff" font-family="JetBrains Mono" font-size="17" font-weight="700" text-anchor="middle">第一代 · 人找货</text>
+        <text x="159" y="104" fill="#8aa0c8" font-family="JetBrains Mono" font-size="13" text-anchor="middle">人 → 搜索/货架</text>
+        <text x="159" y="128" fill="#8aa0c8" font-family="JetBrains Mono" font-size="13" text-anchor="middle">→ 自己比较 → 自己下单</text>
+        <text x="159" y="160" fill="#ffd23f" font-family="JetBrains Mono" font-size="13" text-anchor="middle">优化：SEO</text>
+        <text x="159" y="186" fill="#5e7299" font-family="JetBrains Mono" font-size="12" text-anchor="middle">决策主体：人</text>
+
+        <rect x="350" y="40" width="290" height="170" rx="10" fill="#0b1228" stroke="#27395f"/>
+        <text x="495" y="72" fill="#fff" font-family="JetBrains Mono" font-size="17" font-weight="700" text-anchor="middle">第二代 · 人问 AI</text>
+        <text x="495" y="104" fill="#8aa0c8" font-family="JetBrains Mono" font-size="13" text-anchor="middle">人 → 问 AI「哪个好」</text>
+        <text x="495" y="128" fill="#8aa0c8" font-family="JetBrains Mono" font-size="13" text-anchor="middle">→ AI 建议 → 人自己买</text>
+        <text x="495" y="160" fill="#00f0ff" font-family="JetBrains Mono" font-size="13" text-anchor="middle">优化：GEO</text>
+        <text x="495" y="186" fill="#5e7299" font-family="JetBrains Mono" font-size="12" text-anchor="middle">决策主体：机器初筛 + 人终选</text>
+
+        <rect x="686" y="40" width="280" height="170" rx="10" fill="#0e1733" stroke="#ff2e97"/>
+        <text x="826" y="72" fill="#fff" font-family="JetBrains Mono" font-size="17" font-weight="700" text-anchor="middle">第三代 · 机器下单</text>
+        <text x="826" y="104" fill="#8aa0c8" font-family="JetBrains Mono" font-size="13" text-anchor="middle">人给目标 → 智能体</text>
+        <text x="826" y="128" fill="#8aa0c8" font-family="JetBrains Mono" font-size="13" text-anchor="middle">自主检索·核验·比价·下单</text>
+        <text x="826" y="160" fill="#ff2e97" font-family="JetBrains Mono" font-size="13" text-anchor="middle">优化：MTO</text>
+        <text x="826" y="186" fill="#5e7299" font-family="JetBrains Mono" font-size="12" text-anchor="middle">决策主体：机器全权</text>
+
+        <line x1="304" y1="125" x2="346" y2="125" stroke="#00f0ff" stroke-width="2" marker-end="url(#ar)"/>
+        <line x1="640" y1="125" x2="682" y2="125" stroke="#ff2e97" stroke-width="2" marker-end="url(#ar)"/>
+        <text x="490" y="232" fill="#8aa0c8" font-family="JetBrains Mono" font-size="13" text-anchor="middle">按下「购买」键的主体，从人 → 机器</text>
+      </svg>
+      <div class="cap">图 1 · 交易路径三次迁移：决策权从人转移到机器</div>
+    </div>
+    <div class="callout">
+      前两代无论入口怎么变，<b>按下「购买」键的都是人</b>，所以「被看见、被推荐」就够了。第三代按下购买键的是机器——而机器不「喜欢」任何品牌，它只做一件事：<b>核验主张是否成立</b>。
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section id="dual">
+    <h2><span class="idx">03</span>GEO ↔ MTO 递进双层</h2>
+    <p class="lead">GEO 是地基，MTO 是在地基上盖的房子。两者资产同一套，一次治理、两层受益。</p>
+    <div class="fig">
+      <svg viewBox="0 0 760 320" role="img" aria-label="GEO 与 MTO 递进双层">
+        <rect x="120" y="22" width="520" height="78" rx="10" fill="#0e1733" stroke="#ff2e97"/>
+        <text x="380" y="52" fill="#ff2e97" font-family="JetBrains Mono" font-size="18" font-weight="700" text-anchor="middle">MTO 层 · 被机器信任</text>
+        <text x="380" y="80" fill="#8aa0c8" font-family="JetBrains Mono" font-size="13" text-anchor="middle">证据链可核验 · 信任可量化 · A2A 可调用 → 机器自主交易时选择你</text>
+
+        <rect x="120" y="126" width="520" height="78" rx="10" fill="#0b1228" stroke="#00f0ff"/>
+        <text x="380" y="156" fill="#00f0ff" font-family="JetBrains Mono" font-size="18" font-weight="700" text-anchor="middle">GEO 层 · 被 AI 看见</text>
+        <text x="380" y="184" fill="#8aa0c8" font-family="JetBrains Mono" font-size="13" text-anchor="middle">被正确理解 · 被引用 · 被推荐 → 进入 AI 候选答案池</text>
+
+        <rect x="120" y="230" width="520" height="70" rx="10" fill="#070c20" stroke="#27395f"/>
+        <text x="380" y="258" fill="#fff" font-family="JetBrains Mono" font-size="17" font-weight="700" text-anchor="middle">资产层 · 品牌知识底座</text>
+        <text x="380" y="284" fill="#8aa0c8" font-family="JetBrains Mono" font-size="13" text-anchor="middle">品牌事实 · 产品事实 · 结构化内容资产</text>
+
+        <line x1="380" y1="100" x2="380" y2="124" stroke="#888" stroke-width="2" marker-end="url(#ar)"/>
+        <line x1="380" y1="204" x2="380" y2="228" stroke="#888" stroke-width="2" marker-end="url(#ar)"/>
+      </svg>
+      <div class="cap">图 2 · MTO / GEO / 资产 三层递进依赖</div>
+    </div>
+    <table>
+      <thead><tr><th>关键判断</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>跳过 GEO 做 MTO 不成立</td><td>机器连你都检索不到，遑论信任你。GEO 是必需的入场券。</td></tr>
+        <tr><td>只做 GEO 会停在半路</td><td>被 AI 推荐了，但机器要自主下单时你没有可核验的证据链，依然出局。</td></tr>
+        <tr><td>两者的资产是同一套</td><td>GEO 用它做引用，MTO 用它做核验——<b>一次治理，两层受益</b>。</td></tr>
+        <tr><td>当下该怎么做</td><td>先用 MTO 的标准整理资产，再靠 GEO 拿当下收益；不必等 MTO 成熟才开始准备。</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 04 -->
+  <section id="four">
+    <h2><span class="idx">04</span>MTO 的四层技术构成</h2>
+    <p class="lead">MTO 不是单点工具，而是一套分层能力。缺任何一层，机器都无法完成「验证 → 信任 → 成交」。</p>
+    <div class="cards">
+      <div class="card">
+        <div class="n">L1</div>
+        <h4>证据链层 · Evidence Chain</h4>
+        <p>把分散的产品主张重构为可被独立核验的结构化证据：证据清单化 → 结构化 → 关联化。任何一条对外主张都能指向支撑它的原始证据（签发方 + 有效期）。</p>
+      </div>
+      <div class="card">
+        <div class="n">L2</div>
+        <h4>机器可读层 · Machine Readability</h4>
+        <p>让机器无歧义地读取证据：字段命名标准化、口径明确、语义无歧义；通过 MCP 等标准接口向 AI 系统暴露能力与数据。不依赖图片、扫描件、口语化文案承载关键事实。</p>
+      </div>
+      <div class="card">
+        <div class="n">L3</div>
+        <h4>信任量化层 · Trust Scoring</h4>
+        <p>把「信任」从模糊判断转为可测量、可对比、可追踪的指标。设计原则：可复算、可解释、可审计、防操纵。⚠️ 当前未经过真实交易场景验证，不构成决策依据。</p>
+      </div>
+      <div class="card">
+        <div class="n">L4</div>
+        <h4>协议与执行层 · Protocol &amp; Execution</h4>
+        <p>让核验能力被机器直接调用：MCP（工具连接）+ A2A（智能体协同）+ Agentic Commerce（授权与结算）。外部智能体可不经人工对接，自主发现、授权、调用。</p>
+      </div>
+    </div>
+    <div class="fig">
+      <svg viewBox="0 0 900 120" role="img" aria-label="MTO 四层闭环">
+        <rect x="10" y="28" width="210" height="64" rx="8" fill="#0b1228" stroke="#ff2e97"/>
+        <text x="115" y="58" fill="#fff" font-family="JetBrains Mono" font-size="14" text-anchor="middle">① 证据链</text>
+        <text x="115" y="78" fill="#8aa0c8" font-family="JetBrains Mono" font-size="11" text-anchor="middle">Evidence Chain</text>
+        <rect x="240" y="28" width="210" height="64" rx="8" fill="#0b1228" stroke="#b537f2"/>
+        <text x="345" y="58" fill="#fff" font-family="JetBrains Mono" font-size="14" text-anchor="middle">② 机器可读</text>
+        <text x="345" y="78" fill="#8aa0c8" font-family="JetBrains Mono" font-size="11" text-anchor="middle">Readability</text>
+        <rect x="470" y="28" width="210" height="64" rx="8" fill="#0b1228" stroke="#00f0ff"/>
+        <text x="575" y="58" fill="#fff" font-family="JetBrains Mono" font-size="14" text-anchor="middle">③ 信任量化</text>
+        <text x="575" y="78" fill="#8aa0c8" font-family="JetBrains Mono" font-size="11" text-anchor="middle">Trust Scoring</text>
+        <rect x="700" y="28" width="190" height="64" rx="8" fill="#0e1733" stroke="#39ff14"/>
+        <text x="795" y="58" fill="#fff" font-family="JetBrains Mono" font-size="14" text-anchor="middle">④ 协议执行</text>
+        <text x="795" y="78" fill="#8aa0c8" font-family="JetBrains Mono" font-size="11" text-anchor="middle">A2A · MCP</text>
+        <line x1="220" y1="60" x2="238" y2="60" stroke="#00f0ff" stroke-width="2" marker-end="url(#ar)"/>
+        <line x1="450" y1="60" x2="468" y2="60" stroke="#00f0ff" stroke-width="2" marker-end="url(#ar)"/>
+        <line x1="680" y1="60" x2="698" y2="60" stroke="#00f0ff" stroke-width="2" marker-end="url(#ar)"/>
+        <text x="450" y="112" fill="#8aa0c8" font-family="JetBrains Mono" font-size="12" text-anchor="middle">主张 → 证据 → 核验 → 信任 → 成交（缺一层即无法闭环）</text>
+      </svg>
+      <div class="cap">图 3 · MTO 四层技术构成与闭环</div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section id="arch">
+    <h2><span class="idx">05</span>MTO 平台三层架构</h2>
+    <p class="lead">本平台是递进双层结构：GEO 打底（由 GeoLook 引擎提供），MTO 在上。</p>
+    <div class="fig">
+      <svg viewBox="0 0 760 300" role="img" aria-label="MTO 平台三层架构">
+        <rect x="80" y="18" width="600" height="80" rx="10" fill="#0e1733" stroke="#ff2e97"/>
+        <text x="380" y="46" fill="#ff2e97" font-family="JetBrains Mono" font-size="16" font-weight="700" text-anchor="middle">MTO 层 · 机器信任</text>
+        <text x="380" y="72" fill="#8aa0c8" font-family="JetBrains Mono" font-size="12.5" text-anchor="middle">证据链建模与治理 · 信任量化评分 · A2A 能力暴露 · 机器调用审计日志</text>
+
+        <rect x="80" y="112" width="600" height="80" rx="10" fill="#0b1228" stroke="#00f0ff"/>
+        <text x="380" y="140" fill="#00f0ff" font-family="JetBrains Mono" font-size="16" font-weight="700" text-anchor="middle">GEO 层 · AI 可见性（由 GeoLook 引擎提供）</text>
+        <text x="380" y="166" fill="#8aa0c8" font-family="JetBrains Mono" font-size="12.5" text-anchor="middle">站点状态审计 · AI 答案采样 · 缺口诊断 · 工单生成与闭环验收 · 渠道/竞品分析</text>
+
+        <rect x="80" y="206" width="600" height="74" rx="10" fill="#070c20" stroke="#27395f"/>
+        <text x="380" y="234" fill="#fff" font-family="JetBrains Mono" font-size="16" font-weight="700" text-anchor="middle">资产层 · 品牌知识底座</text>
+        <text x="380" y="260" fill="#8aa0c8" font-family="JetBrains Mono" font-size="12.5" text-anchor="middle">品牌事实库 · 产品事实库 · 结构化内容资产 · 知识库检索</text>
+
+        <line x1="380" y1="98" x2="380" y2="110" stroke="#888" stroke-width="2" marker-end="url(#ar)"/>
+        <line x1="380" y1="192" x2="380" y2="204" stroke="#888" stroke-width="2" marker-end="url(#ar)"/>
+      </svg>
+      <div class="cap">图 4 · MTO 平台递进双层架构</div>
+    </div>
+    <table>
+      <thead><tr><th>核心动作</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>治理</td><td>把品牌事实从散落材料中抽取、归一化、结构化。</td></tr>
+        <tr><td>建链</td><td>为每条关键主张挂上可溯源的证据。</td></tr>
+        <tr><td>量化</td><td>计算证据完整度、可信度、一致性与时效性。</td></tr>
+        <tr><td>暴露</td><td>通过 A2A / MCP 等协议把核验能力开放给机器调用。</td></tr>
+        <tr><td>验证</td><td>持续巡检 AI 答案中的品牌表现，形成闭环工单。</td></tr>
+        <tr><td>留痕</td><td>记录机器访问与决策依据，可审计、可复盘。</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      本平台与纯 GEO 工具的差异<b>不在 GEO 做得更好，而在于多了两层</b>：AI 智能体编排（洞察/编排/创意/归因）与 A2A 机器间协议，以及 MTO 核心的证据链建模与信任量化。纯 GEO 工具回答「AI 提到我了吗」；MTO 平台继续回答「<b>机器凭什么信我</b>」。
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section id="system">
+    <h2><span class="idx">06</span>软件系统架构</h2>
+    <p class="lead">前端 Vue 3 + Vite，后端 FastAPI + Uvicorn，AI 编排基于 LangGraph，知识检索基于 ChromaDB，数据落地于 PostgreSQL / Redis。</p>
+    <div class="fig">
+      <svg viewBox="0 0 880 360" role="img" aria-label="软件系统架构">
+        <!-- frontend -->
+        <rect x="20" y="30" width="300" height="80" rx="10" fill="#0b1228" stroke="#39ff14"/>
+        <text x="170" y="58" fill="#39ff14" font-family="JetBrains Mono" font-size="15" font-weight="700" text-anchor="middle">前端 · Vue 3 + Vite</text>
+        <text x="170" y="82" fill="#8aa0c8" font-family="JetBrains Mono" font-size="12" text-anchor="middle">品牌诊断 · 竞品逆向 · 多模态 · 监测看板</text>
+        <!-- backend -->
+        <rect x="20" y="150" width="840" height="190" rx="10" fill="#0e1733" stroke="#00f0ff"/>
+        <text x="40" y="178" fill="#00f0ff" font-family="JetBrains Mono" font-size="14" font-weight="700">后端 · FastAPI + Uvicorn</text>
+        <rect x="40" y="190" width="380" height="60" rx="8" fill="#0b1228" stroke="#27395f"/>
+        <text x="230" y="212" fill="#fff" font-family="JetBrains Mono" font-size="12.5" text-anchor="middle">API 路由层（10 模块，69+ 端点）</text>
+        <text x="230" y="232" fill="#8aa0c8" font-family="JetBrains Mono" font-size="11" text-anchor="middle">诊断/意图/知识/内容/监测/多模态/竞品/业务/GeoLook</text>
+        <rect x="440" y="190" width="400" height="60" rx="8" fill="#0b1228" stroke="#27395f"/>
+        <text x="640" y="212" fill="#fff" font-family="JetBrains Mono" font-size="12.5" text-anchor="middle">业务逻辑层</text>
+        <text x="640" y="232" fill="#8aa0c8" font-family="JetBrains Mono" font-size="11" text-anchor="middle">LangGraph 编排 · RAG(ChromaDB+BGE-M3) · 多模态 · 竞品逆向</text>
+        <rect x="40" y="262" width="800" height="62" rx="8" fill="#070c20" stroke="#b537f2"/>
+        <text x="440" y="284" fill="#b537f2" font-family="JetBrains Mono" font-size="12.5" text-anchor="middle">GeoLook 引擎内核（上游 MIT）· GEO 全链路：诊断→采样→工单→资产→验收</text>
+        <text x="440" y="306" fill="#8aa0c8" font-family="JetBrains Mono" font-size="11" text-anchor="middle">backend/geolook/ · /api/v2/geolook</text>
+        <!-- db -->
+        <rect x="360" y="358" width="160" height="0" />
+        <g font-family="JetBrains Mono" font-size="12">
+          <rect x="40" y="356" width="150" height="46" rx="8" fill="#0b1228" stroke="#27395f"/><text x="115" y="384" fill="#fff" text-anchor="middle">PostgreSQL</text>
+          <rect x="290" y="356" width="140" height="46" rx="8" fill="#0b1228" stroke="#27395f"/><text x="360" y="384" fill="#fff" text-anchor="middle">Redis</text>
+          <rect x="520" y="356" width="140" height="46" rx="8" fill="#0b1228" stroke="#27395f"/><text x="590" y="384" fill="#fff" text-anchor="middle">Ollama / LLM</text>
+          <rect x="730" y="356" width="130" height="46" rx="8" fill="#0b1228" stroke="#27395f"/><text x="795" y="384" fill="#fff" text-anchor="middle">ChromaDB</text>
+        </g>
+        <line x1="170" y1="110" x2="170" y2="148" stroke="#39ff14" stroke-width="2" marker-end="url(#ar)"/>
+        <line x1="170" y1="340" x2="115" y2="354" stroke="#888" stroke-width="2" marker-end="url(#ar)"/>
+        <line x1="400" y1="340" x2="360" y2="354" stroke="#888" stroke-width="2" marker-end="url(#ar)"/>
+        <line x1="600" y1="340" x2="590" y2="354" stroke="#888" stroke-width="2" marker-end="url(#ar)"/>
+        <line x1="800" y1="340" x2="795" y2="354" stroke="#888" stroke-width="2" marker-end="url(#ar)"/>
+      </svg>
+      <div class="cap">图 5 · 软件系统架构（前端 / 后端 / 数据与引擎）</div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section id="stack">
+    <h2><span class="idx">07</span>技术栈</h2>
+    <div class="twocol">
+      <div class="panel">
+        <h3 style="margin-top:0">后端</h3>
+        <p>FastAPI 0.109+ · SQLAlchemy 2.0 · LangChain 0.3+ / LangGraph 0.2+ · ChromaDB 0.5+（BGE-M3 嵌入）· PostgreSQL 15+ / SQLite · Redis 7+（缓存）· Celery（可选）</p>
+      </div>
+      <div class="panel">
+        <h3 style="margin-top:0">前端</h3>
+        <p>Vue 3.5+（Composition API）· Vite 5 · Element Plus 2.9+ · Vue Router 4 · Axios 1.20+ · 自定义像素科技风主题（深空黑 + 霓虹）</p>
+      </div>
+      <div class="panel">
+        <h3 style="margin-top:0">AI / Agent</h3>
+        <p>Ollama（qwen3.5:9b）/ OpenAI / DeepSeek / Qwen · LangGraph 多智能体编排（规划→执行→反思）· 4 大 Agent：洞察 / 编排 / 创意 / 归因</p>
+      </div>
+      <div class="panel">
+        <h3 style="margin-top:0">协议 / 基础设施</h3>
+        <p>REST + OpenAPI（/docs Swagger）· MCP 兼容 · A2A 就绪 · Function Calling 就绪 · Docker / Docker Compose · Nginx 反向代理</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section id="eco">
+    <h2><span class="idx">08</span>MTO 生态</h2>
+    <p class="lead">MTO 平台并非孤岛：它位于「GEO 引擎 + AI 智能体 + 机器间协议 + 品牌资产」组成的生态中央，并通过协议基础设施连接更广阔的 Agentic 网络。</p>
+    <div class="fig">
+      <svg viewBox="0 0 920 460" role="img" aria-label="MTO 生态">
+        <defs>
+          <radialGradient id="core" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1a2a55"/><stop offset="100%" stop-color="#0b1228"/>
+          </radialGradient>
+        </defs>
+        <circle cx="460" cy="230" r="92" fill="url(#core)" stroke="#ff2e97" stroke-width="2"/>
+        <text x="460" y="220" fill="#fff" font-family="JetBrains Mono" font-size="15" font-weight="700" text-anchor="middle">MTO 平台</text>
+        <text x="460" y="244" fill="#8aa0c8" font-family="JetBrains Mono" font-size="11.5" text-anchor="middle">品牌信任资产</text>
+        <text x="460" y="262" fill="#8aa0c8" font-family="JetBrains Mono" font-size="11.5" text-anchor="middle">治理平台</text>
+
+        <g font-family="JetBrains Mono" font-size="12.5" text-anchor="middle">
+          <rect x="40" y="70" width="200" height="58" rx="9" fill="#0b1228" stroke="#00f0ff"/><text x="140" y="98" fill="#00f0ff">GEO 引擎</text><text x="140" y="116" fill="#8aa0c8" font-size="11">GeoLook（上游 MIT）</text>
+          <rect x="680" y="70" width="200" height="58" rx="9" fill="#0b1228" stroke="#39ff14"/><text x="780" y="98" fill="#39ff14">AI 智能体编排</text><text x="780" y="116" fill="#8aa0c8" font-size="11">洞察/编排/创意/归因</text>
+          <rect x="40" y="350" width="200" height="58" rx="9" fill="#0b1228" stroke="#b537f2"/><text x="140" y="378" fill="#b537f2">品牌知识库</text><text x="140" y="396" fill="#8aa0c8" font-size="11">ChromaDB + RAG</text>
+          <rect x="680" y="350" width="200" height="58" rx="9" fill="#0b1228" stroke="#b537f2"/><text x="780" y="378" fill="#b537f2">品牌资产</text><text x="780" y="396" fill="#8aa0c8" font-size="11">事实/产品/内容</text>
+          <rect x="360" y="20" width="200" height="54" rx="9" fill="#0e1733" stroke="#fff200"/><text x="460" y="46" fill="#fff200">MCP</text><text x="460" y="64" fill="#8aa0c8" font-size="11">工具/数据源连接</text>
+          <rect x="360" y="402" width="200" height="54" rx="9" fill="#0e1733" stroke="#fff200"/><text x="460" y="428" fill="#fff200">A2A</text><text x="460" y="446" fill="#8aa0c8" font-size="11">智能体协同</text>
+          <rect x="20" y="200" width="180" height="56" rx="9" fill="#0b1228" stroke="#ff6b00"/><text x="110" y="226" fill="#ff6b00">Agentic</text><text x="110" y="244" fill="#8aa0c8" font-size="11">Commerce 结算</text>
+          <rect x="720" y="200" width="180" height="56" rx="9" fill="#0b1228" stroke="#ff6b00"/><text x="810" y="226" fill="#ff6b00">8 大 AI 平台</text><text x="810" y="244" fill="#8aa0c8" font-size="11">DeepSeek/豆包…</text>
+        </g>
+        <g stroke="#2a3c63" stroke-width="1.5">
+          <line x1="240" y1="99" x2="370" y2="200"/>
+          <line x1="680" y1="99" x2="550" y2="200"/>
+          <line x1="240" y1="379" x2="370" y2="260"/>
+          <line x1="680" y1="379" x2="550" y2="260"/>
+          <line x1="460" y1="74" x2="460" y2="138"/>
+          <line x1="460" y1="322" x2="460" y2="402"/>
+          <line x1="200" y1="228" x2="368" y2="228"/>
+          <line x1="720" y1="228" x2="552" y2="228"/>
+        </g>
+      </svg>
+      <div class="cap">图 6 · MTO 生态：平台居中，连接 GEO 引擎、AI 智能体、机器间协议与品牌资产</div>
+    </div>
+    <div class="callout">
+      <b>协议基础设施（生态底座）</b>：MCP（Anthropic 2024/11 发布，2025/12 捐赠 Linux Foundation 旗下 AAIF）解决智能体与工具/数据源的连接；A2A（Google 2025/4，核心 Agent Card + Task）解决智能体间协同；Agentic Commerce（Mastercard Agent Pay / OpenAI+Stripe / Google AP2 三路线）解决机器发起的授权与结算。
+    </div>
+    <p style="color:var(--txt-dim)">MTO 要成立，前提是机器能够跨组织地验证证据——一个封闭系统里的「信任分」没有意义。因此底层约定必须开放、可审计、可互操作，这也是本项目选择开源的根本原因。</p>
+  </section>
+
+  <!-- 09 -->
+  <section id="maturity">
+    <h2><span class="idx">09</span>成熟度诚实声明</h2>
+    <p class="lead">本项目主动声明边界，避免概念炒作。MTO 目前仍属理论推演阶段，请勿据此做商业决策。</p>
+    <table>
+      <thead><tr><th>组成部分</th><th>成熟度</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>GEO 层能力</td><td><span class="pill g">🟢 可用</span></td><td>站点审计、答案采样、缺口诊断、工单闭环、验收，均可实际运行并产出结果。</td></tr>
+        <tr><td>AI 智能体层</td><td><span class="pill y">🟡 可用但依赖配置</span></td><td>能力已实现，需自行配置各模型 API Key；未配置的引擎降级为人工采样。</td></tr>
+        <tr><td>A2A 协议层</td><td><span class="pill y">🟡 接口就绪，生态未成熟</span></td><td>协议与接口已实现，但外部尚无规模化支持 A2A 交易的商业生态。</td></tr>
+        <tr><td>MTO 方法论本身</td><td><span class="pill r">🔴 理论推演阶段</span></td><td>机器自主交易尚未大规模发生；本框架是推演与工程化尝试，不是已落地方案。</td></tr>
+        <tr><td>信任量化指标</td><td><span class="pill r">🔴 实验性</span></td><td>指标设计合理但未经过真实交易场景验证，不构成任何决策依据。</td></tr>
+      </tbody>
+    </table>
+    <div class="callout bad">
+      <b>请勿将本平台的 MTO 能力用于对外商业承诺。</b>现阶段它是一块面向未来的实验田，而不是一套可以直接卖钱的成熟产品。一个不敢承认自己还没落地的框架，不值得你投入。
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section id="co">
+    <h2><span class="idx">10</span>开源共建 MTO</h2>
+    <p class="lead">MTO 的底层约定必须开放、可审计、可互操作——不是姿态，是技术前提。我们更欢迎否定意见。</p>
+    <table>
+      <thead><tr><th>共建目标</th><th>当前状态</th><th>需要什么</th></tr></thead>
+      <tbody>
+        <tr><td>证据链的数据模型</td><td>初版设计</td><td>不同行业的证据类型与溯源需求</td></tr>
+        <tr><td>信任量化指标</td><td>实验性</td><td>真实的验证场景与反例，用来证伪</td></tr>
+        <tr><td>A2A 核验接口</td><td>接口就绪</td><td>真实的机器调用方接入测试</td></tr>
+        <tr><td>机器可读知识文件约定</td><td>已实践</td><td>更多实现方参与，形成事实标准</td></tr>
+        <tr><td>行业证据模板</td><td>待补充</td><td>快消 / 美妆 / 3C / 医疗健康等领域知识</td></tr>
+      </tbody>
+    </table>
+    <div class="callout good">参与方式：🐛 提 Issue 挑战框架（尤其欢迎「这个指标算不出来」「这个假设不成立」的具体反例）· 🔧 提 PR 补充行业证据模型 · 📄 参与规范讨论 · 🔬 做证伪实验。</div>
+  </section>
+
+  <!-- 11 -->
+  <section id="start">
+    <h2><span class="idx">11</span>快速开始</h2>
+    <div class="panel">
+      <h3 style="margin-top:0">后端（FastAPI，端口 5006）</h3>
+      <p><code>cd backend</code> → 建 venv 装依赖 → <code>cp .env.example .env</code> 配置 → <code>uvicorn app.main:app --host 0.0.0.0 --port 5006 --reload</code>。API 文档：<code>http://localhost:5006/docs</code></p>
+      <h3>前端（Vue 3 + Vite，端口 5173）</h3>
+      <p><code>cd bmn-frontend</code> → <code>npm install</code> → <code>npm run dev</code>。访问 <code>http://localhost:5173</code></p>
+      <h3>Docker（推荐）</h3>
+      <p><code>docker-compose up -d</code> 一键启动全部服务。</p>
+      <h3>Agent 调用示例</h3>
+      <p>触发诊断：<code>POST /api/v2/geo/diagnosis/start</code> → 轮询 <code>/status/{task_id}</code> → <code>/result/{task_id}</code>。所有端点可在 <code>/docs</code> 查看 OpenAPI Schema，支持 MCP / Function Calling 自动适配。</p>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section id="docs">
+    <h2><span class="idx">12</span>文档导航</h2>
+    <div class="panel glow">
+      <p>本说明配套以下文档，建议按序阅读：</p>
+      <p>① <a href="MTO平台定义说明.md">MTO 平台定义说明</a> —— 概念辨析、四层技术构成、成熟度分级、共建路线图（平台视角）。</p>
+      <p>② <a href="MTO白皮书.md">MTO 白皮书</a> —— 行业研究白皮书（9 章 + 3 附录），独立于本平台实现，可单独对外引用。</p>
+      <p>③ <a href="../README.md">README</a> —— 项目总览、核心特性、系统架构、API 与部署。</p>
+      <p>④ <a href="../llms.txt">llms.txt</a> —— 面向 LLM / Agent 的结构化项目入口（AI 可读）。</p>
+    </div>
+    <div class="callout warn">
+      <b>使用声明</b>：本项目为个人学习与技术研究的非商业项目，无任何商业部署意图。MTO 概念目前仍属理论推演阶段，尚未全面落地，请勿据此做商业决策。GEO 引擎内核源自开源项目 <a href="https://github.com/aigclink/geolook">GeoLook</a>（MIT 许可），版权归其作者所有。如认为本仓库任何内容侵犯您的权益，请联系 <a href="mailto:duckwolf@qq.com">duckwolf@qq.com</a>，核实后第一时间删除，不作抗辩。
+    </div>
+  </section>
+
+  <footer>
+    <div>MTO 平台 · 机器信任优化 — 系统说明书（人读版）｜ MIT 开源 · 作者 Tom (duckwolf)</div>
+    <div class="links">
+      <a href="https://github.com/tomwugdgz/GEO-platform">GitHub 仓库</a>
+      <a href="https://duckwolf.cn">个人网站</a>
+      <a href="https://github.com/tomwugdgz/GEO-platform/issues">Issue / 反馈</a>
+      <a href="MTO白皮书.md">白皮书</a>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
