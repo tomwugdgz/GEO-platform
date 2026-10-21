@@ -87,12 +87,14 @@ GEO 层 · 被 AI 看见   被正确理解 · 被引用 · 被推荐 → 进入�
 ## Resources
 
 - **MTO 平台定义说明**（概念全文，推荐优先阅读）: /docs/MTO平台定义说明.md
-- Documentation: /README.md
+- Documentation (中文): /README.md
+- Documentation (English / Global): /README.en.md
 - API Reference: /docs (Swagger UI, auto-generated OpenAPI)
 - Backend Entry: /backend/app/main.py
 - Frontend Entry: /bmn-frontend/src/main.js
 - License: MIT
 - Third-Party Notices: /THIRD_PARTY_NOTICES.md
+- Community / Feedback: [Reddit r/GEOMTO](https://www.reddit.com/r/GEOMTO/) — 提意见、交流使用、获取更新
 
 ## Open Source Co-Building MTO
 

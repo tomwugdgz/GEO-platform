@@ -222,6 +222,7 @@ MTO 要成立，前提是**机器能够跨组织地验证证据**。
 - 🔧 **提 PR 补充行业证据模型** —— 你所在行业的一条真实证据链，比十页理论更有价值
 - 📄 **参与规范讨论** —— 证据链格式、信任指标口径、A2A 接口约定
 - 🔬 **做证伪实验** —— 试着用本方法让机器完成一次真实核验，然后把失败的地方告诉我们
+- 💬 **社区讨论与反馈**：[Reddit r/GEOMTO](https://www.reddit.com/r/GEOMTO/) —— 提意见、交流使用经验、获取更新
 
 > **我们更欢迎否定意见。** 一个仍在理论推演阶段的框架，
 > 最大的风险不是被批评，而是被附和。
@@ -947,6 +948,7 @@ GeoLook 提供了一套**完整的端到端 GEO 实现**——站点状态分析
 - **GitHub**: [@tomwugdgz](https://github.com/tomwugdgz)
 - **仓库**: [github.com/tomwugdgz/GEO-platform](https://github.com/tomwugdgz/GEO-platform)
 - **Issue/反馈**: [GitHub Issues](https://github.com/tomwugdgz/GEO-platform/issues)
+- **社区**: [Reddit r/GEOMTO](https://www.reddit.com/r/GEOMTO/) —— 提意见、交流使用、获取更新
 
 ---
 
