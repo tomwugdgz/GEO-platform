@@ -1,0 +1,63 @@
+{
+  "schema_version": "mto-crawler-catalog-structure-v1",
+  "source": {
+    "project": "GEOInflow (Liekan)",
+    "version": "1.2.0",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2022 Umami Software, Inc.; Copyright (c) 2026 Liekan contributors",
+    "derived_from": [
+      "docs/crawler-directory.md",
+      "docs/crawler-recognition.md",
+      "README.md"
+    ],
+    "derived_on": "2026-11-07"
+  },
+  "notice": "本文件仅归集【身份目录的结构与条目名称/厂商/用途分类】,不含官方 IP 段。官方 IP 段属时效性运行数据,本项目未引入、未核验,不得据此认定请求来源。range_status 恒为 not_imported。",
+  "purposes": {
+    "ai_training": "AI 训练",
+    "ai_search": "AI 搜索",
+    "user_initiated": "用户触发",
+    "traditional_search": "传统搜索",
+    "other": "其他用途"
+  },
+  "entries": [
+    {"id": "openai.gptbot", "name": "GPTBot", "vendor": "OpenAI", "purpose": "ai_training", "ai_eligible": true, "official_range_url": "https://openai.com/gptbot.json", "range_status": "not_imported"},
+    {"id": "openai.oai-searchbot", "name": "OAI-SearchBot", "vendor": "OpenAI", "purpose": "ai_search", "ai_eligible": true, "official_range_url": "https://openai.com/searchbot.json", "range_status": "not_imported"},
+    {"id": "openai.chatgpt-user", "name": "ChatGPT-User", "vendor": "OpenAI", "purpose": "user_initiated", "ai_eligible": true, "official_range_url": "https://openai.com/chatgpt-user.json", "range_status": "not_imported"},
+    {"id": "openai.oai-adsbot", "name": "OAI-AdsBot", "vendor": "OpenAI", "purpose": "other", "ai_eligible": false, "official_range_url": "https://openai.com/adsbot.json", "range_status": "not_imported"},
+    {"id": "anthropic.claudebot", "name": "ClaudeBot", "vendor": "Anthropic", "purpose": "ai_training", "ai_eligible": true, "official_range_url": "https://claude.com/crawling/bots.json", "range_status": "not_imported"},
+    {"id": "anthropic.claude-searchbot", "name": "Claude-SearchBot", "vendor": "Anthropic", "purpose": "ai_search", "ai_eligible": true, "official_range_url": "https://claude.com/crawling/bots.json", "range_status": "not_imported"},
+    {"id": "anthropic.claude-user", "name": "Claude-User", "vendor": "Anthropic", "purpose": "user_initiated", "ai_eligible": true, "official_range_url": "https://claude.com/crawling/bots.json", "range_status": "not_imported"},
+    {"id": "perplexity.perplexitybot", "name": "PerplexityBot", "vendor": "Perplexity", "purpose": "ai_search", "ai_eligible": true, "official_range_url": "https://www.perplexity.ai/perplexitybot.json", "range_status": "not_imported"},
+    {"id": "perplexity.perplexity-user", "name": "Perplexity-User", "vendor": "Perplexity", "purpose": "user_initiated", "ai_eligible": true, "official_range_url": "https://www.perplexity.ai/perplexity-user.json", "range_status": "not_imported"},
+    {"id": "amazon.amazonbot", "name": "Amazonbot", "vendor": "Amazon", "purpose": "ai_training", "ai_eligible": true, "official_range_url": "https://developer.amazon.com/amazonbot/ip-addresses/", "range_status": "not_imported"},
+    {"id": "amazon.amzn-searchbot", "name": "Amzn-SearchBot", "vendor": "Amazon", "purpose": "ai_search", "ai_eligible": true, "official_range_url": "https://developer.amazon.com/amazonbot/searchbot-ip-addresses/", "range_status": "not_imported"},
+    {"id": "amazon.amzn-user", "name": "Amzn-User", "vendor": "Amazon", "purpose": "user_initiated", "ai_eligible": true, "official_range_url": "https://developer.amazon.com/amazonbot/live-ip-addresses/", "range_status": "not_imported"},
+    {"id": "mistral.mistralai-user", "name": "MistralAI-User", "vendor": "Mistral AI", "purpose": "user_initiated", "ai_eligible": true, "official_range_url": "https://mistral.ai/mistralai-user-ips.json", "range_status": "not_imported"},
+    {"id": "mistral.mistralai-index", "name": "MistralAI-Index", "vendor": "Mistral AI", "purpose": "ai_search", "ai_eligible": true, "official_range_url": "https://mistral.ai/mistralai-index-ips.json", "range_status": "not_imported"},
+    {"id": "mistral.mistralai-training", "name": "MistralAI-Training", "vendor": "Mistral AI", "purpose": "ai_training", "ai_eligible": true, "official_range_url": null, "range_status": "not_imported"},
+    {"id": "google.googlebot", "name": "Googlebot", "vendor": "Google", "purpose": "traditional_search", "ai_eligible": false, "official_range_url": "https://developers.google.com/static/crawling/ipranges/common-crawlers.json", "range_status": "not_imported"},
+    {"id": "google.googlebot-image", "name": "Googlebot-Image", "vendor": "Google", "purpose": "traditional_search", "ai_eligible": false, "official_range_url": "https://developers.google.com/static/crawling/ipranges/common-crawlers.json", "range_status": "not_imported"},
+    {"id": "google.googlebot-video", "name": "Googlebot-Video", "vendor": "Google", "purpose": "traditional_search", "ai_eligible": false, "official_range_url": "https://developers.google.com/static/crawling/ipranges/common-crawlers.json", "range_status": "not_imported"},
+    {"id": "google.googleother", "name": "GoogleOther", "vendor": "Google", "purpose": "other", "ai_eligible": false, "official_range_url": "https://developers.google.com/static/crawling/ipranges/common-crawlers.json", "range_status": "not_imported"},
+    {"id": "google.googleother-image", "name": "GoogleOther-Image", "vendor": "Google", "purpose": "other", "ai_eligible": false, "official_range_url": "https://developers.google.com/static/crawling/ipranges/common-crawlers.json", "range_status": "not_imported"},
+    {"id": "google.googleother-video", "name": "GoogleOther-Video", "vendor": "Google", "purpose": "other", "ai_eligible": false, "official_range_url": "https://developers.google.com/static/crawling/ipranges/common-crawlers.json", "range_status": "not_imported"},
+    {"id": "google.storebot-google", "name": "Storebot-Google", "vendor": "Google", "purpose": "traditional_search", "ai_eligible": false, "official_range_url": "https://developers.google.com/static/crawling/ipranges/common-crawlers.json", "range_status": "not_imported"},
+    {"id": "google.google-inspectiontool", "name": "Google-InspectionTool", "vendor": "Google", "purpose": "user_initiated", "ai_eligible": false, "official_range_url": "https://developers.google.com/static/crawling/ipranges/common-crawlers.json", "range_status": "not_imported"},
+    {"id": "google.google-cloudvertexbot", "name": "Google-CloudVertexBot", "vendor": "Google", "purpose": "other", "ai_eligible": false, "official_range_url": "https://developers.google.com/static/crawling/ipranges/common-crawlers.json", "range_status": "not_imported"},
+    {"id": "apple.applebot", "name": "Applebot", "vendor": "Apple", "purpose": "traditional_search", "ai_eligible": false, "official_range_url": "https://search.developer.apple.com/applebot.json", "range_status": "not_imported"},
+    {"id": "microsoft.bingbot", "name": "bingbot", "vendor": "Microsoft", "purpose": "traditional_search", "ai_eligible": false, "official_range_url": "https://www.bing.com/toolbox/bingbot.json", "range_status": "not_imported"},
+    {"id": "duckduckgo.duckduckbot", "name": "DuckDuckBot", "vendor": "DuckDuckGo", "purpose": "traditional_search", "ai_eligible": false, "official_range_url": "https://duckduckgo.com/duckduckbot.json", "range_status": "not_imported"},
+    {"id": "duckduckgo.duckassistbot", "name": "DuckAssistBot", "vendor": "DuckDuckGo", "purpose": "ai_search", "ai_eligible": true, "official_range_url": "https://duckduckgo.com/duckassistbot.json", "range_status": "not_imported"},
+    {"id": "commoncrawl.ccbot", "name": "CCBot", "vendor": "Common Crawl", "purpose": "other", "ai_eligible": false, "official_range_url": "https://index.commoncrawl.org/ccbot.json", "range_status": "not_imported"},
+    {"id": "ai2.ai2bot", "name": "AI2Bot", "vendor": "Ai2", "purpose": "ai_training", "ai_eligible": true, "official_range_url": null, "range_status": "not_imported"},
+    {"id": "baidu.baiduspider", "name": "Baiduspider", "vendor": "百度", "purpose": "traditional_search", "ai_eligible": false, "official_range_url": null, "range_status": "not_imported"},
+    {"id": "baidu.baiduspider-render", "name": "Baiduspider-render", "vendor": "百度", "purpose": "traditional_search", "ai_eligible": false, "official_range_url": null, "range_status": "not_imported"},
+    {"id": "sogou.web-spider", "name": "Sogou web spider", "vendor": "搜狗", "purpose": "traditional_search", "ai_eligible": false, "official_range_url": null, "range_status": "not_imported"},
+    {"id": "sogou.inst-spider", "name": "Sogou inst spider", "vendor": "搜狗", "purpose": "traditional_search", "ai_eligible": false, "official_range_url": null, "range_status": "not_imported"},
+    {"id": "360.360spider", "name": "360Spider", "vendor": "360", "purpose": "traditional_search", "ai_eligible": false, "official_range_url": null, "range_status": "not_imported"},
+    {"id": "yandex.yandexbot", "name": "YandexBot", "vendor": "Yandex", "purpose": "traditional_search", "ai_eligible": false, "official_range_url": null, "range_status": "not_imported"},
+    {"id": "naver.yeti", "name": "Yeti", "vendor": "Naver", "purpose": "traditional_search", "ai_eligible": false, "official_range_url": null, "range_status": "not_imported"}
+  ],
+  "not_imported_notice": "GEOInflow README 与 geo-weight.md 另提及 Kimi、Tencent Hunyuan(HySpider)、ByteDance(Bytespider)、Meta 等身份；因未取得其明确的 HTTP 名称/用途表格行,本目录按零幻觉原则【不予编造收录】,标记为待核验。"
+}

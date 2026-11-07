@@ -370,6 +370,17 @@ async def diagnose_brand(brand: str, product: str):
 - **数据边界**：需 ≥2 期**真实**累积指标；合成 / 随机数据仅用于演示，不可据此推断真实趋势。
 - **责任边界**：MTO 方法论目前仍属**理论推演阶段**，本结果为研究参考，**不构成任何商业决策依据**。请勿据此做对外商业承诺或投放决策，落地前务必结合人工研判与 A/B 验证。
 
+### 🧾 MTO 证据充分性（GEOInflow 借鉴 · 独立归集模块）
+把「证据链可核验」从概念落成可执行口径，全部集中归集于 `backend/app/geoinflow_adapter/`：
+- **身份目录**：37 条 AI / 传统爬虫身份（稳定 ID / 厂商 / 用途 / AI 资格 / 官方范围来源）；**官方 IP 段未引入**，不据此认定请求来源
+- **证据状态机**：UA 声明 ≠ 身份确认；声明 / 官方范围 / DNS 边缘证据独立存储；`verified / observed / estimated / unknown / missing_input / unsupported / proved_zero` 七态互不折叠
+- **零假数据纪律**：空 / 缺失 / 估算 / 不支持 分状态；演示数据显式标注；缺失输入返回 `null` 而非 `0`
+- **冻结量化策略**：`W = 10·E_search + 7·E_user + 3·E_training`，固定 1–10 档位 + 策略哈希；作为 MTO `trust_score` 的可解释补充
+- **覆盖率与 AI 盲点**：内容清单 vs 观测日志、精确路径匹配；未提供清单返回 `missing_input`
+- **证据缺口显式化**：报告逐条列出缺口，明确「观测 ≠ 收录 / 训练 / 引用 / 排名 / 获客」
+
+> 完整取舍、来源与已知限制见 [`backend/app/geoinflow_adapter/README.md`](backend/app/geoinflow_adapter/README.md)；许可登记见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
 ### 🏢 多租户架构
 - **租户隔离**：完全的数据隔离和权限控制
 - **品牌管理**：单租户多品牌支持
@@ -388,11 +399,12 @@ async def diagnose_brand(brand: str, product: str):
 ┌────────────────────▼────────────────────────────────────┐
 │              后端 (FastAPI + Uvicorn)                    │
 │  ┌──────────────────────────────────────────────────┐  │
-│  │  API 路由层 (11 个模块, 70+ 端点)                 │  │
+│  │  API 路由层 (12 个模块, 70+ 端点)                 │  │
 │  │  ├─ 认证授权    ├─ 租户管理    ├─ 意图洞察       │  │
 │  │  ├─ 知识库      ├─ 内容生产    ├─ 监测看板       │  │
 │  │  ├─ 品牌诊断    ├─ 多模态诊断  ├─ 竞品逆向       │  │
-│  │  ├─ 商业工作流  └─ 趋势顾问(LAYA/JEV)             │  │
+│  │  ├─ 商业工作流  ├─ 趋势顾问(LAYA/JEV)             │  │
+│  │  └─ 证据充分性(GEOInflow 借鉴)                  │  │
 │  └──────────────────────────────────────────────────┘  │
 │  ┌──────────────────────────────────────────────────┐  │
 │  │  业务逻辑层                                        │  │
@@ -581,6 +593,17 @@ GET /api/v2/trend/predict?tenant_id=xxx&brand_id=xxx&backend=auto&limit=12
 ```
 > 判别结果包含：统计趋势方向、各指标斜率与下一期预测、AI 选定的优化方向（含攻击性分数与置信度）、全部候选方案、人话战报（state）。Laya 不可用时自动降级为启发式选择。
 
+#### MTO 证据充分性（GEOInflow 借鉴）
+```bash
+GET  /api/v2/mto/evidence/catalog        # 身份目录（vendor / purpose / ai_eligible 筛选）
+GET  /api/v2/mto/evidence/policy         # 冻结策略 + 零假数据纪律
+POST /api/v2/mto/evidence/observation    # 上报爬取观测（自动判定证据状态）
+GET  /api/v2/mto/evidence/observations  # 观测列表
+GET  /api/v2/mto/evidence/report        # 证据缺口 + 覆盖率/盲点 + 冻结权重
+```
+> 所有响应统一携带 `data` + `evidence_state` + `policy_version` + `limitations`；
+> 缺失输入返回 `null` 而非 `0`，未提供内容清单时覆盖率返回 `missing_input`。
+
 完整的 API 文档请访问：http://localhost:5006/docs (Swagger UI)
 
 ## 🛠️ 技术栈
@@ -616,7 +639,7 @@ GET /api/v2/trend/predict?tenant_id=xxx&brand_id=xxx&backend=auto&limit=12
 GEO/
 ├── backend/                    # 后端服务
 │   ├── app/
-│   │   ├── api/               # API 路由层 (11 个模块)
+│   │   ├── api/               # API 路由层 (12 个模块)
 │   │   │   ├── auth_routes.py
 │   │   │   ├── tenants_routes.py
 │   │   │   ├── intent_routes.py
@@ -627,11 +650,18 @@ GEO/
 │   │   │   ├── multimodal_routes.py
 │   │   │   ├── competitor_routes.py
 │   │   │   ├── business_routes.py
-│   │   │   └── trend_routes.py   # MTO 趋势与优化顾问 (LAYA/JEV)
+│   │   │   ├── trend_routes.py   # MTO 趋势与优化顾问 (LAYA/JEV)
+│   │   │   └── geoinflow_routes.py  # MTO 证据充分性 (GEOInflow 借鉴)
+│   │   ├── geoinflow_adapter/  # 【独立归集模块】GEOInflow 借鉴资产
+│   │   │   ├── catalog_data.json / catalog.py   # AI 爬虫身份目录
+│   │   │   ├── evidence.py / quality.py         # 证据状态机 / 零假数据纪律
+│   │   │   ├── policy.py / coverage.py          # 冻结量化策略 / 覆盖率与盲点
+│   │   │   └── contracts.py / README.md         # 统一契约 / 归集说明
 │   │   ├── agents/            # LangGraph Agent 编排
 │   │   │   └── trend_advisor.py  # 趋势顾问 Agent 封装
-│   │   ├── models/            # 数据模型 (18 张表)
-│   │   │   └── trend.py         # MetricSnapshot 指标快照表
+│   │   ├── models/            # 数据模型 (19 张表)
+│   │   │   ├── trend.py         # MetricSnapshot 指标快照表
+│   │   │   └── geoinflow_evidence.py  # CrawlerObservation 爬取观测证据表
 │   │   ├── services/          # 业务逻辑层
 │   │   │   ├── llm_client.py
 │   │   │   ├── rag_kb.py

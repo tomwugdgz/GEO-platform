@@ -89,6 +89,8 @@ GEO 层 · 被 AI 看见   被正确理解 · 被引用 · 被推荐 → 进入�
 - **MTO 平台定义说明**（概念全文，推荐优先阅读）: /docs/MTO平台定义说明.md
 - Documentation (中文): /README.md
 - Documentation (English / Global): /README.en.md
+- GEOInflow adaptation module: /backend/app/geoinflow_adapter/README.md — 证据状态机 / AI 爬虫身份目录 / 冻结量化策略 / 覆盖率与 AI 盲点 / 零假数据纪律（MIT，来源与边界已登记于 THIRD_PARTY_NOTICES.md）
+- Evidence API: /api/v2/mto/evidence/catalog | /policy | /observation | /observations | /report
 - API Reference: /docs (Swagger UI, auto-generated OpenAPI)
 - Backend Entry: /backend/app/main.py
 - Frontend Entry: /bmn-frontend/src/main.js

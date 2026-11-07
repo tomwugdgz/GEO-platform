@@ -31,6 +31,7 @@ from app.api.competitor_routes import router as competitor_router
 from app.api.geolook_routes import router as geolook_router
 from app.api.web_publishing_routes import router as web_publishing_router
 from app.api.trend_routes import router as trend_router
+from app.api.geoinflow_routes import router as evidence_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -62,6 +63,7 @@ app.include_router(competitor_router, prefix="/api/v2/geo/competitor", tags=["�
 app.include_router(geolook_router, prefix="/api/v2", tags=["GeoLook 引擎"])
 app.include_router(web_publishing_router, prefix="/api/v2", tags=["网站优化"])
 app.include_router(trend_router, prefix="/api/v2/trend", tags=["MTO 趋势与优化顾问"])
+app.include_router(evidence_router, prefix="/api/v2/mto/evidence", tags=["MTO 证据充分性（GEOInflow 借鉴）"])
 
 
 @app.on_event("startup")

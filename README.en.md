@@ -323,6 +323,17 @@ The "optimization directions" given by the advisor are **data-driven suggestions
 - **Data boundary**: Requires ≥2 periods of **real** accumulated metrics; synthetic / random data is for demonstration only and must not be used to infer real trends.
 - **Responsibility boundary**: The MTO methodology is still in the **theoretical exploration stage**; results are for research reference **and constitute no basis for any commercial decision**. Do not use them for external commercial promises or placement decisions; combine with human judgment and A/B validation before deployment.
 
+### 🧾 MTO Evidence Sufficiency (GEOInflow-derived · standalone module)
+Turns "verifiable evidence chain" from a concept into executable rules, collected in `backend/app/geoinflow_adapter/`:
+- **Identity catalog**: 37 AI/traditional crawler identities (stable ID / vendor / purpose / AI eligibility / official range source). **Official IP ranges are not imported**; no source claim is made from them.
+- **Evidence state machine**: a User-Agent claim alone cannot confirm identity; declared UA, official-range match and DNS/edge evidence are stored independently. Seven states (`verified / observed / estimated / unknown / missing_input / unsupported / proved_zero`) are never collapsed.
+- **No fake analytics**: empty, missing, estimated and unsupported are distinct states; demo data is explicitly labeled; missing input returns `null`, not `0`.
+- **Frozen weight policy**: `W = 10·E_search + 7·E_user + 3·E_training`, fixed 1–10 bands plus policy hash — an explainable supplement to the MTO `trust_score`.
+- **Coverage & AI blind spots**: content inventory vs observed logs, exact path matching; no inventory returns `missing_input`.
+- **Explicit evidence gaps**: reports list gaps and state that observed access ≠ indexing / training / citation / ranking / acquisition.
+
+> Full trade-offs, provenance and limitations: [`backend/app/geoinflow_adapter/README.md`](backend/app/geoinflow_adapter/README.md); license notice: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
 ### 🏢 Multi-tenant Architecture
 - **Tenant isolation**: full data isolation and access control
 - **Brand management**: single-tenant multi-brand support
@@ -341,11 +352,12 @@ The "optimization directions" given by the advisor are **data-driven suggestions
 ┌────────────────────▼────────────────────────────────────┐
 │               Backend (FastAPI + Uvicorn)                │
 │  ┌──────────────────────────────────────────────────┐  │
-│  │  API route layer (11 modules, 70+ endpoints)      │  │
+│  │  API route layer (12 modules, 70+ endpoints)      │  │
 │  │  ├─ Auth      ├─ Tenant    ├─ Intent Insight    │  │
 │  │  ├─ KB        ├─ Content   ├─ Monitor           │  │
 │  │  ├─ Diagnosis ├─ Multimodal├─ Competitor        │  │
-│  │  ├─ Biz flow └─ Trend Advisor (LAYA/JEV)        │  │
+│  │  ├─ Biz flow   ├─ Trend Advisor (LAYA/JEV)      │  │
+│  │  └─ Evidence sufficiency (GEOInflow-derived)    │  │
 │  └──────────────────────────────────────────────────┘  │
 │  ┌──────────────────────────────────────────────────┐  │
 │  │  Business-logic layer                              │  │
@@ -473,6 +485,17 @@ GET /api/v2/trend/predict?tenant_id=xxx&brand_id=xxx&backend=auto&limit=12
 ```
 > The result includes: statistical trend direction, per-metric slope & next-period forecast, the AI-selected optimization direction (with aggression & confidence), all candidate directions, and the plain-language battle report (state). When Laya is unavailable it auto-degrades to a heuristic selection.
 
+### MTO Evidence Sufficiency (GEOInflow-derived)
+```bash
+GET  /api/v2/mto/evidence/catalog        # identity catalog (vendor / purpose / ai_eligible)
+GET  /api/v2/mto/evidence/policy         # frozen policy + no-fake-data rules
+POST /api/v2/mto/evidence/observation    # report one crawl observation (state auto-adjudicated)
+GET  /api/v2/mto/evidence/observations  # list observations
+GET  /api/v2/mto/evidence/report        # evidence gaps + coverage/blind spots + frozen weight
+```
+> Every response carries `data` + `evidence_state` + `policy_version` + `limitations`.
+> Missing input returns `null`, not `0`; no content inventory returns `missing_input`.
+
 Full API reference: http://localhost:5006/docs (Swagger UI)
 
 ## Tech Stack
@@ -507,7 +530,7 @@ Full API reference: http://localhost:5006/docs (Swagger UI)
 GEO/
 ├── backend/                    # backend service
 │   ├── app/
-│   │   ├── api/               # API route layer (11 modules)
+│   │   ├── api/               # API route layer (12 modules)
 │   │   │   ├── auth_routes.py
 │   │   │   ├── tenants_routes.py
 │   │   │   ├── intent_routes.py
@@ -518,11 +541,18 @@ GEO/
 │   │   │   ├── multimodal_routes.py
 │   │   │   ├── competitor_routes.py
 │   │   │   ├── business_routes.py
-│   │   │   └── trend_routes.py   # MTO Trend & Optimization Advisor (LAYA/JEV)
+│   │   │   ├── trend_routes.py   # MTO Trend & Optimization Advisor (LAYA/JEV)
+│   │   │   └── geoinflow_routes.py  # MTO evidence sufficiency (GEOInflow-derived)
+│   │   ├── geoinflow_adapter/  # [standalone module] GEOInflow-derived assets
+│   │   │   ├── catalog_data.json / catalog.py   # AI crawler identity catalog
+│   │   │   ├── evidence.py / quality.py         # evidence state machine / no-fake-data
+│   │   │   ├── policy.py / coverage.py          # frozen weight policy / coverage
+│   │   │   └── contracts.py / README.md         # response contract / notes
 │   │   ├── agents/            # LangGraph agent orchestration
 │   │   │   └── trend_advisor.py  # Trend Advisor agent wrapper
-│   │   ├── models/            # data models (18 tables)
-│   │   │   └── trend.py         # MetricSnapshot table
+│   │   ├── models/            # data models (19 tables)
+│   │   │   ├── trend.py         # MetricSnapshot table
+│   │   │   └── geoinflow_evidence.py  # CrawlerObservation table
 │   │   ├── services/          # business-logic layer
 │   │   │   ├── llm_client.py
 │   │   │   ├── rag_kb.py

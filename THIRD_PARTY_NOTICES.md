@@ -44,6 +44,40 @@
 
 ---
 
+### 2. GEOInflow —— 证据链与量化策略的**设计借鉴**（未复制源码）
+
+| 项目 | 说明 |
+|---|---|
+| 上游项目 | GEOInflow（产品展示名）／Liekan（技术标识），v1.2.0 / build 1.2.0 |
+| 联合发布 | 猎看科技 · 北京日报社智源GEO |
+| 上游官网/来源 | 本地参考副本 `D:\download\geoinflow-main`（非本仓库分发内容） |
+| 版权持有者 | Copyright (c) 2022 Umami Software, Inc. `<hello@umami.is>`；Copyright (c) 2026 Liekan contributors |
+| 许可协议 | **MIT License** |
+| 引入位置 | [`backend/app/geoinflow_adapter/`](backend/app/geoinflow_adapter/)（含其 `README.md`） |
+| 引入方式 | **仅借鉴语言无关的设计资产**（数据结构 / 状态口径 / 冻结策略 / 工程纪律），用 Python 重写；**未复制任何 TypeScript / Prisma / Next.js 源码** |
+
+**借鉴的具体内容：**
+
+| 上游文档 | 借鉴内容 | 本仓库落地 |
+|---|---|---|
+| `docs/crawler-directory.md`、`docs/crawler-recognition.md` | AI 爬虫身份目录结构（稳定 ID / 厂商 / 用途 / AI 资格 / 官方范围来源） | `geoinflow_adapter/catalog_data.json`、`catalog.py` |
+| `README.md`、`docs/traffic-quality.md` | 「UA 声明 ≠ 身份确认」；声明 / 官方范围 / DNS 边缘证据独立存储；空 / 缺失 / 估算 / 不支持 分状态 | `geoinflow_adapter/evidence.py`、`quality.py` |
+| `docs/geo-weight.md` | 冻结量化公式 `W = 10·E_search + 7·E_user + 3·E_training`、固定档位、策略哈希、证据门控（缺失返回 null） | `geoinflow_adapter/policy.py` |
+| `README.md`（content inventory / AI blind spots） | 内容清单 vs 观测日志的覆盖率与盲点算法 | `geoinflow_adapter/coverage.py` |
+| `src/lib/liekan/contracts` 分层约定、`AGENTS.md` 工程纪律 | 统一响应契约、增量不可变迁移、演示数据显式标注 | `geoinflow_adapter/contracts.py`、`README.md` |
+
+**明确未引入（取舍）：** 官方 IP 段 `config/liekan/bot-ranges.json`（时效性运行数据，未核验）、
+Umami 跟踪脚本、ClickHouse、pg-boss、rrweb 录制、Cloudflare/robots 远端写控制、
+上游 28 个 Prisma 迁移与 i18n/地理库。
+
+**MIT 合规说明：** 本节保留上游完整版权行与许可名称；上游 `LICENSE` 全文
+（含 Umami 与 Liekan 两行版权）见参考副本 `D:\download\geoinflow-main\LICENSE`。
+本仓库未分发上游源码，故不复制其 `LICENSE` 文件，但保留上述版权声明以履行通知义务。
+所有借鉴产物的来源、边界与已知限制集中记录于
+[`backend/app/geoinflow_adapter/README.md`](backend/app/geoinflow_adapter/README.md)。
+
+---
+
 ## 二、运行时依赖（未复制源码，仅通过包管理器引用）
 
 以下依赖以**声明式依赖**方式引入，其源码不属于本仓库的分发内容，各自遵循其原始许可：
