@@ -94,6 +94,7 @@ topics: "mto, machine-trust-optimization, geo, generative-engine-optimization, a
 - [项目结构](#-项目结构)
 - [开发指南](#-开发指南)
 - [部署](#-部署)
+- [变更记录](#-变更记录)
 - [路线图](#-路线图)
 - [贡献](#-贡献)
 - [许可证](#-许可证)
@@ -822,6 +823,40 @@ server {
 | `GEO_CHAT_MODEL` | 聊天模型 | `qwen3.5:9b` |
 | `OPENAI_API_KEY` | OpenAI API Key | - |
 | `OPENAI_BASE_URL` | OpenAI API Base URL | `https://api.openai.com/v1` |
+
+## 🗒️ 变更记录
+
+> 下列提交哈希与日期取自本仓库 `git log`；GEOInflow 整合的完整评估、取舍与验证记录见
+> [GEOInflow 借鉴与整合说明](docs/geoinflow-借鉴与整合说明.md)。
+
+### 2026-11-07 · `d2623fb` — GEOInflow 借鉴资产整合
+
+把 GEOInflow v1.2.0（MIT）的**语言无关设计资产**整合进本平台，并设立独立归集模块。
+
+| 类别 | 变更 |
+|---|---|
+| 新增 · **独立归集模块**（9 文件） | `backend/app/geoinflow_adapter/`：`__init__.py`、`README.md`、`catalog_data.json`、`catalog.py`、`evidence.py`、`policy.py`、`coverage.py`、`quality.py`、`contracts.py` |
+| 新增 · API（1） | `backend/app/api/geoinflow_routes.py` — 前缀 `/api/v2/mto/evidence`，5 个端点（`catalog` / `policy` / `observation` / `observations` / `report`） |
+| 新增 · 模型（1） | `backend/app/models/geoinflow_evidence.py` — 表 `geo_crawler_observations` |
+| 新增 · 文档（1） | `docs/geoinflow-借鉴与整合说明.md` |
+| 修改（6，均为增量追加） | `backend/app/main.py`(+2)、`backend/app/models/__init__.py`(+3)、`README.md`、`README.en.md`、`THIRD_PARTY_NOTICES.md`(+34)、`llms.txt`(+2) |
+| 数据库 / 路由 | 数据表 **18 → 19**；API 路由模块 **11 → 12** |
+
+- **新增能力**：UA 声明 ≠ 身份确认、七态证据状态机、冻结量化公式 `W = 10·E_search + 7·E_user + 3·E_training` + 策略哈希、内容覆盖率与 AI 盲点、零假数据纪律、统一响应契约。
+- **合规**：`THIRD_PARTY_NOTICES.md` 已登记 GEOInflow 的 MIT 许可与 Umami / Liekan 双版权行；**官方 IP 段未引入**（`range_status=not_imported`）。
+- **验证**：静态断言 **49/49 PASS**（首轮 1 项实现缺陷已修复）；HTTP 联调 **9 组全部 200**；原有端点回归通过。
+- **统计**：18 files changed，**+1491 / −12**。
+
+### 2026-10-22 · `c176d6c` — 社区链接与英文 README
+- `README.md`、`llms.txt` 加入 [Reddit r/GEOMTO](https://www.reddit.com/r/GEOMTO/) 社区入口；新增 `README.en.md`（面向全球的完整英文版）。3 files，+722。
+
+### 2026-10-20 · `2c3a1cf` — MTO 趋势与优化顾问
+- 新增 `models/trend.py`（表 `geo_metric_snapshots`）、`services/trend_advisor.py`、`api/trend_routes.py`、`agents/trend_advisor.py`；
+  注册 `/api/v2/trend`（`snapshot` / `snapshots` / `predict`）；接入 Laya 决策引擎（LAYA 本地 GPU / JEV 远程，`auto` 切换）；
+  README 增加「🔒 优化方向边界与适用限制」。同步上传两份 MTO 系统说明书 HTML。
+
+### 2026-09-11 · `d8575a2` / 2026-09-10 · `2f906da` — MTO 更名与白皮书
+- 平台更名为 **MTO（机器信任优化）**；新增 `docs/MTO平台定义说明.md`、`docs/MTO白皮书.md` 与 6 处导向链接。
 
 ## 🗺️ 路线图
 

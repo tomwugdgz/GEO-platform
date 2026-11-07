@@ -94,6 +94,7 @@ Beyond "getting AI to mention me", it answers **"why should a machine trust me"*
 - [Project Structure](#project-structure)
 - [Development Guide](#development-guide)
 - [Deployment](#deployment)
+- [Changelog](#changelog)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
@@ -603,6 +604,37 @@ server {
     location /ws { proxy_pass http://localhost:5006; proxy_http_version 1.1; proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection "Upgrade"; }
 }
 ```
+
+## Changelog
+
+> Hashes and dates are taken from this repository's `git log`. For the full assessment, trade-offs and verification of the GEOInflow integration, see the [GEOInflow Integration Report](docs/geoinflow-借鉴与整合说明.md).
+
+### 2026-11-07 · `d2623fb` — GEOInflow-derived assets
+
+Language-independent design assets from GEOInflow v1.2.0 (MIT) were integrated, and a standalone module was added to collect them.
+
+| Category | Change |
+|---|---|
+| Added · **standalone module** (9 files) | `backend/app/geoinflow_adapter/`: `__init__.py`, `README.md`, `catalog_data.json`, `catalog.py`, `evidence.py`, `policy.py`, `coverage.py`, `quality.py`, `contracts.py` |
+| Added · API (1) | `backend/app/api/geoinflow_routes.py` — prefix `/api/v2/mto/evidence`, 5 endpoints (`catalog` / `policy` / `observation` / `observations` / `report`) |
+| Added · model (1) | `backend/app/models/geoinflow_evidence.py` — table `geo_crawler_observations` |
+| Added · doc (1) | `docs/geoinflow-借鉴与整合说明.md` |
+| Modified (6, additive only) | `backend/app/main.py` (+2), `backend/app/models/__init__.py` (+3), `README.md`, `README.en.md`, `THIRD_PARTY_NOTICES.md` (+34), `llms.txt` (+2) |
+| Database / routing | tables **18 → 19**; API route modules **11 → 12** |
+
+- **New capabilities**: a User-Agent claim alone cannot confirm identity; seven-state evidence model; frozen formula `W = 10·E_search + 7·E_user + 3·E_training` with a policy hash; content coverage and AI blind spots; no-fake-analytics discipline; unified response contract.
+- **Compliance**: `THIRD_PARTY_NOTICES.md` records the GEOInflow MIT license and both Umami / Liekan copyright lines; **official IP ranges are not imported** (`range_status=not_imported`).
+- **Verification**: static assertions **49/49 PASS** (one implementation defect found and fixed in the first run); **9/9 HTTP integration requests returned 200**; existing endpoints passed regression checks.
+- **Diff**: 18 files changed, **+1491 / −12**.
+
+### 2026-10-22 · `c176d6c` — Community link and English README
+- Added the [Reddit r/GEOMTO](https://www.reddit.com/r/GEOMTO/) community entry to `README.md` and `llms.txt`; added `README.en.md` (full English edition). 3 files, +722.
+
+### 2026-10-20 · `2c3a1cf` — MTO Trend & Optimization Advisor
+- Added `models/trend.py` (table `geo_metric_snapshots`), `services/trend_advisor.py`, `api/trend_routes.py`, `agents/trend_advisor.py`; registered `/api/v2/trend` (`snapshot` / `snapshots` / `predict`); connected the Laya decision engine (LAYA local GPU / JEV remote, `auto` switch); added the "Optimization-Direction Boundaries" section to the README.
+
+### 2026-09-11 · `d8575a2` / 2026-09-10 · `2f906da` — MTO rename and whitepaper
+- Platform renamed to **MTO (Machine Trust Optimization)**; added `docs/MTO平台定义说明.md`, `docs/MTO白皮书.md` and six navigation links.
 
 ## Roadmap
 
