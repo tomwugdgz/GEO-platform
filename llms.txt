@@ -107,7 +107,7 @@ GEO 层 · 被 AI 看见   被正确理解 · 被引用 · 被推荐 → 进入�
 - Frontend Entry: /bmn-frontend/src/main.js
 - License: MIT
 - Third-Party Notices: /THIRD_PARTY_NOTICES.md
-- Community / Feedback: [Reddit r/GEOMTO](https://www.reddit.com/r/GEOMTO/) — 提意见、交流使用、获取更新
+- Community / Feedback: [Reddit r/MTORWA](https://www.reddit.com/r/MTORWA/) — 提意见、交流使用、获取更新
 
 ## Open Source Co-Building MTO
 

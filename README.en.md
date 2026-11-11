@@ -55,7 +55,7 @@ Beyond "getting AI to mention me", it answers **"why should a machine trust me"*
 [![AI-Friendly](https://img.shields.io/badge/llms.txt-included-ff69b4.svg)](llms.txt)
 [![A2A](https://img.shields.io/badge/A2A-AgentCard--discovery-9b59b6.svg)](.well-known/agent-card.json)
 [![Open Source](https://img.shields.io/badge/co--building-welcome-39ff14.svg)](docs/MTO平台定义说明.md#九开源共建-mto)
-[![Community](https://img.shields.io/badge/community-r%2FGEOMTO-red.svg)](https://www.reddit.com/r/GEOMTO/)
+[![Community](https://img.shields.io/badge/community-r%2FMTORWA-red.svg)](https://www.reddit.com/r/MTORWA/)
 
 <!-- AI-READABLE TAGS (for LLM crawlers / A2A agents / search platforms)
 @type: SoftwareSourceCode
@@ -76,7 +76,7 @@ Beyond "getting AI to mention me", it answers **"why should a machine trust me"*
 @upstream: GeoLook — https://github.com/aigclink/geolook (MIT, Copyright (c) 2026 GeoLook contributors) — GEO engine core at /backend/geolook/
 @usage: Personal, non-commercial, research & learning only
 @co_building: Open-source co-building of MTO — issues challenging the framework and PRs adding industry evidence models are welcome
-@community: https://www.reddit.com/r/GEOMTO/
+@community: https://www.reddit.com/r/MTORWA/
 @third_party: https://github.com/tomwugdgz/GEO-platform/blob/main/THIRD_PARTY_NOTICES.md
 @takedown: duckwolf@qq.com — contact if content is believed to infringe; removed promptly after verification
 -->
@@ -223,7 +223,7 @@ This is the fundamental reason for choosing open source: **not a posture, but a 
 - 🔧 **Submit a PR to add industry evidence models** — one real evidence chain from your industry beats ten pages of theory
 - 📄 **Join the spec discussion** — evidence-chain format, trust-metric caliber, A2A interface conventions
 - 🔬 **Run falsification experiments** — try to make a machine complete a real verification with this method, then tell us where it failed
-- 💬 **Community discussion & feedback**: [Reddit r/GEOMTO](https://www.reddit.com/r/GEOMTO/) — give feedback, share usage experience, get updates
+- 💬 **Community discussion & feedback**: [Reddit r/MTORWA](https://www.reddit.com/r/MTORWA/) — give feedback, share usage experience, get updates
 
 > **We welcome negative opinions even more.** For a framework still in the theoretical exploration stage,
 > the biggest risk is not being criticized, but being agreed with.
@@ -802,7 +802,7 @@ The **MTO industry-research whitepaper**, independent of this platform's impleme
 - **GitHub**: [@tomwugdgz](https://github.com/tomwugdgz)
 - **Repo**: [github.com/tomwugdgz/GEO-platform](https://github.com/tomwugdgz/GEO-platform)
 - **Issue/Feedback**: [GitHub Issues](https://github.com/tomwugdgz/GEO-platform/issues)
-- **Community**: [Reddit r/GEOMTO](https://www.reddit.com/r/GEOMTO/) — give feedback, share usage, get updates
+- **Community**: [Reddit r/MTORWA](https://www.reddit.com/r/MTORWA/) — give feedback, share usage, get updates
 
 ---
 
@@ -810,6 +810,6 @@ The **MTO industry-research whitepaper**, independent of this platform's impleme
 
 **⭐ If this project helps you, please give it a Star! ⭐**
 
-[Star](https://github.com/tomwugdgz/GEO-platform) · [Fork](https://github.com/tomwugdgz/GEO-platform/fork) · [Issue](https://github.com/tomwugdgz/GEO-platform/issues) · [Reddit r/GEOMTO](https://www.reddit.com/r/GEOMTO/)
+[Star](https://github.com/tomwugdgz/GEO-platform) · [Fork](https://github.com/tomwugdgz/GEO-platform/fork) · [Issue](https://github.com/tomwugdgz/GEO-platform/issues) · [Reddit r/MTORWA](https://www.reddit.com/r/MTORWA/)
 
 </div>
