@@ -642,7 +642,7 @@ Implemented the "discovery + wording correction" subset of the P0 items marked a
 - **Claim alignment**: `llms.txt` is now a "community proposal, not a formal standard"; "MCP-compatible" became "transport not implemented, manifest template only"; "A2A-ready" became "discovery published, task endpoints NOT implemented"; three unverified claims in the whitepaper were marked ⚠️ pending verification.
 - **Specification basis**: A2A v1.0 (`Latest Released Version 1.0.0`; Agent Discovery path `/.well-known/agent-card.json`, RFC 8615), MCP specification `2026-07-28`, MCP Registry `2025-12-11/server.schema.json`, llmstxt.org self-description as a proposal / informal overview.
 - **Verification**: `py_compile` passed; required-field and `description` ≤100 character assertions passed; HTTP checks returned Agent Card 200, conditional request 304, 7/7 existing endpoints 200, OpenAPI 98 paths.
-- **Boundaries**: no A2A task endpoints and no MCP transport; MTO Score weights unchanged; L3 is not a decision basis; no ranking promises; not pushed to remotes in this change.
+- **Boundaries**: no A2A task endpoints and no MCP transport; MTO Score weights unchanged; L3 is not a decision basis; no ranking promises. Commit and remote-sync status is authoritative in `git log` and each remote's `main` HEAD.
 - **Diff**: 11 files changed, **+240 / −36**.
 
 ### 2026-11-07 · `d2623fb` — GEOInflow-derived assets
