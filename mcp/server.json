@@ -1,0 +1,13 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.tomwugdgz/mto-platform",
+  "title": "MTO Platform (manifest template)",
+  "description": "Manifest template only; no MCP transport deployed. Callable API is REST + OpenAPI at /docs.",
+  "version": "0.1.0",
+  "repository": {
+    "url": "https://github.com/tomwugdgz/GEO-platform",
+    "source": "github",
+    "subfolder": "mcp"
+  },
+  "websiteUrl": "https://github.com/tomwugdgz/GEO-platform"
+}

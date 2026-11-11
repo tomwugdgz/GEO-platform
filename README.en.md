@@ -53,7 +53,7 @@ Beyond "getting AI to mention me", it answers **"why should a machine trust me"*
 [![MTO](https://img.shields.io/badge/MTO-Machine%20Trust%20Optimization-ff6b00.svg)](docs/MTO平台定义说明.md)
 [![Whitepaper](https://img.shields.io/badge/whitepaper-MTO%20Whitepaper-1f6feb.svg)](docs/MTO白皮书.md)
 [![AI-Friendly](https://img.shields.io/badge/llms.txt-included-ff69b4.svg)](llms.txt)
-[![A2A](https://img.shields.io/badge/A2A-ready-9b59b6.svg)](llms.txt)
+[![A2A](https://img.shields.io/badge/A2A-AgentCard--discovery-9b59b6.svg)](.well-known/agent-card.json)
 [![Open Source](https://img.shields.io/badge/co--building-welcome-39ff14.svg)](docs/MTO平台定义说明.md#九开源共建-mto)
 [![Community](https://img.shields.io/badge/community-r%2FGEOMTO-red.svg)](https://www.reddit.com/r/GEOMTO/)
 
@@ -64,9 +64,10 @@ Beyond "getting AI to mention me", it answers **"why should a machine trust me"*
 @category: Machine-Trust / Evidence-Chain / AI-Agent-Orchestration / A2A / AI-Search-Optimization / Brand-Visibility
 @mto_definition: Machine Trust Optimization (机器信任优化) — reshape brand claims into machine-verifiable evidence chains so AI agents can verify and trust the brand during autonomous transactions
 @geo_definition: Generative Engine Optimization (生成式引擎优化) — make the brand correctly understood, cited and recommended by generative AI, entering the candidate answer pool; the lower-layer foundation of MTO
-@maturity: GEO layer usable; AI-agent layer usable; A2A interface ready but ecosystem immature; MTO methodology in theoretical exploration stage
+@maturity: GEO layer usable; AI-agent layer usable; A2A discovery published / A2A task endpoints NOT implemented; MTO methodology in theoretical exploration stage
 @tech: FastAPI, Vue3, LangGraph, ChromaDB, PostgreSQL, Redis, Ollama, OpenAI, Laya (LAYA/JEV decision engine)
-@api: REST + OpenAPI (Swagger at /docs), MCP-compatible, A2A-ready, Function-Calling-ready
+@api: REST + OpenAPI (Swagger at /docs), A2A Agent Card discovery (/.well-known/agent-card.json), MCP Registry manifest template, Function-Calling-ready
+@discovery: .well-known/agent-card.json (A2A v1.0, discovery only); mcp/server.json (template, no transport deployed); llms.txt (community proposal, not a standard)
 @platforms: DeepSeek, Doubao, Yuanbao, Tongyi, Wenxin, Nami, Kimi, Zhipu
 @license: MIT
 @author: Tom (duckwolf)
@@ -190,7 +191,7 @@ The difference is **not** doing GEO better, but adding two more layers:
 |---|---|---|
 | **GEO-layer capability** | 🟢 **Usable** | Site audit, answer sampling, gap diagnosis, ticket closure & acceptance all run and produce results. |
 | **AI-agent layer** | 🟡 **Usable but config-dependent** | Requires configuring each model API key; unconfigured engines degrade to manual sampling. |
-| **A2A protocol layer** | 🟡 **Interface ready, ecosystem immature** | Protocols and interfaces are implemented, but **no scaled external commercial ecosystem supports A2A transactions yet**. |
+| **A2A protocol layer** | 🟡 **Discovery published, task endpoints NOT implemented** | `/.well-known/agent-card.json` is published; **A2A task endpoints (JSONRPC / GRPC / HTTP+JSON bindings) are not implemented**; no scaled external commercial ecosystem supports A2A transactions yet. |
 | **MTO methodology itself** | 🔴 **Theoretical exploration stage** | Machine autonomous transactions haven't happened at scale; this framework is an **exploration and engineering attempt**, not a mature deployed solution. |
 | **Trust-quantification metrics** | 🔴 **Experimental** | Reasonable design but **not validated in real transaction scenarios**; not a basis for any decision. |
 
@@ -231,17 +232,36 @@ See [MTO Platform Definition · Section 9](docs/MTO平台定义说明.md#九开�
 
 ## AI-readable Tags & A2A Integration
 
-This project natively supports **AI crawlers, LLM agents, and A2A (Agent-to-Agent) protocol clients** for automatic discovery and integration:
+This project provides machine-readable entry points for **AI crawlers, LLM agents, and A2A clients**. `llms.txt` is a community-proposal summary and the Agent Card is the A2A discovery layer; **A2A task endpoints and MCP transport are NOT implemented**:
 
 ### 📄 `llms.txt` (LLM entry point)
 
-The repository root provides [`llms.txt`](llms.txt) — following the [Answer.AI llms.txt standard](https://llmstxt.org/), giving LLMs a structured project summary. Major AI crawlers (Claude, GPT, Gemini, Perplexity) read this file first to understand the project.
+The repository root provides [`llms.txt`](llms.txt) — following the [llmstxt.org community proposal](https://llmstxt.org/) (by Jeremy Howard, self-described as "A proposal to standardise…" / "informal overview"; **not a formal standard**), giving LLMs a structured project summary. Major AI crawlers (Claude, GPT, Gemini, Perplexity) can use this file to understand the project.
 
 ### 🏷️ AI-readable metadata tags
 
 The README frontmatter + HTML-comment tags contain complete machine-readable metadata (`@type`, `@category`, `@tech`, `@api`, `@platforms`, etc.) for knowledge graphs, vector stores, and agent registries.
 
-### 🔌 A2A / Agent invocation
+### 🔌 A2A Discovery & Agent Invocation
+
+> **Boundary first**: this platform implements the A2A **discovery layer** (Agent Card) only; **A2A task endpoints (JSONRPC / GRPC / HTTP+JSON bindings) are NOT implemented**.
+> "Discoverable Agent Card" does not mean "A2A protocol implemented"; callable capabilities are REST + OpenAPI.
+
+#### `/.well-known/agent-card.json` (A2A v1.0)
+
+- Official discovery path: the A2A Agent Discovery guide recommends `https://{domain}/.well-known/agent-card.json` (RFC 8615) for public agents; registries and direct configuration are the other two strategies.
+- This repository ships both a [static file](.well-known/agent-card.json) and a runtime endpoint backed by `backend/app/api/agent_card_routes.py`, with `ETag` + `Cache-Control` and instance-aligned `url` / `version`.
+- Required A2A v1.0 fields are present: `name` / `description` / `supportedInterfaces` / `version` / `capabilities` / `defaultInputModes` / `defaultOutputModes` / `skills`. The 5 skills map to real REST endpoints.
+- For public deployment set `MTO_PUBLIC_BASE_URL=https://your-domain`; otherwise the card falls back to the request `base_url`.
+- **Security**: per A2A guidance, treat any Agent Card as untrusted input. This card is public and read-only, with no secrets.
+
+#### `mcp/server.json` (manifest template)
+
+- `$schema` points to the official MCP Registry `2025-12-11/server.schema.json`; required `name` / `description` / `version` are present.
+- **No `remotes` / `packages`**: no installable transport is declared. This is a placeholder for a future official-SDK integration, **not** a claim of an implemented MCP Server.
+- The current MCP specification revision is `2026-07-28`; the Registry schema revision is a separate version line and must not be conflated.
+
+#### REST invocation
 
 The backend exposes standard REST APIs (FastAPI, OpenAPI auto-generated); any agent framework can call them directly:
 
@@ -262,7 +282,7 @@ async def diagnose_brand(brand: str, product: str):
 ```
 
 - **OpenAPI Schema**: After the service runs, visit `/docs` (Swagger UI) or `/openapi.json` for the full endpoint definition.
-- **MCP-compatible**: Any endpoint can be wrapped as a Tool via an MCP Server and called by Claude Desktop / Cursor etc.
+- **MCP**: No transport implemented. The manifest template above is a placeholder only and **is not an MCP-compatibility claim**.
 - **Function-Calling ready**: Endpoint JSON Schema can be directly converted to LLM function definitions.
 
 ## Core Features

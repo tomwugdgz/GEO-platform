@@ -401,7 +401,7 @@
       </div>
       <div class="panel">
         <h3 style="margin-top:0">协议 / 基础设施</h3>
-        <p>REST + OpenAPI（/docs Swagger）· MCP 兼容 · A2A 就绪 · Function Calling 就绪 · Docker / Docker Compose · Nginx 反向代理</p>
+        <p>REST + OpenAPI（/docs Swagger）· A2A Agent Card（发现层）· MCP 清单模板（传输层未实现）· Function Calling 就绪 · Docker / Docker Compose · Nginx 反向代理</p>
       </div>
     </div>
   </section>
@@ -460,7 +460,7 @@
       <tbody>
         <tr><td>GEO 层能力</td><td><span class="pill g">🟢 可用</span></td><td>站点审计、答案采样、缺口诊断、工单闭环、验收，均可实际运行并产出结果。</td></tr>
         <tr><td>AI 智能体层</td><td><span class="pill y">🟡 可用但依赖配置</span></td><td>能力已实现，需自行配置各模型 API Key；未配置的引擎降级为人工采样。</td></tr>
-        <tr><td>A2A 协议层</td><td><span class="pill y">🟡 接口就绪，生态未成熟</span></td><td>协议与接口已实现，但外部尚无规模化支持 A2A 交易的商业生态。</td></tr>
+        <tr><td>A2A 协议层</td><td><span class="pill y">🟡 发现层已发布，任务端点未实现</span></td><td>已发布 /.well-known/agent-card.json；A2A 任务端点未实现；外部亦无规模化支持 A2A 交易的商业生态。</td></tr>
         <tr><td>MTO 方法论本身</td><td><span class="pill r">🔴 理论推演阶段</span></td><td>机器自主交易尚未大规模发生；本框架是推演与工程化尝试，不是已落地方案。</td></tr>
         <tr><td>信任量化指标</td><td><span class="pill r">🔴 实验性</span></td><td>指标设计合理但未经过真实交易场景验证，不构成任何决策依据。</td></tr>
       </tbody>
@@ -479,7 +479,7 @@
       <tbody>
         <tr><td>证据链的数据模型</td><td>初版设计</td><td>不同行业的证据类型与溯源需求</td></tr>
         <tr><td>信任量化指标</td><td>实验性</td><td>真实的验证场景与反例，用来证伪</td></tr>
-        <tr><td>A2A 核验接口</td><td>接口就绪</td><td>真实的机器调用方接入测试</td></tr>
+        <tr><td>A2A 核验接口</td><td>发现层已发布</td><td>先实现任务端点，再接入真实的机器调用方测试</td></tr>
         <tr><td>机器可读知识文件约定</td><td>已实践</td><td>更多实现方参与，形成事实标准</td></tr>
         <tr><td>行业证据模板</td><td>待补充</td><td>快消 / 美妆 / 3C / 医疗健康等领域知识</td></tr>
       </tbody>
@@ -498,7 +498,7 @@
       <h3>Docker（推荐）</h3>
       <p><code>docker-compose up -d</code> 一键启动全部服务。</p>
       <h3>Agent 调用示例</h3>
-      <p>触发诊断：<code>POST /api/v2/geo/diagnosis/start</code> → 轮询 <code>/status/{task_id}</code> → <code>/result/{task_id}</code>。所有端点可在 <code>/docs</code> 查看 OpenAPI Schema，支持 MCP / Function Calling 自动适配。</p>
+      <p>触发诊断：<code>POST /api/v2/geo/diagnosis/start</code> → 轮询 <code>/status/{task_id}</code> → <code>/result/{task_id}</code>。所有端点可在 <code>/docs</code> 查看 OpenAPI Schema；Function Calling 可由 JSON Schema 转换；MCP 传输层未实现。</p>
     </div>
   </section>
 

@@ -32,6 +32,7 @@ from app.api.geolook_routes import router as geolook_router
 from app.api.web_publishing_routes import router as web_publishing_router
 from app.api.trend_routes import router as trend_router
 from app.api.geoinflow_routes import router as evidence_router
+from app.api.agent_card_routes import router as agent_card_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -64,6 +65,8 @@ app.include_router(geolook_router, prefix="/api/v2", tags=["GeoLook 引擎"])
 app.include_router(web_publishing_router, prefix="/api/v2", tags=["网站优化"])
 app.include_router(trend_router, prefix="/api/v2/trend", tags=["MTO 趋势与优化顾问"])
 app.include_router(evidence_router, prefix="/api/v2/mto/evidence", tags=["MTO 证据充分性（GEOInflow 借鉴）"])
+# A2A 发现端点：路径固定为 /.well-known/agent-card.json，故不加前缀
+app.include_router(agent_card_router)
 
 
 @app.on_event("startup")
@@ -85,6 +88,7 @@ async def startup():
     print(f"🖼️ 多模态诊断: POST /api/v2/geo/multimodal/image/analyze")
     print(f"🔍 竞品逆向: POST /api/v2/geo/competitor/analyze")
     print(f"🔬 GeoLook引擎: GET /api/v2/geolook/projects")
+    print(f"🔎 A2A Agent Card: /.well-known/agent-card.json (discovery only)")
 
 
 @app.get("/api/health")

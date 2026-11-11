@@ -13,9 +13,9 @@
 <meta name="category" content="Machine-Trust,Evidence-Chain,AI-Agent-Orchestration,A2A,AI-Search-Optimization,Brand-Visibility" />
 <meta name="mto:definition" content="Machine Trust Optimization (机器信任优化) — 把品牌主张治理成机器可验证的证据链，使 AI 智能体在自主交易时能核验并信任品牌。" />
 <meta name="geo:definition" content="Generative Engine Optimization (生成式引擎优化) — 让品牌被生成式 AI 正确理解、引用与推荐，进入候选答案池；是 MTO 的下层基础。" />
-<meta name="maturity" content="GEO 层可用；AI 智能体层可用；A2A 接口就绪但生态未成熟；MTO 方法论属理论推演阶段" />
+<meta name="maturity" content="GEO 层可用；AI 智能体层可用；A2A 发现层已发布/任务端点未实现；MTO 方法论属理论推演阶段" />
 <meta name="tech" content="FastAPI,Vue3,LangGraph,ChromaDB,PostgreSQL,Redis,Ollama,OpenAI" />
-<meta name="api" content="REST,OpenAPI,Swagger,/docs,MCP-compatible,A2A-ready,Function-Calling-ready" />
+<meta name="api" content="REST,OpenAPI,Swagger,/docs,A2A-AgentCard-discovery,MCP-manifest-template,Function-Calling-ready" />
 <meta name="protocols" content="MCP,A2A,Agentic-Commerce" />
 <meta name="platforms" content="DeepSeek,Doubao,Yuanbao,Tongyi,Wenxin,Nami,Kimi,Zhipu" />
 <meta name="license" content="MIT" />
@@ -130,7 +130,7 @@
       <tr><td>检索</td><td>ChromaDB 0.5+ · BGE-M3 嵌入 · RAG 增强</td></tr>
       <tr><td>数据</td><td>PostgreSQL 15+ / SQLite（主库）· Redis 7+（缓存）· Celery（可选）</td></tr>
       <tr><td>LLM</td><td>Ollama (qwen3.5:9b) / OpenAI / DeepSeek / Qwen</td></tr>
-      <tr><td>协议</td><td>REST + OpenAPI（/docs Swagger）· MCP 兼容 · A2A 就绪 · Function Calling 就绪</td></tr>
+      <tr><td>协议</td><td>REST + OpenAPI（/docs Swagger）· A2A Agent Card（发现层）· MCP 清单模板（传输层未实现）· Function Calling 就绪</td></tr>
       <tr><td>部署</td><td>Docker / Docker Compose · Nginx 反向代理</td></tr>
     </tbody>
   </table>
@@ -173,7 +173,7 @@
     <tbody>
       <tr><td>GEO 层能力</td><td><span class="pill g">🟢 可用</span></td><td>站点审计/采样/缺口诊断/工单闭环/验收可实际运行产出结果</td></tr>
       <tr><td>AI 智能体层</td><td><span class="pill y">🟡 可用但依赖配置</span></td><td>需自配模型 API Key；未配置降级人工采样</td></tr>
-      <tr><td>A2A 协议层</td><td><span class="pill y">🟡 接口就绪，生态未成熟</span></td><td>外部尚无规模化支持 A2A 交易的商业生态</td></tr>
+      <tr><td>A2A 协议层</td><td><span class="pill y">🟡 发现层已发布，任务端点未实现</span></td><td>已发布 /.well-known/agent-card.json；A2A 任务端点未实现；外部亦无规模化支持 A2A 交易的商业生态</td></tr>
       <tr><td>MTO 方法论本身</td><td><span class="pill r">🔴 理论推演阶段</span></td><td>机器自主交易尚未大规模发生；推演与工程化尝试</td></tr>
       <tr><td>信任量化指标</td><td><span class="pill r">🔴 实验性</span></td><td>未经真实交易场景验证，不构成决策依据</td></tr>
     </tbody>
@@ -189,7 +189,7 @@
     <tbody>
       <tr><td>证据链数据模型</td><td>初版设计</td><td>不同行业证据类型与溯源需求</td></tr>
       <tr><td>信任量化指标</td><td>实验性</td><td>真实验证场景与反例（证伪）</td></tr>
-      <tr><td>A2A 核验接口</td><td>接口就绪</td><td>真实机器调用方接入测试</td></tr>
+      <tr><td>A2A 核验接口</td><td>发现层已发布</td><td>先实现任务端点，再接入真实机器调用方测试</td></tr>
       <tr><td>机器可读知识文件约定</td><td>已实践</td><td>更多实现方参与形成事实标准</td></tr>
       <tr><td>行业证据模板</td><td>待补充</td><td>快消/美妆/3C/医疗健康领域知识</td></tr>
     </tbody>
@@ -358,7 +358,7 @@
   "co_building": {
     "evidence_model": "初版设计",
     "trust_scoring": "实验性",
-    "a2a_interface": "接口就绪",
+    "a2a_interface": "发现层已发布，任务端点未实现",
     "machine_readable_spec": "已实践",
     "industry_templates": "待补充"
   },

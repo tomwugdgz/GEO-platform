@@ -55,7 +55,7 @@ topics: "mto, machine-trust-optimization, geo, generative-engine-optimization, a
 [![MTO](https://img.shields.io/badge/MTO-Machine%20Trust%20Optimization-ff6b00.svg)](docs/MTO平台定义说明.md)
 [![Whitepaper](https://img.shields.io/badge/whitepaper-MTO%20行业白皮书-1f6feb.svg)](docs/MTO白皮书.md)
 [![AI-Friendly](https://img.shields.io/badge/llms.txt-included-ff69b4.svg)](llms.txt)
-[![A2A](https://img.shields.io/badge/A2A-ready-9b59b6.svg)](llms.txt)
+[![A2A](https://img.shields.io/badge/A2A-AgentCard--discovery-9b59b6.svg)](.well-known/agent-card.json)
 [![Open Source](https://img.shields.io/badge/co--building-welcome-39ff14.svg)](docs/MTO平台定义说明.md#九开源共建-mto)
 
 <!-- AI-READABLE TAGS (for LLM crawlers / A2A agents / search platforms)
@@ -65,9 +65,10 @@ topics: "mto, machine-trust-optimization, geo, generative-engine-optimization, a
 @category: Machine-Trust / Evidence-Chain / AI-Agent-Orchestration / A2A / AI-Search-Optimization / Brand-Visibility
 @mto_definition: Machine Trust Optimization (机器信任优化) — 把品牌主张治理成机器可验证的证据链，使 AI 智能体在自主交易时能核验并信任品牌
 @geo_definition: Generative Engine Optimization (生成式引擎优化) — 让品牌被生成式 AI 正确理解、引用与推荐，进入候选答案池；是 MTO 的下层基础
-@maturity: GEO 层可用；AI 智能体层可用；A2A 接口就绪但生态未成熟；MTO 方法论属理论推演阶段
+@maturity: GEO 层可用；AI 智能体层可用；A2A 发现层已发布/A2A 任务端点未实现；MTO 方法论属理论推演阶段
 @tech: FastAPI, Vue3, LangGraph, ChromaDB, PostgreSQL, Redis, Ollama, OpenAI, Laya(LAYA/JEV 决策引擎)
-@api: REST + OpenAPI (Swagger at /docs), MCP-compatible, A2A-ready, Function-Calling-ready
+@api: REST + OpenAPI (Swagger at /docs), A2A Agent Card discovery (/.well-known/agent-card.json), MCP Registry manifest template, Function-Calling-ready
+@discovery: .well-known/agent-card.json (A2A v1.0, discovery only); mcp/server.json (template, no transport deployed); llms.txt (community proposal, not a standard)
 @platforms: DeepSeek, Doubao, Yuanbao, Tongyi, Wenxin, Nami, Kimi, Zhipu
 @license: MIT
 @author: Tom (duckwolf)
@@ -191,7 +192,7 @@ topics: "mto, machine-trust-optimization, geo, generative-engine-optimization, a
 |---|---|---|
 | **GEO 层能力** | 🟢 **可用** | 站点审计、答案采样、缺口诊断、工单闭环、验收均可实际运行并产出结果 |
 | **AI 智能体层** | 🟡 **可用但依赖配置** | 需自行配置各模型 API Key；未配置的引擎降级为人工采样 |
-| **A2A 协议层** | 🟡 **接口就绪，生态未成熟** | 协议与接口已实现，但**外部尚无规模化支持 A2A 交易的商业生态** |
+| **A2A 协议层** | 🟡 **发现层已发布，任务端点未实现** | 已发布 `/.well-known/agent-card.json`；**A2A 任务端点（JSONRPC / GRPC / HTTP+JSON 绑定）尚未实现**；外部亦无规模化支持 A2A 交易的商业生态 |
 | **MTO 方法论本身** | 🔴 **理论推演阶段** | 机器自主交易尚未大规模发生；本框架是**推演与工程化尝试**，不是已落地的成熟方案 |
 | **信任量化指标** | 🔴 **实验性** | 指标设计合理但**未经过真实交易场景验证**，不构成任何决策依据 |
 
@@ -213,7 +214,7 @@ MTO 要成立，前提是**机器能够跨组织地验证证据**。
 |---|---|---|
 | **证据链的数据模型** | 初版设计 | 不同行业的证据类型与溯源需求 |
 | **信任量化指标** | 实验性 | 真实的验证场景与反例，用来证伪 |
-| **A2A 核验接口** | 接口就绪 | 真实的机器调用方接入测试 |
+| **A2A 核验接口** | 发现层已发布（任务端点未实现） | 先实现 A2A 任务端点，再接入真实的机器调用方测试 |
 | **机器可读知识文件约定** | 已实践 | 更多实现方参与，形成事实标准 |
 | **行业证据模板** | 待补充 | 快消 / 美妆 / 3C / 医疗健康等领域的领域知识 |
 
@@ -274,17 +275,36 @@ MTO 要成立，前提是**机器能够跨组织地验证证据**。
 
 ## 🤖 AI 可读标签与 A2A 集成
 
-本项目原生支持 **AI 爬虫、LLM Agent、A2A (Agent-to-Agent) 协议客户端** 自动发现与对接：
+本项目为 **AI 爬虫、LLM Agent、A2A (Agent-to-Agent) 客户端** 提供机器可读入口。其中 `llms.txt` 为社区提案式摘要、Agent Card 为 A2A 发现层；**A2A 任务端点与 MCP 传输层均未实现**：
 
 ### 📄 `llms.txt`（LLM 首选入口）
 
-仓库根目录提供 [`llms.txt`](llms.txt) — 遵循 [Answer.AI llms.txt 标准](https://llmstxt.org/)，为大型语言模型提供结构化项目摘要。主流 AI 爬虫（Claude、GPT、Gemini、Perplexity）会优先读取此文件理解项目。
+仓库根目录提供 [`llms.txt`](llms.txt) — 参考 [llmstxt.org 社区提案](https://llmstxt.org/)（署名 Jeremy Howard；官方自述为 "A proposal to standardise…" / "informal overview"，**非正式标准**），为大型语言模型提供结构化项目摘要。主流 AI 爬虫（Claude、GPT、Gemini、Perplexity）可通过此文件理解项目。
 
 ### 🏷️ AI 可读元数据标签
 
 README 顶部 YAML frontmatter + HTML 注释标签包含完整的机器可读元数据（`@type`、`@category`、`@tech`、`@api`、`@platforms` 等），便于知识图谱、向量库、Agent 注册中心索引。
 
-### 🔌 A2A / Agent 调用方式
+### 🔌 A2A 发现层与 Agent 调用方式
+
+> **边界先行**：本平台已实现 A2A **发现层**（Agent Card），**未实现 A2A 任务端点**（JSONRPC / GRPC / HTTP+JSON 绑定）。
+> 「Agent Card 可被发现」≠「A2A 协议已实现」；当前可调用能力为 REST + OpenAPI。
+
+#### `/.well-known/agent-card.json`（A2A v1.0）
+
+- 官方发现路径：A2A Agent Discovery 建议公开 Agent 将卡片托管于 `https://{domain}/.well-known/agent-card.json`（RFC 8615），另列注册表、直配两种发现策略。
+- 本仓库同时提供 [静态文件](.well-known/agent-card.json) 与运行时端点；运行时由 `backend/app/api/agent_card_routes.py` 提供，带 `ETag` + `Cache-Control`，并把 `url` / `version` 对齐当前实例。
+- 字段按 A2A v1.0 必填结构：`name` / `description` / `supportedInterfaces` / `version` / `capabilities` / `defaultInputModes` / `defaultOutputModes` / `skills`；`skills` 列出 5 个真实 REST 端点（证据目录 / 观测上报 / 证据报告 / 趋势快照 / 品牌诊断）。
+- 公网部署设置 `MTO_PUBLIC_BASE_URL=https://your-domain`；未设置则回退为请求 `base_url`。
+- **安全**：按 A2A 官方建议，任何 Agent Card 都应视为不可信输入；本卡为公开只读，不含密钥。
+
+#### `mcp/server.json`（清单模板）
+
+- `$schema` 指向 MCP Registry 官方 `2025-12-11/server.schema.json`；必填 `name` / `description` / `version` 齐备。
+- **不含 `remotes` / `packages`**，即未声明任何可安装传输层。它是后续接入官方 MCP SDK 的占位清单，**不是**「已通过官方 SDK 实现的 MCP Server」。
+- MCP 官方规范当前版本为 `2026-07-28`；Registry schema 版本与协议规范版本分属两条线，不可混写。
+
+#### REST 调用
 
 后端暴露标准 REST API（FastAPI，OpenAPI 自动生成），任意 Agent 框架可直接调用：
 
@@ -308,7 +328,7 @@ async def diagnose_brand(brand: str, product: str):
 ```
 
 - **OpenAPI Schema**: 服务运行后访问 `/docs` (Swagger UI) 或 `/openapi.json` 获取完整端点定义
-- **MCP 兼容**: 所有端点可经 MCP Server 封装为 Tool，被 Claude Desktop / Cursor 等直接调用
+- **MCP**: 传输层未实现；上述清单模板仅为后续封装预留，**不构成 MCP 兼容声明**
 - **Function Calling 就绪**: 端点 JSON Schema 可直接转为 LLM function 定义
 
 ## ✨ 核心特性
