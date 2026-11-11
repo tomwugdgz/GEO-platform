@@ -849,6 +849,22 @@ server {
 > 下列提交哈希与日期取自本仓库 `git log`；GEOInflow 整合的完整评估、取舍与验证记录见
 > [GEOInflow 借鉴与整合说明](docs/geoinflow-借鉴与整合说明.md)。
 
+### 2026-11-11 · `edfca06` — A2A 发现层与协议口径校准
+
+依据 AAO / MTO 架构对比研究中列为「可直接抄」的 P0 项，取「发现层 + 措辞纠偏」子集落地。
+
+| 类别 | 变更 |
+|---|---|
+| 新增 · 发现层（3） | `.well-known/agent-card.json`（A2A v1.0，5 个 skills）、`mcp/server.json`（Registry 清单模板）、`backend/app/api/agent_card_routes.py`（运行时端点） |
+| 修改（8） | `backend/app/main.py`(+4)、`README.md`、`README.en.md`、`llms.txt`、`docs/MTO平台定义说明.md`、`docs/MTO白皮书.md`、两份 HTML 系统说明书 |
+| 新增端点 | `GET /.well-known/agent-card.json`（`ETag` + `Cache-Control`，`include_in_schema=False`） |
+
+- **口径校准**：`llms.txt` 改为「社区提案、非正式标准」；「MCP 兼容」改为「传输层未实现，仅清单模板」；「A2A-ready」改为「发现层已发布、任务端点未实现」；白皮书 3 处未核实来源加 ⚠️ 待核标注（MCP 捐赠 AAIF / A2A 版本与维护方 / Agentic Commerce 三路线）。
+- **规范依据**：A2A v1.0（`Latest Released Version 1.0.0`；Agent Discovery 路径 `/.well-known/agent-card.json`，RFC 8615）、MCP 规范 `2026-07-28`、MCP Registry `2025-12-11/server.schema.json`、llmstxt.org 官方自述 proposal / informal overview。
+- **验证**：`py_compile` 通过；AgentCard 与 server.json 必填字段、`description` ≤100 字符断言通过；HTTP 实测 Agent Card 200、`If-None-Match` 条件请求 304、7 个既有端点全部 200、OpenAPI 98 paths。
+- **边界**：未实现 A2A 任务端点与 MCP 传输层；不改 MTO Score 四维权重；L3 不作决策依据；不承诺排名；本次未推送远端。
+- **统计**：11 files changed，**+240 / −36**。
+
 ### 2026-11-07 · `d2623fb` — GEOInflow 借鉴资产整合
 
 把 GEOInflow v1.2.0（MIT）的**语言无关设计资产**整合进本平台，并设立独立归集模块。

@@ -629,6 +629,22 @@ server {
 
 > Hashes and dates are taken from this repository's `git log`. For the full assessment, trade-offs and verification of the GEOInflow integration, see the [GEOInflow Integration Report](docs/geoinflow-借鉴与整合说明.md).
 
+### 2026-11-11 · `edfca06` — A2A discovery layer and protocol-claim alignment
+
+Implemented the "discovery + wording correction" subset of the P0 items marked as directly transferable in the AAO / MTO architecture comparison study.
+
+| Category | Change |
+|---|---|
+| Added · discovery (3) | `.well-known/agent-card.json` (A2A v1.0, 5 skills), `mcp/server.json` (Registry manifest template), `backend/app/api/agent_card_routes.py` (runtime endpoint) |
+| Modified (8) | `backend/app/main.py` (+4), `README.md`, `README.en.md`, `llms.txt`, `docs/MTO平台定义说明.md`, `docs/MTO白皮书.md`, both HTML system manuals |
+| New endpoint | `GET /.well-known/agent-card.json` (`ETag` + `Cache-Control`, `include_in_schema=False`) |
+
+- **Claim alignment**: `llms.txt` is now a "community proposal, not a formal standard"; "MCP-compatible" became "transport not implemented, manifest template only"; "A2A-ready" became "discovery published, task endpoints NOT implemented"; three unverified claims in the whitepaper were marked ⚠️ pending verification.
+- **Specification basis**: A2A v1.0 (`Latest Released Version 1.0.0`; Agent Discovery path `/.well-known/agent-card.json`, RFC 8615), MCP specification `2026-07-28`, MCP Registry `2025-12-11/server.schema.json`, llmstxt.org self-description as a proposal / informal overview.
+- **Verification**: `py_compile` passed; required-field and `description` ≤100 character assertions passed; HTTP checks returned Agent Card 200, conditional request 304, 7/7 existing endpoints 200, OpenAPI 98 paths.
+- **Boundaries**: no A2A task endpoints and no MCP transport; MTO Score weights unchanged; L3 is not a decision basis; no ranking promises; not pushed to remotes in this change.
+- **Diff**: 11 files changed, **+240 / −36**.
+
 ### 2026-11-07 · `d2623fb` — GEOInflow-derived assets
 
 Language-independent design assets from GEOInflow v1.2.0 (MIT) were integrated, and a standalone module was added to collect them.
