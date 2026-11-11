@@ -849,6 +849,13 @@ server {
 > 下列提交哈希与日期取自本仓库 `git log`；GEOInflow 整合的完整评估、取舍与验证记录见
 > [GEOInflow 借鉴与整合说明](docs/geoinflow-借鉴与整合说明.md)。
 
+### 2026-11-11 · `d34ca8f` — 社区入口迁移至 r/MTORWA
+
+- 当前社区讨论与反馈入口由 `r/GEOMTO` 改为 **[Reddit r/MTORWA](https://www.reddit.com/r/MTORWA/)**。
+- 变更范围：`README.md`（2 处）、`README.en.md`（5 处，含 badge、`@community` 标签、页脚）、`llms.txt`（1 处），共 **8 处当前引用**。
+- **历史记录保留**：`2026-10-22 · c176d6c` 条目中的 `r/GEOMTO` 是当时的事实，按「不静默覆盖历史」原则原样保留；本条即其后继变更记录。
+- 统计：3 files changed，**+8 / −8**。
+
 ### 2026-11-11 · `edfca06` — A2A 发现层与协议口径校准
 
 依据 AAO / MTO 架构对比研究中列为「可直接抄」的 P0 项，取「发现层 + 措辞纠偏」子集落地。

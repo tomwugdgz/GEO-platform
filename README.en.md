@@ -629,6 +629,13 @@ server {
 
 > Hashes and dates are taken from this repository's `git log`. For the full assessment, trade-offs and verification of the GEOInflow integration, see the [GEOInflow Integration Report](docs/geoinflow-借鉴与整合说明.md).
 
+### 2026-11-11 · `d34ca8f` — Community link moved to r/MTORWA
+
+- The current community discussion & feedback entry changed from `r/GEOMTO` to **[Reddit r/MTORWA](https://www.reddit.com/r/MTORWA/)**.
+- Scope: `README.md` (2), `README.en.md` (5, including badge, `@community` tag and footer), `llms.txt` (1) — **8 live references** in total.
+- **Historical entries retained**: the `r/GEOMTO` link in the `2026-10-22 · c176d6c` entry was accurate at that time and is kept verbatim under the "no silent overwrite of history" rule; this entry is its successor.
+- Diff: 3 files changed, **+8 / −8**.
+
 ### 2026-11-11 · `edfca06` — A2A discovery layer and protocol-claim alignment
 
 Implemented the "discovery + wording correction" subset of the P0 items marked as directly transferable in the AAO / MTO architecture comparison study.
